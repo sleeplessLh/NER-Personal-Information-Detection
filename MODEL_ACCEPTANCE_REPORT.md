@@ -6,7 +6,7 @@
 
 ## 1. 核心问题
 
-结论：仓库包含已训练的 `models/best_model.pt`。在全新的 Windows 11 目录和虚拟环境中安装 `requirements.txt` 后，可以直接加载模型、预测、脱敏并启动 FastAPI，**不需要重新训练**。本轮修复后的最终远程 Clone 仍需在 Push 后完成，因此本报告在最终证据提交前暂记 `PENDING FINAL RE-CLONE`。
+结论：**YES**。仓库包含已训练的 `models/best_model.pt`。在全新的 Windows 11 目录和虚拟环境中安装 `requirements.txt` 后，可以直接加载模型、预测、脱敏并启动 FastAPI，**不需要重新训练**。这一结论已由修复版本的最终远程 Clone 证明，而不是根据 README 推断。
 
 ## 2. 环境与首次 Fresh Clone
 
@@ -18,6 +18,16 @@
 - `.venv\\Scripts\\python.exe -m pip install -r requirements.txt`：PASS
 - 初始仓库测试：28 passed
 - 未设置必需环境变量；源码使用项目相对路径
+
+修复 Push 后再次 Clone 到第三个全新目录 `tmp/final-reclone-20261029`：
+
+- 检出功能修复 commit：`7919565e82c2dd147f3acb55eec60613be169165`
+- 创建全新 `.venv` 并完整安装 `requirements.txt`：PASS
+- `pip check`：`No broken requirements found.`
+- checkpoint SHA-256：`4CB9276D78120406F7C2FDD40C2B7F5498659B8E0A5FC3F9C2D7E8657FD15945`
+- 未重新训练，直接 CPU 加载、预测和脱敏：PASS
+- final Clone tests：**38 passed in 5.40s**
+- final Clone Uvicorn：主页、JSON API、TXT、两页 PDF 均 HTTP 200
 
 教程 PDF 构建脚本引用 `C:\\Windows\\Fonts`，这是 Windows 教程制品构建的显式字体依赖，不影响模型、API、测试或 Clone 后运行。运行应用不依赖开发机绝对路径。
 
@@ -102,8 +112,8 @@
 
 | 验收项目 | 状态 | 证据 |
 |---|---|---|
-| Fresh Clone | PENDING FINAL RE-CLONE | 修复 Push 后执行第三个全新目录 |
-| Dependency Installation | PASS | 首次审计 Clone 独立 venv 完整安装 |
+| Fresh Clone | PASS | 第三个全新目录检出 `7919565`，不重新训练运行 |
+| Dependency Installation | PASS | 全新 venv 安装；`pip check` 无冲突 |
 | Model Loading | PASS | checkpoint CPU load + inference |
 | PERSON Detection | PASS WITH LIMITATION | synthetic PER recall 1.0；人工矩阵有括号姓名漏检 |
 | LOCATION Detection | PASS WITH LIMITATION | synthetic LOC F1 1.0；人工样本通过 |
@@ -117,8 +127,8 @@
 | Automated Tests | PASS | 38 passed |
 | Model Evaluation | PASS WITH LIMITATION | synthetic overall F1 1.0；manual 11/13 |
 | Windows 11 | PASS | 本轮为 Windows 11 原生执行；另增 Windows Actions |
-| GitHub Sync | PENDING | 修复尚待 commit/push |
+| GitHub Sync | PASS | 功能修复 commit `7919565e82c2dd147f3acb55eec60613be169165` |
 
 ## 10. 当前 Verdict
 
-**PARTIAL PASS — 核心功能可运行；等待修复版本 Push 后的最终全新 Clone，同时保留人工挑战矩阵的两项模型泛化失败。**
+**PARTIAL PASS — GitHub 最终功能版本可在全新 Windows 环境直接运行，不需要重新训练；但固定人工挑战矩阵仍有 2/13 项模型泛化失败，因此不能宣布无条件 PASS。**
