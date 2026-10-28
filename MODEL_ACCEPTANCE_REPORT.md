@@ -1,6 +1,6 @@
 # MODEL ACCEPTANCE REPORT
 
-执行日期：2026-10-28（Asia/Singapore）
+执行日期：2026-10-29（Asia/Singapore）
 项目：Personal Information Detection in Text (NER)
 目标仓库：<https://github.com/sleeplessLh/NER-Personal-Information-Detection>
 
@@ -48,7 +48,7 @@ $env:MKL_NUM_THREADS='1'
 python -m pytest -q
 ```
 
-最新结果：**28 passed in 3.37s**（重新训练后的本地验收）。
+本地重新训练后结果：**28 passed in 5.57s**。GitHub 全新 Clone 独立环境结果：**28 passed in 5.35s**。
 
 覆盖 dataset loading、preprocessing、vocabulary、label mapping、BIO validation、model initialization、forward、loss、backpropagation、checkpoint save/load、prediction、PER/LOC/ORG、span、redaction、Malaysian split、TXT/PDF、FastAPI、Web HTML、empty input、invalid/oversized file、CPU inference 与 end-to-end。
 
@@ -86,9 +86,24 @@ python -m pytest -q
 
 ## 6. Clone Verification
 
-状态：**NOT VERIFIED - 等待首次 GitHub Push 后执行全新 Clone。**
+状态：**PASS**。
 
-必须在发布后完成：从 GitHub Clone 到新目录、确认 `models/best_model.pt` 存在、使用仓库依赖启动、直接预测与脱敏、TXT/PDF、pytest。未完成前最终项目状态不得标为完全 PASS。
+2026-10-29 从公开仓库 Clone 到全新目录 `tmp/clean-clone-20261029`，检出的发布提交为 `2d1a6e043e72a85c13ff0c3b781aa1048d6922c0`。没有重新训练模型。
+
+- `python -m venv .venv`：PASS
+- `.venv\\Scripts\\python.exe -m pip install -r requirements.txt`：PASS
+- checkpoint 大小：582,645 bytes
+- checkpoint SHA-256：`9077F72D721AE36885BF18E442A3B616F0D7FDCEB89C67F5B66E290E61B60A6B`
+- `.venv\\Scripts\\python.exe -m pytest -q`：**28 passed in 5.35s**
+- `.venv\\Scripts\\python.exe -m src.evaluate`：general 与 Malaysian test overall F1 均为 1.0000（仅合成模板域）
+- 直接加载 checkpoint：Sarah=`PER`、Microsoft=`ORG`、Kuala Lumpur=`LOC`
+- 脱敏输出：`[PER] works at [ORG] in [LOC].`
+- Uvicorn 首页：HTTP 200，页面含 `Detect Entities`
+- `POST /api/predict`：3 entities，PASS
+- `POST /api/upload` TXT：3 entities，PASS
+- `POST /api/upload` text-layer PDF：3 entities，PASS
+
+以上验证证明公开仓库在一台全新 Python 虚拟环境中，不重新训练即可加载随仓库发布的模型并运行测试、预测、Web API、TXT 与 PDF 功能。
 
 ## 7. Known Limitations
 
@@ -107,8 +122,8 @@ python -m pytest -q
 | ML evaluation | PASS（仅合成模板域） |
 | Mandatory model/application requirements | PASS |
 | Three bonus features | PASS |
-| Public GitHub repository | NOT VERIFIED - 待创建/Push |
-| Clean GitHub Clone verification | NOT VERIFIED |
+| Public GitHub repository | PASS |
+| Clean GitHub Clone verification | PASS |
 | Production-sensitive-data deployment | FAIL / NOT APPROVED |
 
-当前总状态：**NOT VERIFIED**。只有公开仓库创建、Push 和全新 Clone 验收成功后，才能更新为比赛原型最终 PASS。
+当前总状态：**PASS（比赛原型范围）**。这不等同于生产批准；合成模板数据上的高指标不能替代真实数据评估与高风险场景人工复核。
