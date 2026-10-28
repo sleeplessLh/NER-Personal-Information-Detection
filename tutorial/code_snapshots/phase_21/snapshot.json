@@ -1,0 +1,22 @@
+{
+  "phase": "21",
+  "verified": true,
+  "test_command": "pytest -q; reproduce_tutorial.py; qa_tutorial_pdf.py",
+  "actual_result": "28 passed; 125/125 PDF pages rendered; 8 contact sheets reviewed; full verified source code embedded; long lines visually continued without clipping; 0 missing phases, glyph errors, unfinished markers, or empty pages.",
+  "files": {
+    "pyproject.toml": "48f01a39459b0c09ccc928fb84aefbb6ad93948ecc22580e3bf1a437573ad922",
+    "src/constants.py": "1ed10ebd07f0ce8fba31a16f3d1285e3b19ce1b3ae122f1f5c98e0ce5b9f70c0",
+    "src/preprocessing.py": "e8c540bb87a3ff02237044ab002751fad90e423228bb00af90b4f7e7f4ac7a05",
+    "src/generate_data.py": "1aa276a072a1cb0156332ed73f07fb22556ebf933865a2c67c093854d705afc5",
+    "src/dataset.py": "706fcf33b48ca57003e6a7b91d90064aec33903ead677ad0bd7e8ef5fa612b5f",
+    "src/model.py": "3c2f908147d8fd0ed69c7c4cd983e9e34d738325957c5421ac1f37bc5a8ad8ff",
+    "src/metrics.py": "86339ee2d4a62092d3f474b3c32a20a844a1ac6859390d306de81b868c90425e",
+    "src/train.py": "8cafe28b356c77a6466790efaa973a78a4f17a8a2904b057a5e9ed702c6eff6f",
+    "src/evaluate.py": "32de2df8015672d0fe038d42be9458dc248bbacfbc51235b6b54a68bbabb4852",
+    "src/predict.py": "3bd5a9053e8311c7e1020677fe8b2c4cc3c17b723731b6942675e06b9862339f",
+    "src/redact.py": "0177e0ce469488c02c5b942b960772c817ade8ba0e0b88f640bf9d6b0a8f1380",
+    "app/main.py": "0a495c2b1af1ecee610343919403710671520636a49166cfe4339fde0c125138",
+    "tutorial/build_pdf.py": "a8c4cc94237fa7203aa5ba2f3e109f84ff4585f60ebbaa952d53defab345bdaf",
+    "tutorial/chapters/phase_21.md": "8d89bc3ddb76e587f860502b3b67c6818cdce103cf6b18a45f9a1eda1b4a85c0"
+  }
+}

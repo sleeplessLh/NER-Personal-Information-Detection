@@ -1,0 +1,38 @@
+{
+  "dataset": "synthetic leakage-safe test split",
+  "sentences": 300,
+  "metrics": {
+    "PER": {
+      "tp": 283,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "LOC": {
+      "tp": 149,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "ORG": {
+      "tp": 198,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "overall": {
+      "tp": 630,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  }
+}

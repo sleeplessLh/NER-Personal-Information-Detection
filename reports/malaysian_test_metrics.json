@@ -1,0 +1,38 @@
+{
+  "dataset": "synthetic Malaysian local test split",
+  "sentences": 60,
+  "metrics": {
+    "PER": {
+      "tp": 52,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "LOC": {
+      "tp": 36,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "ORG": {
+      "tp": 38,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "overall": {
+      "tp": 126,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  }
+}

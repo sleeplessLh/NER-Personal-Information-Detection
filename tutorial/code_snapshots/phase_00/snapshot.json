@@ -1,0 +1,9 @@
+{
+  "phase": "00",
+  "verified": true,
+  "test_command": "manual requirement checklist",
+  "actual_result": "PASS: boundaries and evidence types documented",
+  "files": {
+    "tutorial\\chapters\\phase_00.md": "b3155aa6ccda936d90f9a1af0fe252560102dc1f34680726f8b6fe5b5d004588"
+  }
+}

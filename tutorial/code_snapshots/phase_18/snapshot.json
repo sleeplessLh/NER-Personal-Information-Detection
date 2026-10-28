@@ -1,0 +1,10 @@
+{
+  "phase": "18",
+  "verified": true,
+  "test_command": "real Uvicorn browser/API path",
+  "actual_result": "PASS: HTML fetch uses trained API and renders JSON",
+  "files": {
+    "app\\main.py": "0a495c2b1af1ecee610343919403710671520636a49166cfe4339fde0c125138",
+    "tutorial\\chapters\\phase_18.md": "aba44195d20a8fb56a9f331ed5e285e133caf8360ce507bf04ead2a7086e4c6b"
+  }
+}

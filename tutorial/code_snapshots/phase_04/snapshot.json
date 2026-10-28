@@ -1,0 +1,11 @@
+{
+  "phase": "04",
+  "verified": true,
+  "test_command": "python import constants assertions",
+  "actual_result": "PASS: paths, eight labels and PAD token verified",
+  "files": {
+    "src\\__init__.py": "e5d3e9266bb6e0ae2705e1afcfa4a8032547950792b73545b99ea247631855d3",
+    "src\\constants.py": "1ed10ebd07f0ce8fba31a16f3d1285e3b19ce1b3ae122f1f5c98e0ce5b9f70c0",
+    "tutorial\\chapters\\phase_04.md": "9be278b8e664a700ca83d0cc4c73370d9c1c8bab49a0fc6bdf0570095c0c4ae9"
+  }
+}

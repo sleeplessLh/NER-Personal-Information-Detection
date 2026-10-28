@@ -1,0 +1,11 @@
+{
+  "phase": "17",
+  "verified": true,
+  "test_command": "pytest tests/test_api.py -q",
+  "actual_result": "PASS: text, TXT, PDF, invalid type and 5MB limit",
+  "files": {
+    "app\\main.py": "0a495c2b1af1ecee610343919403710671520636a49166cfe4339fde0c125138",
+    "tests\\test_api.py": "759c087541ed716581c931a8fbc841a5c6fc8705ec7dc7235b57305bea3708f6",
+    "tutorial\\chapters\\phase_17.md": "5eb0dc38cd28bb370d19269d5387a57fba2df17f8e78a93408b32bd59d0ed39b"
+  }
+}

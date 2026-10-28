@@ -1,0 +1,34 @@
+[project]
+name = "personal-information-ner"
+version = "0.1.0"
+description = "A from-scratch PyTorch BiLSTM NER system for personal information detection."
+requires-python = ">=3.11,<3.13"
+dependencies = [
+  "fastapi==0.120.1",
+  "jinja2==3.1.6",
+  "numpy==2.3.4",
+  "pandas==2.3.3",
+  "pydantic==2.12.3",
+  "pypdf==6.1.3",
+  "python-multipart==0.0.20",
+  "scikit-learn==1.7.2",
+  "torch==2.9.0",
+  "uvicorn==0.38.0",
+]
+
+[dependency-groups]
+dev = [
+  "httpx==0.28.1",
+  "pdfplumber==0.11.7",
+  "pytest==8.4.2",
+  "pytest-cov==7.0.0",
+  "reportlab==4.4.4",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-ra --basetemp=.pytest-tmp"
+
+[tool.uv]
+package = false

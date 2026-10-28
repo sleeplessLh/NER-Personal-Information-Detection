@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.pytest-tmp/
+.coverage
+htmlcov/
+tmp/
+data/raw/*
+!data/raw/.gitkeep
+models/*.pt
+models/*.pth
+!models/best_model.pt
+output/pdf/*.pdf
+output/pdf/qa-*/
+output/pdf/rendered/

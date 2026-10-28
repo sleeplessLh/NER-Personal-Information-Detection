@@ -1,0 +1,10 @@
+{
+  "phase": "01",
+  "verified": true,
+  "test_command": "python learning\\hello_python.py",
+  "actual_result": "PASS: Python 3.12.15 on Windows using project .venv",
+  "files": {
+    "learning\\hello_python.py": "659639cc4f0fe725832f5548f1547f6b3708c9de5d752549b37510ca31368761",
+    "tutorial\\chapters\\phase_01.md": "b8585a01eea3c3e84bfc7ab3d2f0804d288769fdb6aae925df739271e0fbb356"
+  }
+}

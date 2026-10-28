@@ -1,0 +1,11 @@
+{
+  "phase": "13",
+  "verified": true,
+  "test_command": "pytest tests/test_redaction.py -q",
+  "actual_result": "PASS: character-span redaction preserves whitespace",
+  "files": {
+    "src\\redact.py": "0177e0ce469488c02c5b942b960772c817ade8ba0e0b88f640bf9d6b0a8f1380",
+    "tests\\test_redaction.py": "7fdfc2d3738e9714c00c2b72787a8c4047e5185d3bbe7626f5be7390b86c3bd5",
+    "tutorial\\chapters\\phase_13.md": "8fcc565ec97f5f6e4457e819579d91458db915d86f5ffe4df11d42930327f719"
+  }
+}

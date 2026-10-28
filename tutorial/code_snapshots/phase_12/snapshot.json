@@ -1,0 +1,11 @@
+{
+  "phase": "12",
+  "verified": true,
+  "test_command": "pytest tests/test_prediction.py -q",
+  "actual_result": "PASS: checkpoint reload, CPU prediction and BIO decoding",
+  "files": {
+    "src\\predict.py": "3bd5a9053e8311c7e1020677fe8b2c4cc3c17b723731b6942675e06b9862339f",
+    "tests\\test_prediction.py": "b59425417d6504a2926ef37ee02beb4cc68cf2681bf3b3e4259b376546b4f240",
+    "tutorial\\chapters\\phase_12.md": "bfaedc96d8789af0a57e51c00f8a551eb7071d4ab805de80ab660ce3e47595c2"
+  }
+}

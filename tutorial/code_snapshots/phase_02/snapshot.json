@@ -1,0 +1,11 @@
+{
+  "phase": "02",
+  "verified": true,
+  "test_command": "python learning\\python_foundations.py",
+  "actual_result": "PASS: label counts and entity dictionary matched expected values",
+  "files": {
+    "learning\\hello_python.py": "659639cc4f0fe725832f5548f1547f6b3708c9de5d752549b37510ca31368761",
+    "learning\\python_foundations.py": "34fbb9f4c3bc740b6019291e88caa08cb158c6829a7af36467ebb75a12e8fafa",
+    "tutorial\\chapters\\phase_02.md": "a2f0e02a2097c4723b731bff0e6e1a85f2e712408f75275ee49cec72a4df7678"
+  }
+}

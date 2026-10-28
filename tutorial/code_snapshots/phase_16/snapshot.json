@@ -1,0 +1,12 @@
+{
+  "phase": "16",
+  "verified": true,
+  "test_command": "independent Uvicorn POST /api/predict",
+  "actual_result": "PASS: HTTP redacted [PER] lives in [LOC]. and two entities",
+  "files": {
+    "app\\main.py": "0a495c2b1af1ecee610343919403710671520636a49166cfe4339fde0c125138",
+    "src\\predict.py": "3bd5a9053e8311c7e1020677fe8b2c4cc3c17b723731b6942675e06b9862339f",
+    "src\\redact.py": "0177e0ce469488c02c5b942b960772c817ade8ba0e0b88f640bf9d6b0a8f1380",
+    "tutorial\\chapters\\phase_16.md": "88cb1b994d73a175184f97fb9fac1647e327620c60d1fd71e73ddc81a271d023"
+  }
+}

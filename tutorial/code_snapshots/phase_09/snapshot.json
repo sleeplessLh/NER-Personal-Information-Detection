@@ -1,0 +1,16 @@
+{
+  "phase": "09",
+  "verified": true,
+  "test_command": "python -m pytest tests\\test_model_versions.py -q",
+  "actual_result": "PASS: six incremental model versions passed shape, mode and gradient checks",
+  "files": {
+    "tutorial\\model_versions\\model_v1.py": "a9994b3c442458108ca411e3a5d75ae7cc1986c7f40f71365bd0bfc8cdb250cd",
+    "tutorial\\model_versions\\model_v2.py": "c01286b3164744fe081aa2ec5064f2339be09bc3498da19c24e735875a635985",
+    "tutorial\\model_versions\\model_v3.py": "a231168f6d7e2eff500f149490dec17b283565f7599dc94ac4c0427ad295fd02",
+    "tutorial\\model_versions\\model_v4.py": "973cfbeac0b544166e32f7c548069f9bbdd59679fb75c5d95f8f082ed551c0ae",
+    "tutorial\\model_versions\\model_v5.py": "442c06e3a30dfb10d5d20dea892b6cd7cf8e213f3e182b550eda8ba59ccbb3c3",
+    "tutorial\\model_versions\\model_v6.py": "10fc8209d1059179f307126551282e789adb7fd3ef10bb9476463b999151e868",
+    "tests\\test_model_versions.py": "d53542e5794c83ca6fc7bb29aea7bc5355a5cd8550da471deb35c002df420c57",
+    "tutorial\\chapters\\phase_09.md": "2e7da50cec4a615d37b18a427bc0b652fdf5cc7877b2c5ed610207443d7dd676"
+  }
+}

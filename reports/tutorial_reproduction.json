@@ -1,0 +1,9 @@
+{
+  "directory": "D:\\AIROST\\Intern-MachineLearning\\tmp\\tutorial-reproduction",
+  "python": "3.12.15 (main, Oct 14 2026, 01:08:45) [MSC v.1944 64 bit (AMD64)]",
+  "dependency_install": "reused the already verified locked .venv; did not redownload packages",
+  "pytest": "............................                                             [100%]\n28 passed in 3.67s",
+  "evaluation_contains_general_300": true,
+  "evaluation_contains_malaysian_60": true,
+  "prediction": "[{'text': 'Sarah', 'type': 'PER', 'start_token': 0, 'end_token': 1, 'start': 0, 'end': 5}, {'text': 'Microsoft', 'type': 'ORG', 'start_token': 3, 'end_token': 4, 'start': 15, 'end': 24}, {'text': 'Kuala Lumpur', 'type': 'LOC', 'start_token': 5, 'end_token': 7, 'start': 28, 'end': 40}]"
+}
