@@ -26,7 +26,7 @@
 - Malaysian 姓名、城市、大学、公司、医院与政府机构合成标注数据。
 - FastAPI JSON API 和单页 Web 界面。
 - UTF-8 `.txt` 与带文本层 `.pdf` 上传；5 MB 限制和错误响应。
-- 28 项自动化测试及独立 general/Malaysian test evaluation。
+- 38 项自动化测试、固定人工挑战矩阵及独立 general/Malaysian test evaluation。
 
 ## Model Architecture
 
@@ -108,16 +108,16 @@ python -m src.evaluate
 
 ## Model Evaluation
 
-2026-10-28 在 Windows 11、Python 3.12.15、PyTorch 2.9.0+cpu 重新训练与评估：
+2026-10-29 在 Windows 11、Python 3.12.15、PyTorch 2.9.0+cpu 重新训练与评估：
 
 - 8 epochs；batch size 64；learning rate 0.003；Adam；seed 42。
-- CPU training loop: 16.8963 seconds。
-- Best epoch: 7；validation entity F1: 0.9986。
+- CPU training loop: 15.9974 seconds。
+- Best epoch: 6；validation entity F1: 0.9974。
 - General synthetic test (300): P/R/F1 = 1.0000/1.0000/1.0000。
 - Malaysian synthetic test (60): P/R/F1 = 1.0000/1.0000/1.0000。
 - PERSON precision/recall/F1 = 1.0000/1.0000/1.0000 on both synthetic tests。
 
-这些分数只适用于共享模板的合成分布。人工挑战句 `Dr. Evelyn Carter ... Oxford` 出现姓名漏检和类型误判，因此不能把 1.0 当成生产性能。
+这些分数只适用于共享模板的合成分布。固定人工挑战矩阵为 11/13 通过；`Petronas executives` 和带括号的句子仍有类型误判，因此不能把合成测试的 1.0 当成生产性能。完整实际输出在 `reports/manual_acceptance.json`。
 
 ## Testing
 
@@ -127,7 +127,7 @@ $env:MKL_NUM_THREADS="1"
 python -m pytest -q
 ```
 
-最新实测：`28 passed`。覆盖 dataset、preprocessing、vocabulary、BIO、model、forward、loss/backpropagation、checkpoint、prediction、三类实体、span、redaction、Malaysian data、TXT/PDF、API/Web、空输入、非法/超大文件、CPU inference 与 end-to-end。
+最新实测：`38 passed`。覆盖 dataset、实体池泄漏、preprocessing、vocabulary、BIO、model、forward、loss/backpropagation、checkpoint、prediction、三类实体、标点 span、长文本、重复实体、redaction、Malaysian data、TXT、单页/多页/损坏 PDF、API/Web、空输入、非法/超大文件、CPU inference 与 end-to-end。
 
 ## Project Structure
 
@@ -141,7 +141,7 @@ src/train.py                Training、validation、checkpoint、history
 src/evaluate.py             General/Malaysian 独立 test evaluation
 src/predict.py              CPU checkpoint loading、BIO/entity extraction
 src/redact.py               基于字符 span 的可靠脱敏
-tests/                      28 项自动化测试
+tests/                      38 项自动化测试
 models/best_model.pt        已训练 checkpoint；Clone 后直接使用
 data/processed/             可分发的合成 general 数据
 data/malaysian/             可分发的合成 Malaysian 数据

@@ -22,8 +22,8 @@ ENTITY_POOLS = {
     },
     "test": {
         "PER": ["John Carter", "Ali Hassan", "Sarah Lee", "Ahmad Zaki", "Siti Hajar", "Grace Taylor"],
-        "LOC": ["London", "Kuala Lumpur", "Johor Bahru", "Malacca", "New York", "Kuching"],
-        "ORG": ["Universiti Teknologi Malaysia", "Microsoft Research", "Universiti Malaya", "Sunway University", "Apple", "Sarawak General Hospital"],
+        "LOC": ["Edinburgh", "Bangkok", "Melbourne", "Malacca", "New York", "Kuching"],
+        "ORG": ["Universiti Teknologi Malaysia", "Microsoft Research", "OpenAI", "Sunway University", "Apple", "Sarawak General Hospital"],
     },
 }
 
@@ -39,6 +39,12 @@ TEMPLATES = [
     "{PER} moved from {LOC} to join {ORG} .",
     "After arriving in {LOC} , {PER} called {ORG} .",
     "{PER} met {PER2} at {ORG} .",
+    "{PER} submitted the report .",
+    "{PER} arrived early .",
+    "The conference took place in {LOC} .",
+    "{LOC} will host the next conference .",
+    "{ORG} opened a laboratory .",
+    "{ORG} hired a specialist .",
 ]
 NO_ENTITY = {
     "train": [
@@ -153,6 +159,15 @@ def _write_jsonl(rows: list[dict], path: Path) -> None:
 
 def main() -> None:
     """生成三个 Split；发现规范化句子跨 Split 重复时立即失败。"""
+    # 完整句子和实体字符串都必须跨 split 隔离，避免验证/测试指标因记忆
+    # 训练集专有名词而虚高。
+    for entity_type in ("PER", "LOC", "ORG"):
+        split_sets = {split: set(values[entity_type]) for split, values in ENTITY_POOLS.items()}
+        for left, right in (("train", "validation"), ("train", "test"), ("validation", "test")):
+            overlap = split_sets[left] & split_sets[right]
+            if overlap:
+                raise RuntimeError(f"{entity_type} entity leakage between {left}/{right}: {sorted(overlap)}")
+
     sizes = {"train": 2400, "validation": 300, "test": 300}
     all_texts: set[str] = set()
     summary = {}

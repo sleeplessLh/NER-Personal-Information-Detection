@@ -1,0 +1,368 @@
+{
+  "purpose": "manual robustness evidence only; never used for training or model selection",
+  "passed": 11,
+  "total": 13,
+  "results": [
+    {
+      "name": "PERSON-US",
+      "text": "Barack Obama spoke yesterday.",
+      "expected": [
+        [
+          "Barack Obama",
+          "PER"
+        ]
+      ],
+      "actual": [
+        [
+          "Barack Obama",
+          "PER"
+        ]
+      ],
+      "offsets_ok": true,
+      "redacted": "[PER] spoke yesterday.",
+      "passed": true
+    },
+    {
+      "name": "PERSON-Indian",
+      "text": "Priyanka Chopra arrived early.",
+      "expected": [
+        [
+          "Priyanka Chopra",
+          "PER"
+        ]
+      ],
+      "actual": [
+        [
+          "Priyanka Chopra",
+          "PER"
+        ]
+      ],
+      "offsets_ok": true,
+      "redacted": "[PER] arrived early.",
+      "passed": true
+    },
+    {
+      "name": "PERSON-Chinese",
+      "text": "Li Wei submitted the report.",
+      "expected": [
+        [
+          "Li Wei",
+          "PER"
+        ]
+      ],
+      "actual": [
+        [
+          "Li Wei",
+          "PER"
+        ]
+      ],
+      "offsets_ok": true,
+      "redacted": "[PER] submitted the report.",
+      "passed": true
+    },
+    {
+      "name": "LOCATION",
+      "text": "The conference took place in Toronto.",
+      "expected": [
+        [
+          "Toronto",
+          "LOC"
+        ]
+      ],
+      "actual": [
+        [
+          "Toronto",
+          "LOC"
+        ]
+      ],
+      "offsets_ok": true,
+      "redacted": "The conference took place in [LOC].",
+      "passed": true
+    },
+    {
+      "name": "ORG-university",
+      "text": "Stanford University opened a laboratory.",
+      "expected": [
+        [
+          "Stanford University",
+          "ORG"
+        ]
+      ],
+      "actual": [
+        [
+          "Stanford University",
+          "ORG"
+        ]
+      ],
+      "offsets_ok": true,
+      "redacted": "[ORG] opened a laboratory.",
+      "passed": true
+    },
+    {
+      "name": "ORG-hospital",
+      "text": "Johns Hopkins Hospital hired a specialist.",
+      "expected": [
+        [
+          "Johns Hopkins Hospital",
+          "ORG"
+        ]
+      ],
+      "actual": [
+        [
+          "Johns Hopkins Hospital",
+          "ORG"
+        ]
+      ],
+      "offsets_ok": true,
+      "redacted": "[ORG] hired a specialist.",
+      "passed": true
+    },
+    {
+      "name": "MIXED",
+      "text": "Aisha Rahman joined Google in Singapore.",
+      "expected": [
+        [
+          "Aisha Rahman",
+          "PER"
+        ],
+        [
+          "Google",
+          "ORG"
+        ],
+        [
+          "Singapore",
+          "LOC"
+        ]
+      ],
+      "actual": [
+        [
+          "Aisha Rahman",
+          "PER"
+        ],
+        [
+          "Google",
+          "ORG"
+        ],
+        [
+          "Singapore",
+          "LOC"
+        ]
+      ],
+      "offsets_ok": true,
+      "redacted": "[PER] joined [ORG] in [LOC].",
+      "passed": true
+    },
+    {
+      "name": "NO-ENTITY",
+      "text": "The weather is beautiful and the room is quiet.",
+      "expected": [],
+      "actual": [],
+      "offsets_ok": true,
+      "redacted": "The weather is beautiful and the room is quiet.",
+      "passed": true
+    },
+    {
+      "name": "MALAYSIAN",
+      "text": "Nurul Izzah met Petronas executives in Putrajaya.",
+      "expected": [
+        [
+          "Nurul Izzah",
+          "PER"
+        ],
+        [
+          "Petronas",
+          "ORG"
+        ],
+        [
+          "Putrajaya",
+          "LOC"
+        ]
+      ],
+      "actual": [
+        [
+          "Nurul Izzah",
+          "PER"
+        ],
+        [
+          "Petronas executives",
+          "PER"
+        ],
+        [
+          "Putrajaya",
+          "LOC"
+        ]
+      ],
+      "offsets_ok": true,
+      "redacted": "[PER] met [PER] in [LOC].",
+      "passed": false
+    },
+    {
+      "name": "REPEATED",
+      "text": "Sarah met Sarah at Microsoft in London.",
+      "expected": [
+        [
+          "Sarah",
+          "PER"
+        ],
+        [
+          "Sarah",
+          "PER"
+        ],
+        [
+          "Microsoft",
+          "ORG"
+        ],
+        [
+          "London",
+          "LOC"
+        ]
+      ],
+      "actual": [
+        [
+          "Sarah",
+          "PER"
+        ],
+        [
+          "Sarah",
+          "PER"
+        ],
+        [
+          "Microsoft",
+          "ORG"
+        ],
+        [
+          "London",
+          "LOC"
+        ]
+      ],
+      "offsets_ok": true,
+      "redacted": "[PER] met [PER] at [ORG] in [LOC].",
+      "passed": true
+    },
+    {
+      "name": "MULTI-SENTENCE",
+      "text": "John works at Apple in New York. Sarah studies at Oxford University in London.",
+      "expected": [
+        [
+          "John",
+          "PER"
+        ],
+        [
+          "Apple",
+          "ORG"
+        ],
+        [
+          "New York",
+          "LOC"
+        ],
+        [
+          "Sarah",
+          "PER"
+        ],
+        [
+          "Oxford University",
+          "ORG"
+        ],
+        [
+          "London",
+          "LOC"
+        ]
+      ],
+      "actual": [
+        [
+          "John",
+          "PER"
+        ],
+        [
+          "Apple",
+          "ORG"
+        ],
+        [
+          "New York",
+          "LOC"
+        ],
+        [
+          "Sarah",
+          "PER"
+        ],
+        [
+          "Oxford University",
+          "ORG"
+        ],
+        [
+          "London",
+          "LOC"
+        ]
+      ],
+      "offsets_ok": true,
+      "redacted": "[PER] works at [ORG] in [LOC]. [PER] studies at [ORG] in [LOC].",
+      "passed": true
+    },
+    {
+      "name": "PUNCTUATION",
+      "text": "(John Carter), from Microsoft, visited London!",
+      "expected": [
+        [
+          "John Carter",
+          "PER"
+        ],
+        [
+          "Microsoft",
+          "ORG"
+        ],
+        [
+          "London",
+          "LOC"
+        ]
+      ],
+      "actual": [
+        [
+          "Microsoft",
+          "LOC"
+        ],
+        [
+          "London",
+          "LOC"
+        ]
+      ],
+      "offsets_ok": true,
+      "redacted": "(John Carter), from [LOC], visited [LOC]!",
+      "passed": false
+    },
+    {
+      "name": "UNKNOWN-WORDS",
+      "text": "Xylophonia Zqv works for Quasarion Labs in Vexford.",
+      "expected": [
+        [
+          "Xylophonia Zqv",
+          "PER"
+        ],
+        [
+          "Quasarion Labs",
+          "ORG"
+        ],
+        [
+          "Vexford",
+          "LOC"
+        ]
+      ],
+      "actual": [
+        [
+          "Xylophonia Zqv",
+          "PER"
+        ],
+        [
+          "Quasarion Labs",
+          "ORG"
+        ],
+        [
+          "Vexford",
+          "LOC"
+        ]
+      ],
+      "offsets_ok": true,
+      "redacted": "[PER] works for [ORG] in [LOC].",
+      "passed": true
+    }
+  ]
+}

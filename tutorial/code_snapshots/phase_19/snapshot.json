@@ -2,15 +2,15 @@
   "phase": "19",
   "verified": true,
   "test_command": "python -m pytest -q",
-  "actual_result": "PASS: 28 tests after incremental model-version tests",
+  "actual_result": "38 passed",
   "files": {
-    "tests\\test_acceptance.py": "28fcb19a32a43f735d1a7c847d1e30f9882872ab3cbfd52328bc562ad0b230be",
-    "tests\\test_api.py": "759c087541ed716581c931a8fbc841a5c6fc8705ec7dc7235b57305bea3708f6",
-    "tests\\test_model.py": "227d2039c739523fbc8cb9daf93e8e9f3d16dc74387be257da34e7a9544e7a2e",
-    "tests\\test_model_versions.py": "d53542e5794c83ca6fc7bb29aea7bc5355a5cd8550da471deb35c002df420c57",
-    "tests\\test_prediction.py": "b59425417d6504a2926ef37ee02beb4cc68cf2681bf3b3e4259b376546b4f240",
-    "tests\\test_preprocessing.py": "81bc60a49149976cf9b8c6d66f758c4240e146a9ad5d245b7923b27e026560c6",
-    "tests\\test_redaction.py": "7fdfc2d3738e9714c00c2b72787a8c4047e5185d3bbe7626f5be7390b86c3bd5",
-    "tutorial\\chapters\\phase_19.md": "496beb85b40923888865582dde09dbe4f162f7d5de296ee5712f537ab99d3a33"
+    "tests/test_acceptance.py": "28fcb19a32a43f735d1a7c847d1e30f9882872ab3cbfd52328bc562ad0b230be",
+    "tests/test_api.py": "d8443b24742816453fc18e6b6f667eedc5f2c8e979ec381ac6ac32a4ce54f726",
+    "tests/test_model.py": "227d2039c739523fbc8cb9daf93e8e9f3d16dc74387be257da34e7a9544e7a2e",
+    "tests/test_model_versions.py": "d53542e5794c83ca6fc7bb29aea7bc5355a5cd8550da471deb35c002df420c57",
+    "tests/test_prediction.py": "185283a5e23b2d821521d93b4fcae4b448054819415f341d6bd70b15a4ce4018",
+    "tests/test_preprocessing.py": "b2a80da1d36445882d0834ced6d81e77a2c6bf197b50d770288094ddb57232de",
+    "tests/test_redaction.py": "7fdfc2d3738e9714c00c2b72787a8c4047e5185d3bbe7626f5be7390b86c3bd5",
+    "tutorial/chapters/phase_19.md": "cdbd3a74da2454a5ba097e91273e6857c28922d95ce7fc32605b64a0cbcfc468"
   }
 }

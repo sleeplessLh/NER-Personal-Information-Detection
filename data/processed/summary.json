@@ -1,19 +1,19 @@
 {
   "train": {
     "rows": 2400,
-    "unique_sentences": 1613
+    "unique_sentences": 1213
   },
   "validation": {
     "rows": 300,
-    "unique_sentences": 184
+    "unique_sentences": 149
   },
   "test": {
     "rows": 300,
-    "unique_sentences": 215
+    "unique_sentences": 175
   },
   "malaysian_train": {
     "rows": 160,
-    "unique_sentences": 132
+    "unique_sentences": 123
   },
   "malaysian_validation": {
     "rows": 40,
@@ -21,6 +21,6 @@
   },
   "malaysian_test": {
     "rows": 60,
-    "unique_sentences": 42
+    "unique_sentences": 39
   }
 }

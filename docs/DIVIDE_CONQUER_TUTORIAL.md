@@ -255,7 +255,7 @@ Version 4：外层遍历 DataLoader，形成 `run_epoch`。执行一个 epoch �
 
 ## 实验事实
 
-早期基线 validation F1=0.1976：模型背记训练实体。加入 entity word dropout 后 0.6494；增加多词地点后 0.8681；再加入 ordinary word dropout 后曾达到 0.9685。最终加入明确的 Malaysian train/validation 并重训 8 epochs，最佳 epoch 7 validation F1=0.9986。理论跟随失败出现：Overfitting 是 train 极好、validation 差；合成模板上的高 validation 仍不等于真实泛化。
+早期基线 validation F1=0.1976：模型背记训练实体。加入 entity word dropout 后 0.6494；增加多词地点后 0.8681；再加入 ordinary word dropout 后曾达到 0.9685。最终加入 Malaysian train/validation、互斥实体池和更多上下文模板并重训 8 epochs，最佳 epoch 6 validation F1=0.9974。理论跟随失败出现：Overfitting 是 train 极好、validation 差；合成模板上的高 validation 仍不等于真实泛化。
 
 ## 验收与 Checkpoint
 

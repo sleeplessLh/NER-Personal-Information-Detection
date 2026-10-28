@@ -14,7 +14,7 @@
 
 **5:00-6:30 - Live demo.** Start Uvicorn, open the page, paste `Sarah works at Microsoft in Kuala Lumpur.`, click Detect, point to each entity's type and character offsets, and show `[PER] works at [ORG] in [LOC].`. Then upload a UTF-8 TXT and a text-layer PDF. Explain that scanned PDFs need OCR and are rejected when no text can be extracted.
 
-**6:30-7:30 - Testing and safety.** Show `28 passed`. Explain the 5 MB limit, invalid input handling, checkpoint reload, CPU inference, exact entity-level metrics, and character-span redaction. Emphasise that this prototype does not detect phone numbers, emails, IDs, passports or all addresses, and high-risk use needs human review.
+**6:30-7:30 - Testing and safety.** Show `38 passed`. Explain the 5 MB limit, invalid input handling, checkpoint reload, CPU inference, exact entity-level metrics, and character-span redaction. Emphasise that this prototype does not detect phone numbers, emails, IDs, passports or all addresses, and high-risk use needs human review.
 
 ## Likely Interview Questions and Suggested Answers
 

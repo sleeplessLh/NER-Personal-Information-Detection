@@ -2,128 +2,123 @@
 
 执行日期：2026-10-29（Asia/Singapore）
 项目：Personal Information Detection in Text (NER)
-目标仓库：<https://github.com/sleeplessLh/NER-Personal-Information-Detection>
+仓库：<https://github.com/sleeplessLh/NER-Personal-Information-Detection>
 
-## 1. Environment
+## 1. 核心问题
 
-- OS: Windows 11 sandbox
-- Python: 3.12.15
-- PyTorch: 2.9.0+cpu
-- Device: CPU
-- Random seed: 42
-- Model parameters: 143,536
-- Core framework: PyTorch + FastAPI
+结论：仓库包含已训练的 `models/best_model.pt`。在全新的 Windows 11 目录和虚拟环境中安装 `requirements.txt` 后，可以直接加载模型、预测、脱敏并启动 FastAPI，**不需要重新训练**。本轮修复后的最终远程 Clone 仍需在 Push 后完成，因此本报告在最终证据提交前暂记 `PENDING FINAL RE-CLONE`。
 
-## 2. Model Training
+## 2. 环境与首次 Fresh Clone
 
-实际执行命令：
+- Windows 11 原生环境；PowerShell
+- Python 3.12.15；PyTorch 2.9.0+cpu；CPU inference
+- 首次审计 Clone：`tmp/full-acceptance-20261029`
+- 审计起点 commit：`80b29ae2f36e05d947bd729da11aaa56d4a3e809`
+- `python -m venv .venv`：PASS
+- `.venv\\Scripts\\python.exe -m pip install -r requirements.txt`：PASS
+- 初始仓库测试：28 passed
+- 未设置必需环境变量；源码使用项目相对路径
 
-```powershell
-python -m src.generate_data
-python -m src.train --epochs 8 --batch-size 64 --learning-rate 0.003
-```
+教程 PDF 构建脚本引用 `C:\\Windows\\Fonts`，这是 Windows 教程制品构建的显式字体依赖，不影响模型、API、测试或 Clone 后运行。运行应用不依赖开发机绝对路径。
 
-- Architecture: trainable Embedding(64) + casing projection(4->8) + one-layer BiLSTM(96 each direction) + Dropout(0.25) + Linear(192->8)
-- Optimizer: Adam
-- Loss: CrossEntropyLoss，padding label `-100` 被忽略
-- Training rows: 2,560（general 2,400 + Malaysian 160）
-- Validation rows: 340（general 300 + Malaysian 40）
-- Test rows: general 300；Malaysian 60；均未用于训练或选模
-- Batch size: 64
-- Learning rate: 0.003
-- Epochs: 8
-- Measured training-loop time: 16.8963 seconds
-- Best epoch: 7
-- Best validation entity F1: 0.9986225895
-- Saved artifact: `models/best_model.pt`（582,645 bytes）
-- Checkpoint contents: weights、vocabulary、label mapping、model config、preprocessing config、seed、dataset counts、best epoch/F1
+## 3. 模型与训练
 
-训练从随机初始化开始。未加载预训练 NER 权重，也未调用外部 NER API。采用比赛允许的 BiLSTM Token Classifier 备选而非 CRF；这降低 CPU/教学复杂度，但没有联合 BIO 转移约束。
+- Architecture：trainable Embedding(64) + casing projection(4→8) + one-layer BiLSTM(96/方向) + Dropout(0.25) + Linear(192→8)
+- Parameters：143,536
+- Labels：`<PAD>, O, B/I-PER, B/I-LOC, B/I-ORG`
+- Random seed：42；Adam；learning rate 0.003；batch size 64；8 epochs
+- Training：general 2,400 + Malaysian 160
+- Validation：general 300 + Malaysian 40
+- Test：general 300；Malaysian 60；不参与训练或选模
+- 本轮训练时间：15.9974 秒（Windows CPU）
+- Best epoch：6；best validation entity F1：0.997389
+- Checkpoint：585,397 bytes；CPU 可加载
+- Checkpoint 内含 weights、vocabulary（178 entries）、label mapping、model config、seed、dataset counts、best epoch/F1
 
-## 3. Automated Testing
+本轮修复了实体池跨 split 重复，并扩充了通用上下文模板。模型仍从随机权重训练，不加载第三方 NER 权重，不调用外部 NER API。
 
-```powershell
-$env:OMP_NUM_THREADS='1'
-$env:MKL_NUM_THREADS='1'
-python -m pytest -q
-```
-
-本地重新训练后结果：**28 passed in 5.57s**。GitHub 全新 Clone 独立环境结果：**28 passed in 5.35s**。
-
-覆盖 dataset loading、preprocessing、vocabulary、label mapping、BIO validation、model initialization、forward、loss、backpropagation、checkpoint save/load、prediction、PER/LOC/ORG、span、redaction、Malaysian split、TXT/PDF、FastAPI、Web HTML、empty input、invalid/oversized file、CPU inference 与 end-to-end。
-
-## 4. Model Evaluation
+## 4. 独立测试集评估
 
 实际执行 `python -m src.evaluate`：
 
-| Dataset | Sentences | PER P/R/F1 | LOC F1 | ORG F1 | Overall P/R/F1 |
-|---|---:|---:|---:|---:|---:|
-| Synthetic general test | 300 | 1.0000 / 1.0000 / 1.0000 | 1.0000 | 1.0000 | 1.0000 / 1.0000 / 1.0000 |
-| Synthetic Malaysian test | 60 | 1.0000 / 1.0000 / 1.0000 | 1.0000 | 1.0000 | 1.0000 / 1.0000 / 1.0000 |
+| Dataset | Sentences | PER Precision | PER Recall | PER F1 | LOC F1 | ORG F1 | Overall P/R/F1 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Synthetic general test | 300 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 / 1.0000 / 1.0000 |
+| Synthetic Malaysian test | 60 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 / 1.0000 / 1.0000 |
 
-内部 F1 >= 0.75 目标达到，PERSON recall 为 1.0000。上述数据实体池和完整句子跨 split 隔离，但仍共享句法模板，因此 1.0 明显高估真实文本泛化。
+完整句子和实体字符串跨 split 隔离，但模板分布仍共享，所以 1.0 高估真实泛化；它不能被宣传为生产性能。
 
-人工困难句 `Dr. Evelyn Carter emailed the research team from Oxford.` 出现姓名漏检和类型误判。这一失败被保留为真实限制证据。
+## 5. 固定真实英文挑战矩阵
 
-## 5. Functional Testing
+实际执行 `python scripts/run_manual_acceptance.py`：**11/13 cases passed**，且全部已预测实体的字符 offset 与原文一致。完整逐例 JSON 在 `reports/manual_acceptance.json`。
 
-| Function | Actual evidence | Status |
+成功覆盖美国、印度、中国姓名，陌生地点，大学、医院，mixed/no-entity，重复实体，多句文本和未知词。保留两项真实失败：
+
+1. `Nurul Izzah met Petronas executives in Putrajaya.`：把 `Petronas executives` 误判为 PER。
+2. `(John Carter), from Microsoft, visited London!`：漏检括号内姓名，并把 Microsoft 误判为 LOC。
+
+因此项目适合比赛原型展示，但不适合无人复核的真实敏感资料脱敏。
+
+## 6. 自动化、文件与 Web 验收
+
+- `python -m pytest -q`：**38 passed in 3.61s**（修复后开发目录）
+- 浏览器真实点击 Detect：显示 3 entities 表格（Sarah/PER、Microsoft/ORG、Kuala Lumpur/LOC）
+- 浏览器显示脱敏：`[PER] works at [ORG] in [LOC].`
+- 浏览器空输入：显示 `Please enter English text.`
+- `GET /`：HTTP 200
+- `POST /api/predict`：HTTP 200，3 entities
+- TXT：HTTP 200
+- 两页 text-layer PDF：HTTP 200，两页文本均提取并进入自训练模型
+- 空 TXT：HTTP 400
+- 损坏 PDF：HTTP 400
+- 不支持 CSV：HTTP 415
+- 5 MB 超限文件：HTTP 413
+- 空 JSON text：HTTP 422
+- 扫描 PDF OCR：不支持，NOT CLAIMED
+
+## 7. 本轮实际修复
+
+1. 纯标点被吸入实体 span：解码时把纯标点 tag 安全归为 `O`，保护字符 offset 和原标点。
+2. general validation/test 实体池重复：替换重复 LOC/ORG，并新增自动化 disjoint 测试和生成时失败保护。
+3. 陌生上下文泛化弱：新增姓名、地点、大学、医院上下文模板后重新训练；多项人工失败转为正确。
+4. Web 页面只打印 JSON：新增实体表格、类型、offset、脱敏区域、状态和错误信息。
+5. 未选文件时前端无提示：新增明确提示。
+6. 上传内容仅限制文件字节：新增提取文本 100,000 字符上限。
+7. 缺少多页/空/损坏 PDF、长文本、重复实体、标点 span 测试：补齐回归覆盖。
+8. 缺少 Windows CI：新增 `.github/workflows/windows-tests.yml`。
+9. 人工验收不可复现：新增 `scripts/run_manual_acceptance.py` 和实际 JSON 证据。
+10. 人工脚本直接运行找不到 `src`：加入可靠项目根目录引导。
+
+## 8. Malaysian Bonus 证据
+
+- 数据存在：160 train / 40 validation / 60 test
+- 覆盖 Malaysian 姓名、地点、大学、公司、医院和政府机构
+- train/validation/test 实体池与完整句子互斥
+- checkpoint `dataset_counts` 明确记录 `malaysian_training=160`、`malaysian_validation=40`
+- 独立 Malaysian test entity F1=1.0000（仅合成模板域）
+- 数据为合理构造并人工可检查的合成数据，不冒充真实用户数据
+
+## 9. 最终验收矩阵
+
+| 验收项目 | 状态 | 证据 |
 |---|---|---|
-| Trained ML model | 8 epochs CPU，checkpoint 可加载 | PASS |
-| PER / LOC / ORG | 独立测试指标与真实文本示例 | PASS（合成域） |
-| Raw text prediction | `POST /api/predict` | PASS |
-| Entity text/type/offset | 返回 token 与字符 span | PASS |
-| Redaction | `[PER] works at [ORG] in [LOC].` | PASS |
-| Malaysian data | 160/40/60，test 未参与训练 | PASS（合成数据） |
-| TXT upload | 真实 Uvicorn multipart 请求返回 3 entities | PASS |
-| PDF upload | 真实文本层 PDF 返回 3 entities | PASS |
-| Web UI | `/` HTTP 200 且包含 Detect Entities | PASS |
-| Invalid/oversized input | 自动化测试验证 4xx | PASS |
-| CPU inference | checkpoint 通过 `map_location=cpu` 加载 | PASS |
-| Scanned PDF OCR | 明确不支持 | NOT CLAIMED |
+| Fresh Clone | PENDING FINAL RE-CLONE | 修复 Push 后执行第三个全新目录 |
+| Dependency Installation | PASS | 首次审计 Clone 独立 venv 完整安装 |
+| Model Loading | PASS | checkpoint CPU load + inference |
+| PERSON Detection | PASS WITH LIMITATION | synthetic PER recall 1.0；人工矩阵有括号姓名漏检 |
+| LOCATION Detection | PASS WITH LIMITATION | synthetic LOC F1 1.0；人工样本通过 |
+| ORGANISATION Detection | PASS WITH LIMITATION | synthetic ORG F1 1.0；人工矩阵有类型误判 |
+| Text Redaction | PASS | offset 回归、重复/多句/标点测试 |
+| Malaysian Dataset | PASS WITH LIMITATION | 实际合入训练并独立评估；合成域 |
+| TXT Input | PASS | HTTP 200；空文件 400 |
+| PDF Input | PASS | 单页/多页 200；损坏 400；无 OCR |
+| FastAPI | PASS | 真实 Uvicorn HTTP 请求 |
+| Web Interface | PASS | 真实浏览器点击、表格与脱敏可见 |
+| Automated Tests | PASS | 38 passed |
+| Model Evaluation | PASS WITH LIMITATION | synthetic overall F1 1.0；manual 11/13 |
+| Windows 11 | PASS | 本轮为 Windows 11 原生执行；另增 Windows Actions |
+| GitHub Sync | PENDING | 修复尚待 commit/push |
 
-真实 Uvicorn 端口 8765 验收：主页 HTTP 200；文本、TXT、PDF 三条路径均返回 3 个实体和 `[PER] works at [ORG] in [LOC].`。服务随后停止。
+## 10. 当前 Verdict
 
-## 6. Clone Verification
-
-状态：**PASS**。
-
-2026-10-29 从公开仓库 Clone 到全新目录 `tmp/clean-clone-20261029`，检出的发布提交为 `2d1a6e043e72a85c13ff0c3b781aa1048d6922c0`。没有重新训练模型。
-
-- `python -m venv .venv`：PASS
-- `.venv\\Scripts\\python.exe -m pip install -r requirements.txt`：PASS
-- checkpoint 大小：582,645 bytes
-- checkpoint SHA-256：`9077F72D721AE36885BF18E442A3B616F0D7FDCEB89C67F5B66E290E61B60A6B`
-- `.venv\\Scripts\\python.exe -m pytest -q`：**28 passed in 5.35s**
-- `.venv\\Scripts\\python.exe -m src.evaluate`：general 与 Malaysian test overall F1 均为 1.0000（仅合成模板域）
-- 直接加载 checkpoint：Sarah=`PER`、Microsoft=`ORG`、Kuala Lumpur=`LOC`
-- 脱敏输出：`[PER] works at [ORG] in [LOC].`
-- Uvicorn 首页：HTTP 200，页面含 `Detect Entities`
-- `POST /api/predict`：3 entities，PASS
-- `POST /api/upload` TXT：3 entities，PASS
-- `POST /api/upload` text-layer PDF：3 entities，PASS
-
-以上验证证明公开仓库在一台全新 Python 虚拟环境中，不重新训练即可加载随仓库发布的模型并运行测试、预测、Web API、TXT 与 PDF 功能。
-
-## 7. Known Limitations
-
-- 合成模板数据不等同于 CoNLL-2003、真实 incident report 或 support chat。
-- PER/LOC/ORG 不覆盖电话、邮箱、学号、护照、完整地址等所有 PII。
-- 无 CRF，BIO 约束主要由后处理安全修复。
-- 扫描 PDF 无 OCR。
-- 高风险医院、大学、企业脱敏必须人工复核，姓名漏检尤其危险。
-
-## 8. Final Acceptance Status
-
-| Area | Status |
-|---|---|
-| Model training | PASS |
-| Automated tests | PASS |
-| ML evaluation | PASS（仅合成模板域） |
-| Mandatory model/application requirements | PASS |
-| Three bonus features | PASS |
-| Public GitHub repository | PASS |
-| Clean GitHub Clone verification | PASS |
-| Production-sensitive-data deployment | FAIL / NOT APPROVED |
-
-当前总状态：**PASS（比赛原型范围）**。这不等同于生产批准；合成模板数据上的高指标不能替代真实数据评估与高风险场景人工复核。
+**PARTIAL PASS — 核心功能可运行；等待修复版本 Push 后的最终全新 Clone，同时保留人工挑战矩阵的两项模型泛化失败。**

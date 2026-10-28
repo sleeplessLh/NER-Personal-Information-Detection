@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+import re
 
 import torch
 
@@ -37,7 +38,10 @@ class Predictor:
         with torch.no_grad():
             # 推理不需要 Gradient；argmax 选择每个 Token 分数最高的标签。
             predictions = self.model(input_ids, features).argmax(dim=-1)[0]
-        return [self.labels[int(index)] for index in predictions]
+        tags = [self.labels[int(index)] for index in predictions]
+        # 纯标点不可能单独构成 PER/LOC/ORG。若模型把 `!` 等预测为 I-LOC，
+        # 直接解码会吞掉标点并破坏实体 text 与字符 offset 的一致性。
+        return [tag if re.search(r"\w", token, flags=re.UNICODE) else "O" for token, tag in zip(tokens, tags, strict=True)]
 
     def predict(self, text: str) -> dict:
         """接收原始字符串，返回 Token、BIO 标签和合并后的实体。"""

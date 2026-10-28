@@ -65,7 +65,7 @@ python -m src.evaluate
 python tutorial\build_pdf.py
 ```
 
-本项目真实证据：空目录复现得到 28 passed in 3.52s；评估确认 general test 300 句与 Malaysian test 60 句；预测 Sarah/Microsoft/Kuala Lumpur 分别返回 PER/ORG/LOC。最终 PDF 还必须通过全页视觉 QA 才能发布。学生电脑的时间可能不同，但结构、断言和文件数量应一致。命令失败时保留完整 traceback，从最后一行向上找第一个自己的文件行号；修复后重跑同一命令。
+本项目真实证据：空目录复现得到 38 passed；评估确认 general test 300 句与 Malaysian test 60 句；预测 Sarah/Microsoft/Kuala Lumpur 分别返回 PER/ORG/LOC。最终 PDF 还必须通过全页视觉 QA 才能发布。学生电脑的时间可能不同，但结构、断言和文件数量应一致。命令失败时保留完整 traceback，从最后一行向上找第一个自己的文件行号；修复后重跑同一命令。
 
 ## 10. 完整代码回顾
 

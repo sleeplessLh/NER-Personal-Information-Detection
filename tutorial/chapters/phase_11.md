@@ -66,7 +66,7 @@ torch.save({"model_state_dict": model.state_dict(), "vocabulary": vocabulary,
 python -m src.train --epochs 8 --batch-size 64 --learning-rate 0.003
 ```
 
-本项目真实证据：CPU 实训 8 epochs；最佳 epoch 7，validation entity-F1=0.9986225895，loop 6.9201 秒。 学生电脑的时间可能不同，但结构、断言和文件数量应一致。命令失败时保留完整 traceback，从最后一行向上找第一个自己的文件行号；修复后重跑同一命令。
+本项目真实证据：CPU 实训 8 epochs；最佳 epoch 6，validation entity-F1=0.997389，loop 15.9974 秒。 学生电脑的时间可能不同，但结构、断言和文件数量应一致。命令失败时保留完整 traceback，从最后一行向上找第一个自己的文件行号；修复后重跑同一命令。
 
 ## 10. 完整代码回顾
 
