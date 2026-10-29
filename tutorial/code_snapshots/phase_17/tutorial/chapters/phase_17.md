@@ -2,7 +2,7 @@
 
 ## 1. 本阶段学习目标
 
-本阶段围绕 `app/main.py` 完成一个可独立验收的功能。为什么现在需要它：Bonus 要求文件输入，但解析器只能提供文本，NER 仍必须由自己的模型完成。 完成后学生必须能说明输入、输出、参数、返回值、调用者和下一步消费者，而不只是复制代码。
+本阶段围绕 `tutorial/app_versions/app_v2_file_api.py` 完成一个可独立验收的功能。为什么现在需要它：Bonus 要求文件输入，但解析器只能提供文本，NER 仍必须由自己的模型完成。 完成后学生必须能说明输入、输出、参数、返回值、调用者和下一步消费者，而不只是复制代码。
 
 ## 2. 本阶段需要掌握的知识
 
@@ -10,14 +10,14 @@ multipart upload、bytes、UTF-8 decode、PDF text layer、size limit、415/413/
 
 ## 3. 从零解释知识点
 
-本阶段坚持“概念 -> 最小代码 -> 局部运行 -> 接入现有项目 -> 回归测试”。关键不是记语法，而是知道数据从哪里来、为什么采用当前类型/shape、错误会在哪一层出现。学生每写一个小单元就保存并运行，不等到整章结束。
+UploadFile 提供文件名与 bytes；bytes 不是 text，TXT 必须 UTF-8 decode。PDF reader 只能提取已有文本层，不等于 OCR。先读取 limit+1 字节才能区分刚好 5MB 与超限。400 表示内容坏，413 表示过大，415 表示类型不支持。解析后仍调用同一个 analyze，文件解析器不能决定实体。
 
-正式函数必须回答十二项：名称、目的、parameters、parameter types、return value/type、内部逻辑、调用者、被调用函数、example input/output、common errors。相关答案分布在下面 Lessons、数据流和错误章节。
+学习顺序固定为：先做可丢弃的小实验，确认具体输入/输出；再按写入顺序完成正式函数；最后运行本阶段 checkpoint。完整源码会在本阶段末尾逐行列出，不能只复制两个片段后跳到下一章。
 
 ## 4. 本阶段开始前的项目状态
 
 ```text
-app/main.py                 [本阶段新增或修改]
+tutorial/app_versions/app_v2_file_api.py                 [本阶段新增或修改]
 tests/                 [本阶段增加/运行对应测试]
 tutorial/chapters/phase_17.md [同步更新]
 tutorial/code_snapshots/phase_17/ [通过后生成]
@@ -27,15 +27,21 @@ tutorial/code_snapshots/phase_17/ [通过后生成]
 
 ## 5. 本阶段需要使用的工具
 
-打开 VS Code Explorer，定位 `app/main.py`；Terminal -> New Terminal 打开 PowerShell；确认 Working Directory 是项目根目录，prompt 有 `(.venv)`。先执行 `python --version`，再按 Lesson 输入。所有命令默认在根目录、已激活 `.venv`。
+打开 VS Code Explorer，定位 `tutorial/app_versions/app_v2_file_api.py`；Terminal -> New Terminal 打开 PowerShell；确认 Working Directory 是项目根目录，prompt 有 `(.venv)`。先执行 `python --version`，再按 Lesson 输入。所有命令默认在根目录、已激活 `.venv`。
 
 ### 6. Lesson 17.1：先理解概念和接口
 
-本阶段新概念：multipart upload、bytes、UTF-8 decode、PDF text layer、size limit、415/413/400、OCR boundary。先写出一条 sample 的输入类型和预期输出，再打开正式文件。回答：调用者是谁？输入是否可变？失败应 raise 还是返回空值？任何答案不清楚，先阅读第 12/13 节。
+本阶段新概念：multipart upload、bytes、UTF-8 decode、PDF text layer、size limit、415/413/400、OCR boundary。先不要修改正式文件。在项目根目录执行这个最小实验：
+
+```powershell
+python -m pytest tests\test_api.py -q -k 'txt_upload or text_pdf_upload or unsupported_upload or size_limit'
+```
+
+通过条件：TXT/PDF 正常样例通过；CSV=415、5MB+1=413、损坏 PDF=400；扫描 PDF 明确不声称支持。
 
 ### 7. Lesson 17.2：编写第一个最小单元
 
-在 `app/main.py` 对应位置输入：
+在 VS Code 打开 `tutorial/app_versions/app_v2_file_api.py`。若文件不存在就按该路径新建；若已存在，先用 Ctrl+F 查找代码块中的第一个 `class`/`def`/变量名，并在完整源码显示的相同顺序写入。不要凭感觉选择位置。先输入：
 
 ```python
 MAX_UPLOAD_BYTES = 5 * 1024 * 1024
@@ -44,7 +50,7 @@ if len(content) > MAX_UPLOAD_BYTES:
     raise HTTPException(status_code=413, detail="File exceeds the 5 MB limit")
 ```
 
-逐行检查 import、变量 scope、parameter type 和 return。此代码只承担当前职责；不把下一阶段逻辑塞进函数。保存后用 `python -m py_compile app/main.py` 做语法检查。正常无输出、exit code 0。
+逐行检查 import、变量 scope、parameter type 和 return。这是局部代码，不代表完整文件；正式写入顺序如下：upload endpoint 只负责 await read 和把同步解析送入 threadpool；analyze_uploaded_content 按 size -> extension -> decode/extract -> nonblank -> text length -> analyze 的顺序 fail fast。
 
 ### 8. Lesson 17.3：连接下一个逻辑单元
 
@@ -65,14 +71,16 @@ else: raise HTTPException(status_code=415, detail="Only .txt and .pdf")
 在项目根目录运行：
 
 ```powershell
-python -m pytest tests\test_api.py -q
+python -m pytest tests\test_file_api.py -q
 ```
 
 本项目真实证据：TXT、动态文字 PDF、unsupported type、5MB+1、空白/非法输入测试通过。 学生电脑的时间可能不同，但结构、断言和文件数量应一致。命令失败时保留完整 traceback，从最后一行向上找第一个自己的文件行号；修复后重跑同一命令。
 
-## 10. 完整代码回顾
+## 10. 完整代码回顾与函数契约
 
-打开 `app/main.py`，从 imports 开始完整阅读。确认本章新增的函数/类与两个代码单元都存在；没有未解释的额外 branch。教材片段用于增量输入，阶段结束时以 snapshot 中完整文件为准。运行 `python -m py_compile app/main.py` 证明至少语法完整。
+本阶段 PDF 紧接着列出 `tutorial/app_versions/app_v2_file_api.py` 的完整验收版本（带真实行号并分块，不能省略）。学生必须在 VS Code 中按 Lesson 顺序输入，而不是从 GitHub 偷看下一阶段。完成后运行 `python -m py_compile tutorial/app_versions/app_v2_file_api.py`；无错误只证明文件可读取/语法正确，还必须通过第 9/14 节的功能测试。
+
+函数契约检查法：对本阶段每个 `def`/`class` 写五行笔记：输入参数与类型、返回值与类型、直接调用者、它调用的项目函数、失败方式。若完整源码出现 Lesson 未提到的函数，停下并在该函数 docstring 和调用处补完笔记后再继续。
 
 ## 11. 跨文件调用关系
 

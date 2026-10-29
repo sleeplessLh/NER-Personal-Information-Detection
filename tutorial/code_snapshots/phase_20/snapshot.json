@@ -1,13 +1,14 @@
 {
   "phase": "20",
   "verified": true,
-  "test_command": "pytest -q; verify_tutorial.py; git diff --check",
-  "actual_result": "PASS: Web setup and run instructions documented; 47 tests",
+  "test_command": "pytest; validators; diff check",
+  "actual_result": "PASS: 56 tests and audit report",
   "files": {
-    "README.md": "fde966ed386e5b47a8936727ce67db8571921670a8bd15d97e848a49190d6ef5",
-    "MODEL_ACCEPTANCE_REPORT.md": "4e0264166b2758fe78b0dc8134e4cc501c42f5f1313afe96c7615350637b6730",
-    "PRESENTATION_MATERIALS.md": "b58e5f345b58e4a5a32f9de452126f5a0905c29e47140be995e3fe6d0361f8d3",
+    "README.md": "ad8400b5eb602bf7ad83bc1b5705a6c42d384cc7154ebf39dcf8c7831aea190d",
+    "MODEL_ACCEPTANCE_REPORT.md": "3d2fd80c021af1b9d72c42753d445d78a8f4b37a54b8d7504c06c3c559ada45e",
+    "TUTORIAL_AUDIT_REPORT.md": "37953a09acb426c2debb752dfdbb27007f4fa386b0f0e954f62675a144e5dd08",
+    "PRESENTATION_MATERIALS.md": "35d7a34b1b4e6b1089200d5dcba8f533a85b96145baf2649a54091160cb1f929",
     "tutorial/FILE_EVOLUTION.md": "a55b964b79c84f92380182137a1e3ec8b93919e176c781107d1f48948164a58b",
-    "tutorial/chapters/phase_20.md": "ff0a1beaa6b421095b32137cf335b7b0690f39ed826a095b16ae8484b122e71f"
+    "tutorial/chapters/phase_20.md": "0cbde99e0bfb52e2654353048810f22defc94f745b8a7a7a12feb21376eedef0"
   }
 }

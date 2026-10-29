@@ -2,13 +2,13 @@
   "phase": "14",
   "verified": true,
   "test_command": "inspect checkpoint dataset_counts",
-  "actual_result": "PASS: Malaysian 160 train and 40 validation included; 60 test excluded",
+  "actual_result": "PASS: Malaysian train/validation included test excluded",
   "files": {
-    "src\\generate_data.py": "1aa276a072a1cb0156332ed73f07fb22556ebf933865a2c67c093854d705afc5",
-    "src\\train.py": "8cafe28b356c77a6466790efaa973a78a4f17a8a2904b057a5e9ed702c6eff6f",
-    "data\\malaysian\\train.jsonl": "0b4acb9a022e4cf99a268bf2a34ca09abfed905f85dc57fc5a3d88c374864470",
-    "data\\malaysian\\validation.jsonl": "e324e4489f32515601182728f1de392045ad1dec1f05e7d801047c380d772b36",
-    "data\\malaysian\\test.jsonl": "353fb6e3f7a2917e427715298a3673a1eede3c07b5aecd8578e7b7e71896d9d5",
-    "tutorial\\chapters\\phase_14.md": "1d779bead24b5a3174f4a93b4de7b48eb8c9af9846f23d8cfd81d0a3813bf08a"
+    "src/generate_data.py": "289267bbf55084c95f30941fa4a714cfec59a90fe1c83cfdb249b5ecab0a62b5",
+    "src/train.py": "8cafe28b356c77a6466790efaa973a78a4f17a8a2904b057a5e9ed702c6eff6f",
+    "data/malaysian/train.jsonl": "5324135835a13c80966857ec465daa5c5447ee3aabed32bdf1f749157ff88d3f",
+    "data/malaysian/validation.jsonl": "cabb0098ad89ac27d58adfe61df6a9b9e5b9c90e5826f1cd46bf83def1bd5b6b",
+    "data/malaysian/test.jsonl": "03e8b65b633064992c166953b52561783d5e5224385eaa30ab56c58058647b47",
+    "tutorial/chapters/phase_14.md": "277d4e01681f762f5c83edb63f98fc61b58357dee3132256fae8ec107d4cb7d5"
   }
 }

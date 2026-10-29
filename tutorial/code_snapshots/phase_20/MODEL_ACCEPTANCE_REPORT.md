@@ -75,7 +75,7 @@ Redacted: [PER], a student from [ORG], attended an event in [LOC].
 
 ## 6. Software, Web and File Tests
 
-- Automated tests：**47 passed**（加入简易 Web redaction 前端回归后）
+- Automated tests：**56 passed**（加入阶段专用学习实验与 API/Web 回归后）
 - Windows browser：Student Privacy Protection 页面正常显示
 - 浏览器点击 Detect：3 entities，PER/ORG/LOC 表格与 offset 正确
 - 浏览器 Redacted Text：题目示例完全匹配
@@ -88,7 +88,7 @@ Redacted: [PER], a student from [ORG], attended an event in [LOC].
 
 GitHub 提交 `067b77cc4db19dffec330581f9afc0bd422730bf` 推送后，从公开远程仓库全新 Clone 到独立目录，并在新虚拟环境安装 55 个锁定依赖。该 Clone 的实测结果：
 
-- `pytest -q`：**47 passed**（最终 Web 提交重新 Clone 后复测）
+- `pytest -q`：**56 passed**（零基础阶段复现的新虚拟环境）
 - 两套 `src.evaluate` 指标与上表逐项一致
 - student manual matrix：**13/13 passed**
 - checkpoint SHA-256 与开发目录一致
@@ -121,7 +121,7 @@ GitHub 提交 `067b77cc4db19dffec330581f9afc0bd422730bf` 推送后，从公开�
 | Malaysian student data | PASS WITH LIMITATION | trained/evaluated synthetic dataset |
 | TXT/PDF | PASS | real localhost requests |
 | Web interface | PASS | real browser click and visible table |
-| Automated tests | PASS | 47 passed |
+| Automated tests | PASS | 56 passed |
 | GitHub update | PASS | public main commit `067b77c` |
 | Final remote re-clone | PASS | new venv；39 tests；evaluate；13 cases；JSON/TXT/PDF HTTP |
 | Tutorial PDF | PASS | 131/131 rendered；22 phases；no missing glyph/replacement/empty text page |

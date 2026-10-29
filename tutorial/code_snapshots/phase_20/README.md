@@ -26,7 +26,7 @@
 - Malaysian 学生姓名、地点、大学、学校、学生组织与教育机构合成标注数据。
 - FastAPI JSON API 和响应式单页 Web 界面（Input Text、Redact Text、只读结果、Clear）。
 - UTF-8 `.txt` 与带文本层 `.pdf` 上传；5 MB 限制和错误响应。
-- 47 项自动化测试、13 项学生场景固定挑战矩阵及独立 general/Malaysian test evaluation。
+- 56 项自动化测试（包含阶段专用 Tensor、DataLoader、training step、text API、file API 与 Web UI 检查）、13 项学生场景固定挑战矩阵及独立 general/Malaysian test evaluation。
 
 ## Model Architecture
 
@@ -161,7 +161,7 @@ $env:MKL_NUM_THREADS="1"
 python -m pytest -q
 ```
 
-最新实测：`47 passed`。覆盖学生数据、合并实体池泄漏、preprocessing、vocabulary、BIO、model、forward、loss/backpropagation、checkpoint、prediction、三类实体、标点 span、长文本、重复实体、redaction、Malaysian data、TXT、单页/多页/损坏 PDF、API/Web、空白/超长输入、连续提交、模型不可用、CPU inference 与 end-to-end。
+最新实测：`56 passed`。覆盖学生数据、合并实体池泄漏、preprocessing、vocabulary、BIO、Tensor/DataLoader 小实验、model、forward、loss/backpropagation、checkpoint、prediction、三类实体、标点 span、长文本、重复实体、redaction、Malaysian data、TXT、单页/多页/损坏 PDF、API/Web、空白/超长输入、连续提交、模型不可用、CPU inference 与 end-to-end。
 
 ## Project Structure
 
@@ -175,12 +175,13 @@ src/train.py                Training、validation、checkpoint、history
 src/evaluate.py             General/Malaysian 独立 test evaluation
 src/predict.py              CPU checkpoint loading、BIO/entity extraction
 src/redact.py               基于字符 span 的可靠脱敏
-tests/                      47 项自动化测试
+tests/                      56 项自动化测试
 models/best_model.pt        已训练 checkpoint；Clone 后直接使用
 data/processed/             可分发的合成 general 数据
 data/malaysian/             可分发的合成 Malaysian 数据
 reports/                    训练与评估 JSON 证据
 MODEL_ACCEPTANCE_REPORT.md  完整工程验收记录
+TUTORIAL_AUDIT_REPORT.md    22 阶段零基础教程审计与复现边界
 ```
 
 ## Limitations

@@ -1,5 +1,6 @@
 import pytest
 
+from src.generate_data import ENTITY_POOLS, MALAYSIAN_POOLS
 from src.preprocessing import build_vocabulary, casing_features, tokenize, tokens_to_ids, validate_bio
 
 
@@ -21,3 +22,23 @@ def test_casing_feature_shape():
 def test_invalid_bio_is_rejected():
     with pytest.raises(ValueError, match="Illegal I-tag"):
         validate_bio(["Ali"], ["I-PER"])
+
+
+@pytest.mark.parametrize("pools", [ENTITY_POOLS, MALAYSIAN_POOLS])
+def test_entity_pools_are_disjoint_across_splits(pools):
+    for entity_type in ("PER", "LOC", "ORG"):
+        split_sets = [set(pools[split][entity_type]) for split in ("train", "validation", "test")]
+        assert split_sets[0].isdisjoint(split_sets[1])
+        assert split_sets[0].isdisjoint(split_sets[2])
+        assert split_sets[1].isdisjoint(split_sets[2])
+
+
+def test_combined_general_and_malaysian_entities_do_not_cross_splits():
+    for entity_type in ("PER", "LOC", "ORG"):
+        combined = {
+            split: set(ENTITY_POOLS[split][entity_type]) | set(MALAYSIAN_POOLS[split][entity_type])
+            for split in ("train", "validation", "test")
+        }
+        assert combined["train"].isdisjoint(combined["validation"])
+        assert combined["train"].isdisjoint(combined["test"])
+        assert combined["validation"].isdisjoint(combined["test"])

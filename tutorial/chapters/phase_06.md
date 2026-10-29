@@ -10,9 +10,9 @@
 
 ## 3. 从零解释知识点
 
-本阶段坚持“概念 -> 最小代码 -> 局部运行 -> 接入现有项目 -> 回归测试”。关键不是记语法，而是知道数据从哪里来、为什么采用当前类型/shape、错误会在哪一层出现。学生每写一个小单元就保存并运行，不等到整章结束。
+Token 是模型一次处理的文本单位；span 是它在原字符串中的半开区间 [start,end)。Vocabulary 把 token 变成整数 ID，因为 Embedding 不接受字符串。PAD=0 只用于补齐，UNK=1 接住训练时没见过的词。BIO validator 在数据进入模型前拒绝非法 I-tag；若缺少它，错误标签会静默污染 loss。四维 casing feature 分别描述全小写、首字母大写、全大写和含数字，给随机 Embedding 额外表面线索。
 
-正式函数必须回答十二项：名称、目的、parameters、parameter types、return value/type、内部逻辑、调用者、被调用函数、example input/output、common errors。相关答案分布在下面 Lessons、数据流和错误章节。
+学习顺序固定为：先做可丢弃的小实验，确认具体输入/输出；再按写入顺序完成正式函数；最后运行本阶段 checkpoint。完整源码会在本阶段末尾逐行列出，不能只复制两个片段后跳到下一章。
 
 ## 4. 本阶段开始前的项目状态
 
@@ -31,11 +31,17 @@ tutorial/code_snapshots/phase_06/ [通过后生成]
 
 ### 6. Lesson 06.1：先理解概念和接口
 
-本阶段新概念：正则 tokenization、match span、normalization、Counter、Vocabulary、PAD、UNK、BIO fail-fast、casing features。先写出一条 sample 的输入类型和预期输出，再打开正式文件。回答：调用者是谁？输入是否可变？失败应 raise 还是返回空值？任何答案不清楚，先阅读第 12/13 节。
+本阶段新概念：正则 tokenization、match span、normalization、Counter、Vocabulary、PAD、UNK、BIO fail-fast、casing features。先不要修改正式文件。在项目根目录执行这个最小实验：
+
+```powershell
+python -c "from src.preprocessing import tokenize_with_spans; t='Ahmad Ali, UTM.'; x,s=tokenize_with_spans(t); print(x); print(s); print([t[a:b] for a,b in s])"
+```
+
+通过条件：三行输出中的 token 与切片逐项相同；逗号和句点拥有独立 span；test_preprocessing 全部通过。
 
 ### 7. Lesson 06.2：编写第一个最小单元
 
-在 `src/preprocessing.py` 对应位置输入：
+在 VS Code 打开 `src/preprocessing.py`。若文件不存在就按该路径新建；若已存在，先用 Ctrl+F 查找代码块中的第一个 `class`/`def`/变量名，并在完整源码显示的相同顺序写入。不要凭感觉选择位置。先输入：
 
 ```python
 TOKEN_PATTERN = re.compile(r"[A-Za-z]+(?:[-'][A-Za-z]+)*|\d+(?:[.,]\d+)*|[^\w\s]")
@@ -44,7 +50,7 @@ def tokenize_with_spans(text: str):
     return [m.group(0) for m in matches], [m.span() for m in matches]
 ```
 
-逐行检查 import、变量 scope、parameter type 和 return。此代码只承担当前职责；不把下一阶段逻辑塞进函数。保存后用 `python -m py_compile src/preprocessing.py` 做语法检查。正常无输出、exit code 0。
+逐行检查 import、变量 scope、parameter type 和 return。这是局部代码，不代表完整文件；正式写入顺序如下：先输入 TOKEN_PATTERN 与 tokenize_with_spans 并运行小实验；再输入 normalize_token、validate_bio、build_vocabulary、tokens_to_ids、casing_features。每完成一个函数就运行对应单测。dataset.py 和 predict.py 都 import 同一个 tokenizer，禁止复制第二套分词规则。
 
 ### 8. Lesson 06.3：连接下一个逻辑单元
 
@@ -72,9 +78,11 @@ python -m pytest tests\test_preprocessing.py -q
 
 本项目真实证据：4 preprocessing tests passed；token、标点、UNK、四维特征和非法 BIO 均被验证。 学生电脑的时间可能不同，但结构、断言和文件数量应一致。命令失败时保留完整 traceback，从最后一行向上找第一个自己的文件行号；修复后重跑同一命令。
 
-## 10. 完整代码回顾
+## 10. 完整代码回顾与函数契约
 
-打开 `src/preprocessing.py`，从 imports 开始完整阅读。确认本章新增的函数/类与两个代码单元都存在；没有未解释的额外 branch。教材片段用于增量输入，阶段结束时以 snapshot 中完整文件为准。运行 `python -m py_compile src/preprocessing.py` 证明至少语法完整。
+本阶段 PDF 紧接着列出 `src/preprocessing.py` 的完整验收版本（带真实行号并分块，不能省略）。学生必须在 VS Code 中按 Lesson 顺序输入，而不是从 GitHub 偷看下一阶段。完成后运行 `python -m py_compile src/preprocessing.py`；无错误只证明文件可读取/语法正确，还必须通过第 9/14 节的功能测试。
+
+函数契约检查法：对本阶段每个 `def`/`class` 写五行笔记：输入参数与类型、返回值与类型、直接调用者、它调用的项目函数、失败方式。若完整源码出现 Lesson 未提到的函数，停下并在该函数 docstring 和调用处补完笔记后再继续。
 
 ## 11. 跨文件调用关系
 

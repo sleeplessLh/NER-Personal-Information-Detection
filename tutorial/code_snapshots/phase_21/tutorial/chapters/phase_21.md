@@ -10,9 +10,9 @@ clean-room reproduction、static synchronization、PDF rendering QA、learning s
 
 ## 3. 从零解释知识点
 
-本阶段坚持“概念 -> 最小代码 -> 局部运行 -> 接入现有项目 -> 回归测试”。关键不是记语法，而是知道数据从哪里来、为什么采用当前类型/shape、错误会在哪一层出现。学生每写一个小单元就保存并运行，不等到整章结束。
+Clean-room reproduction 必须在新目录验证路径和命令，不能借用开发目录文件。Static synchronization 比较教程最终源码与 GitHub；render QA 把每页变 PNG 检查裁切/乱码。Localhost 是本机部署，不是公网发布。最终结论只能依据已执行证据。
 
-正式函数必须回答十二项：名称、目的、parameters、parameter types、return value/type、内部逻辑、调用者、被调用函数、example input/output、common errors。相关答案分布在下面 Lessons、数据流和错误章节。
+学习顺序固定为：先做可丢弃的小实验，确认具体输入/输出；再按写入顺序完成正式函数；最后运行本阶段 checkpoint。完整源码会在本阶段末尾逐行列出，不能只复制两个片段后跳到下一章。
 
 ## 4. 本阶段开始前的项目状态
 
@@ -31,28 +31,36 @@ tutorial/code_snapshots/phase_21/ [通过后生成]
 
 ### 6. Lesson 21.1：先理解概念和接口
 
-本阶段新概念：clean-room reproduction、static synchronization、PDF rendering QA、learning schedule、demo fallback、final acceptance。先写出一条 sample 的输入类型和预期输出，再打开正式文件。回答：调用者是谁？输入是否可变？失败应 raise 还是返回空值？任何答案不清楚，先阅读第 12/13 节。
+本阶段新概念：clean-room reproduction、static synchronization、PDF rendering QA、learning schedule、demo fallback、final acceptance。先不要修改正式文件。在项目根目录执行这个最小实验：
+
+```powershell
+python scripts\validate_tutorial.py; python scripts\verify_tutorial.py; python -m pytest -q; python -m src.evaluate
+```
+
+通过条件：22/22 phases；56 tests；两套 evaluation；真实 Uvicorn/Web；PDF 页数等于渲染页数；远程 clone HEAD 与本地一致。
 
 ### 7. Lesson 21.2：编写第一个最小单元
 
-在 `tutorial/build_pdf.py` 对应位置输入：
+在 VS Code 打开 `tutorial/build_pdf.py`。若文件不存在就按该路径新建；若已存在，先用 Ctrl+F 查找代码块中的第一个 `class`/`def`/变量名，并在完整源码显示的相同顺序写入。不要凭感觉选择位置。先输入：
 
 ```python
-python scripts/verify_tutorial.py
-python scripts/validate_tutorial.py
-python -m pytest -q
-python -m src.evaluate
+ROOT = Path(__file__).resolve().parents[1]
+MANIFEST = json.loads((ROOT / "tutorial/manifest.json").read_text(encoding="utf-8"))
+OUTPUT = ROOT / MANIFEST["output"]
 ```
 
-逐行检查 import、变量 scope、parameter type 和 return。此代码只承担当前职责；不把下一阶段逻辑塞进函数。保存后用 `python -m py_compile tutorial/build_pdf.py` 做语法检查。正常无输出、exit code 0。
+逐行检查 import、变量 scope、parameter type 和 return。这是局部代码，不代表完整文件；正式写入顺序如下：先创建全新目录并按 Phase 01-20 累积文件；每个 checkpoint 失败就回到对应 Phase。全部功能通过后才 build_pdf、pdfinfo、pdftoppm 和逐页检查，最后 push 并从远程再 clone。
 
 ### 8. Lesson 21.3：连接下一个逻辑单元
 
 在上一段已经通过后，再加入：
 
 ```python
-# 生成后：pdfinfo -> pdftoppm 全页 PNG -> contact sheets -> 原尺寸抽查
-# 检查中文、代码裁切、页码、目录、空页、最终 hash
+def main() -> None:
+    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    document = Book(str(OUTPUT))
+    document.multiBuild(build_story())
+    print(OUTPUT)
 ```
 
 新增代码读取上一单元的返回值，而不是重新计算或使用全局隐藏状态。用具体 sample 手工追踪一遍数据；记录每个 list/dict/Tensor/str 的类型。若涉及 Tensor，打印 shape/dtype 后再接下一层。
@@ -65,11 +73,13 @@ python -m src.evaluate
 python tutorial\build_pdf.py
 ```
 
-本项目真实证据：空目录复现得到 47 passed；评估确认 general student test 300 句与 Malaysian student test 60 句；预测 Ahmad Ali/Universiti Teknologi Malaysia/Johor Bahru 分别返回 PER/ORG/LOC。最终 PDF 还必须通过全页视觉 QA 才能发布。学生电脑的时间可能不同，但结构、断言和文件数量应一致。命令失败时保留完整 traceback，从最后一行向上找第一个自己的文件行号；修复后重跑同一命令。
+本项目真实证据：阶段式空目录复现 22/22 通过；全新 .venv 安装依赖后 56 passed；评估确认 general student test 300 句与 Malaysian student test 60 句；真实 Uvicorn 与浏览器模型脱敏通过。 学生电脑的时间可能不同，但结构、断言和文件数量应一致。命令失败时保留完整 traceback，从最后一行向上找第一个自己的文件行号；修复后重跑同一命令。
 
-## 10. 完整代码回顾
+## 10. 完整代码回顾与函数契约
 
-打开 `tutorial/build_pdf.py`，从 imports 开始完整阅读。确认本章新增的函数/类与两个代码单元都存在；没有未解释的额外 branch。教材片段用于增量输入，阶段结束时以 snapshot 中完整文件为准。运行 `python -m py_compile tutorial/build_pdf.py` 证明至少语法完整。
+本阶段 PDF 紧接着列出 `tutorial/build_pdf.py` 的完整验收版本（带真实行号并分块，不能省略）。学生必须在 VS Code 中按 Lesson 顺序输入，而不是从 GitHub 偷看下一阶段。完成后运行 `python -m py_compile tutorial/build_pdf.py`；无错误只证明文件可读取/语法正确，还必须通过第 9/14 节的功能测试。
+
+函数契约检查法：对本阶段每个 `def`/`class` 写五行笔记：输入参数与类型、返回值与类型、直接调用者、它调用的项目函数、失败方式。若完整源码出现 Lesson 未提到的函数，停下并在该函数 docstring 和调用处补完笔记后再继续。
 
 ## 11. 跨文件调用关系
 
@@ -100,5 +110,3 @@ I reproduced the verified commands, validated tutorial-source synchronization, r
 ## 17. 下一阶段预告
 
 没有下一编码阶段；学生进入 30 天执行计划并在每个 checkpoint 停下来证明掌握。
-
-最终人工否决问题：一个从未学习 ML 的一年级学生，能否只依靠本教材，在新文件夹中完成环境、逐文件编码、训练、测试、Web 演示并解释限制？如果任何步骤仍需要猜测文件、命令、输入或预期输出，本 Phase 立即判定失败，返回对应章节补写后重新执行复现，不能用“读者应该知道”作为理由。

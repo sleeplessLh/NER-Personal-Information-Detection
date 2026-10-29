@@ -2,11 +2,10 @@
   "phase": "06",
   "verified": true,
   "test_command": "pytest tests/test_preprocessing.py -q",
-  "actual_result": "PASS: tokenization, vocabulary, features and BIO errors verified",
+  "actual_result": "PASS: token, spans, BIO, vocabulary",
   "files": {
-    "src\\constants.py": "1ed10ebd07f0ce8fba31a16f3d1285e3b19ce1b3ae122f1f5c98e0ce5b9f70c0",
-    "src\\preprocessing.py": "e8c540bb87a3ff02237044ab002751fad90e423228bb00af90b4f7e7f4ac7a05",
-    "tests\\test_preprocessing.py": "81bc60a49149976cf9b8c6d66f758c4240e146a9ad5d245b7923b27e026560c6",
-    "tutorial\\chapters\\phase_06.md": "e87ffdbf5090b99cf090aa07ed0ceeeb79d2905198ad940a57a8224c9d8764d3"
+    "src/preprocessing.py": "e8c540bb87a3ff02237044ab002751fad90e423228bb00af90b4f7e7f4ac7a05",
+    "tests/test_preprocessing.py": "06969c95e6ea5057c44ce2a31ca1efbbd3e10ce2e590b72f008382d32d3dc898",
+    "tutorial/chapters/phase_06.md": "1cb13958f42e0ade6b5b5a52c496ef39db1871966f29c5c28848722f40b65bc2"
   }
 }

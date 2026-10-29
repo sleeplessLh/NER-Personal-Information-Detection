@@ -29,33 +29,33 @@ PHASE_FILES = {
     "02": ["learning/python_foundations.py"],
     "03": ["learning/bio_demo.py"],
     "04": ["pyproject.toml", ".gitignore", "src/constants.py"],
-    "05": ["src/generate_data.py"],
-    "06": ["src/preprocessing.py"],
-    "07": ["src/preprocessing.py", "src/dataset.py"],
-    "08": ["src/dataset.py"],
+    "05": ["src/preprocessing.py", "src/generate_data.py"],
+    "06": ["src/preprocessing.py", "tests/test_preprocessing.py"],
+    "07": ["learning/tensor_demo.py", "src/preprocessing.py", "src/dataset.py"],
+    "08": ["learning/dataloader_demo.py", "src/dataset.py"],
     "09": [
         "tutorial/model_versions/model_v1.py", "tutorial/model_versions/model_v2.py",
         "tutorial/model_versions/model_v3.py", "tutorial/model_versions/model_v4.py",
         "tutorial/model_versions/model_v5.py", "tutorial/model_versions/model_v6.py",
         "tests/test_model_versions.py", "src/model.py",
     ],
-    "10": ["src/model.py", "src/train.py"],
-    "11": ["src/train.py"],
+    "10": ["learning/training_step_demo.py", "src/model.py"],
+    "11": ["src/metrics.py", "src/train.py"],
     "12": ["src/predict.py"],
     "13": ["src/redact.py", "tests/test_redaction.py"],
     "14": ["src/generate_data.py", "src/train.py"],
     "15": ["src/metrics.py", "src/evaluate.py"],
-    "16": ["app/main.py", "tests/test_api.py"],
-    "17": ["app/main.py", "tests/test_acceptance.py"],
-    "18": ["app/main.py"],
+    "16": ["tutorial/app_versions/app_v1_text_api.py", "tests/test_text_api.py"],
+    "17": ["tutorial/app_versions/app_v2_file_api.py", "tests/test_file_api.py"],
+    "18": ["app/main.py", "tests/test_web_ui.py"],
     "19": [
-        "tests/test_acceptance.py", "tests/test_api.py", "tests/test_model.py",
+        "tests/test_acceptance.py", "tests/test_api.py", "tests/test_file_api.py", "tests/test_model.py",
         "tests/test_model_versions.py", "tests/test_prediction.py",
-        "tests/test_preprocessing.py", "tests/test_redaction.py",
+        "tests/test_preprocessing.py", "tests/test_redaction.py", "tests/test_text_api.py", "tests/test_web_ui.py",
     ],
-    "20": ["README.md", "MODEL_ACCEPTANCE_REPORT.md", "PRESENTATION_MATERIALS.md"],
+    "20": ["README.md", "MODEL_ACCEPTANCE_REPORT.md", "TUTORIAL_AUDIT_REPORT.md", "PRESENTATION_MATERIALS.md"],
     "21": [
-        "scripts/reproduce_tutorial.py", "scripts/validate_tutorial.py",
+        "scripts/student_reproduction_audit.py", "scripts/reproduce_tutorial.py", "scripts/validate_tutorial.py",
         "scripts/verify_tutorial.py", "scripts/qa_tutorial_pdf.py",
     ],
 }
@@ -74,6 +74,7 @@ FILE_GUIDES = {
     "README.md": "公开仓库入口。学生需要逐段填写项目介绍、安装、数据、训练、运行、测试、架构、指标与限制，而不是写一句占位说明。",
     "MODEL_ACCEPTANCE_REPORT.md": "正式验收证据。必须区分软件测试、ML 指标、人工演示、失败案例、限制与未完成的公开发布。",
     "PRESENTATION_MATERIALS.md": "5-10 分钟英文讲稿、现场演示顺序、架构解释和面试问答的完整可复制版本。",
+    "TUTORIAL_AUDIT_REPORT.md": "逐 Phase 教学缺陷、修复、复现状态和证据边界；明确区分工程模拟与真实人类 novice study。",
 }
 
 # 旧版自动章节只有模板化句子。以下阶段改用专属操作说明，禁止再复用“最小单元”占位文案。
@@ -90,9 +91,9 @@ GUIDED_PHASES = {
     "16": {"title": "FastAPI Text API 与真实 HTTP 验收", "objective": "提供 POST /api/predict，让浏览器或客户端提交原始英文文本并收到 entities 与 redacted_text。", "concepts": "HTTP、JSON、Pydantic、status code、application lifespan、shared Predictor", "relation": "app/main.py -> Predictor -> model -> redact_text -> JSON response；测试使用 FastAPI TestClient。", "commands": ["python -m pytest tests\\test_api.py -q", "python -m uvicorn app.main:app --reload"], "expected": "API 测试通过；浏览器访问 http://127.0.0.1:8000；空文本返回 422/400 而非假成功。", "errors": "每次请求重复加载 checkpoint；吞掉异常仍返回 200；字段名与前端不一致；服务启动目录错误。", "interview": "FastAPI validates the request and reuses one trained predictor instead of loading the checkpoint for every call."},
     "17": {"title": "TXT/PDF 文件处理、安全限制与错误响应", "objective": "安全接收最多 5 MB 的 UTF-8 TXT 或带文本层 PDF，并把提取文字送入同一自训练模型。", "concepts": "multipart、MIME/extension、size limit、UTF-8、PDF text layer、OCR boundary", "relation": "upload endpoint -> validate bytes/type -> extract text -> Predictor -> redact -> JSON。", "commands": ["python -m pytest tests\\test_acceptance.py -q -k upload", "python -m uvicorn app.main:app --reload"], "expected": "TXT/PDF 上传测试通过；错误类型、过大文件、空/扫描 PDF 返回明确 4xx。", "errors": "只信 Content-Type；无限读取上传；把 PDF bytes 当 UTF-8；声称支持 OCR；文件失败返回 500。", "interview": "TXT and text-layer PDF are supported; scanned PDFs need OCR and are rejected when no text is extracted."},
     "18": {"title": "Web Interface 与端到端数据流", "objective": "让用户粘贴文本、点击 Detect、上传文件并清楚看到实体类型、offset 与脱敏文本。", "concepts": "HTML form、fetch、FormData、DOM、JSON rendering、end-to-end flow", "relation": "browser -> FastAPI -> Predictor -> response -> DOM；网页不执行 NER，只展示服务器模型结果。", "commands": ["python -m uvicorn app.main:app --reload", "python -m pytest tests\\test_acceptance.py -q -k end_to_end"], "expected": "网页能完成文本与文件两条路径；端到端测试通过；关闭服务用 Ctrl+C。", "errors": "在 JavaScript 硬编码实体；接口路径错；未展示服务错误；把 HTML 输入直接拼接造成注入。", "interview": "The browser only collects input and displays JSON; all entity recognition is performed by the trained PyTorch model on the server."},
-    "19": {"title": "自动化测试、Windows 调试与错误修复", "objective": "运行 47 项测试，理解每个断言覆盖的需求，并用 traceback 修复根因。", "concepts": "unit/integration/end-to-end test、fixture、assertion、regression、coverage、traceback", "relation": "tests 分别调用 preprocessing/model/predict/redact/API；acceptance 测试串起真实 checkpoint 与应用。", "commands": ["python -m pytest -q", "python -m pytest tests\\test_acceptance.py -q -vv"], "expected": "47 passed；任何失败都保留完整 traceback，修复后先重跑单项再跑全套。", "errors": "删除失败测试；用宽泛 except 掩盖异常；只在 IDE 运行导致工作目录不同；测试污染正式数据。", "interview": "I use unit tests for small contracts and acceptance tests for the complete model-to-API path."},
-    "20": {"title": "README、验收报告、GitHub 发布准备与文档同步", "objective": "把真实安装、训练、测试、指标、限制和发布状态写成可审核文档。", "concepts": "reproducibility、requirement traceability、artifact hash、public repository boundary", "relation": "README 给复现者；acceptance report 给评委；presentation 给现场演示；三者必须引用同一真实证据。", "commands": ["python -m pytest -q", "python scripts\\verify_tutorial.py", "git diff --check"], "expected": "47 passed；路径同步；无 diff whitespace error；GitHub commit 可验证。", "errors": "复制旧指标；把未执行步骤写成 PASS；遗漏限制；提交 checkpoint 却没有重训方法；虚构公开 URL。", "interview": "My documentation separates verified evidence, known limitations, and published artifacts."},
-    "21": {"title": "最终复现、30 天计划、英文演示与面试", "objective": "在新目录执行静态同步、测试、评估、预测和 PDF 全页检查，并安排 30 天学习节奏。", "concepts": "clean-room reproduction、static synchronization、render QA、demo fallback、final acceptance", "relation": "verified source -> reproduction directory -> tests/evaluation/prediction -> rendered PDF -> QA report。", "commands": ["python scripts\\reproduce_tutorial.py", "python scripts\\validate_tutorial.py", "python scripts\\verify_tutorial.py", "python scripts\\qa_tutorial_pdf.py"], "expected": "47 passed；22 phases；路径同步；PDF 页面数等于 PNG 数；无缺失 Phase、缺字或空页。", "errors": "复现时偷偷引用原目录；只看 PDF 首页；命令与文档不一致；现场重新训练无 checkpoint 备份。", "interview": "I reproduced the verified commands, checked source synchronization, and rendered every PDF page before release."},
+    "19": {"title": "自动化测试、Windows 调试与错误修复", "objective": "运行 56 项测试，理解每个断言覆盖的需求，并用 traceback 修复根因。", "concepts": "unit/integration/end-to-end test、fixture、assertion、regression、coverage、traceback", "relation": "tests 分别调用 preprocessing/model/predict/redact/API；acceptance 测试串起真实 checkpoint 与应用。", "commands": ["python -m pytest -q", "python -m pytest tests\\test_acceptance.py -q -vv"], "expected": "56 passed；任何失败都保留完整 traceback，修复后先重跑单项再跑全套。", "errors": "删除失败测试；用宽泛 except 掩盖异常；只在 IDE 运行导致工作目录不同；测试污染正式数据。", "interview": "I use unit tests for small contracts and acceptance tests for the complete model-to-API path."},
+    "20": {"title": "README、验收报告、GitHub 发布准备与文档同步", "objective": "把真实安装、训练、测试、指标、限制和发布状态写成可审核文档。", "concepts": "reproducibility、requirement traceability、artifact hash、public repository boundary", "relation": "README 给复现者；acceptance report 给评委；presentation 给现场演示；三者必须引用同一真实证据。", "commands": ["python -m pytest -q", "python scripts\\verify_tutorial.py", "git diff --check"], "expected": "56 passed；路径同步；无 diff whitespace error；GitHub commit 可验证。", "errors": "复制旧指标；把未执行步骤写成 PASS；遗漏限制；提交 checkpoint 却没有重训方法；虚构公开 URL。", "interview": "My documentation separates verified evidence, known limitations, and published artifacts."},
+    "21": {"title": "最终复现、30 天计划、英文演示与面试", "objective": "在新目录执行静态同步、测试、评估、预测和 PDF 全页检查，并安排 30 天学习节奏。", "concepts": "clean-room reproduction、static synchronization、render QA、demo fallback、final acceptance", "relation": "verified source -> reproduction directory -> tests/evaluation/prediction -> rendered PDF -> QA report。", "commands": ["python scripts\\student_reproduction_audit.py", "python scripts\\validate_tutorial.py", "python scripts\\verify_tutorial.py", "python scripts\\qa_tutorial_pdf.py"], "expected": "22/22 phases；56 passed；路径同步；PDF 页面数等于 PNG 数；无缺失 Phase、缺字或空页。", "errors": "复现时一次复制最终项目；只看 PDF 首页；命令与文档不一致；现场重新训练无 checkpoint 备份。", "interview": "I reproduced the verified commands, checked source synchronization, and rendered every PDF page before release."},
 }
 
 
@@ -295,7 +296,7 @@ def guided_phase_close(phase_id: str, styles: dict):
         *schedule,
         Paragraph("16. Evidence / 本项目真实证据", styles["h2"]),
         Paragraph(
-            "正式工程已在 CPU 环境训练 16 epochs；完整测试为 47 passed；general student 与 Malaysian student test 分开评估；"
+            "正式工程已在 CPU 环境训练 16 epochs；阶段式空目录复现 22/22，完整测试为 56 passed；general student 与 Malaysian student test 分开评估；"
             "人工困难样例出现姓名漏检，因此文档明确要求高风险场景人工复核。", styles["body"]
         ),
         Paragraph("17. Next Phase / 下一阶段", styles["h2"]),

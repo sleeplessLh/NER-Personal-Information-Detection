@@ -1,11 +1,11 @@
 {
   "phase": "08",
   "verified": true,
-  "test_command": "pytest model and training-step tests",
-  "actual_result": "PASS: Dataset, padding, mask and batch integration verified",
+  "test_command": "python -m learning.dataloader_demo",
+  "actual_result": "PASS: padding and mask",
   "files": {
-    "src\\dataset.py": "706fcf33b48ca57003e6a7b91d90064aec33903ead677ad0bd7e8ef5fa612b5f",
-    "tests\\test_model.py": "227d2039c739523fbc8cb9daf93e8e9f3d16dc74387be257da34e7a9544e7a2e",
-    "tutorial\\chapters\\phase_08.md": "a2937563e00bd441b6a16ac74909c2a15be40becc69b00099c3e6293125c8ce2"
+    "learning/dataloader_demo.py": "2401b3cf7f5cebead6b5b53933d2a396248640dc6fe9b57d9eb4ea466acbdb4a",
+    "src/dataset.py": "706fcf33b48ca57003e6a7b91d90064aec33903ead677ad0bd7e8ef5fa612b5f",
+    "tutorial/chapters/phase_08.md": "e12c15804d8f676f00664714ffb5ceb9ee4e2a7f12550177689241a62a471bfa"
   }
 }

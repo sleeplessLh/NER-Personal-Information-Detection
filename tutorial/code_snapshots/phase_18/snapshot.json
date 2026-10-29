@@ -1,9 +1,11 @@
 {
   "phase": "18",
   "verified": true,
-  "test_command": "python -m pytest tests/test_api.py -q",
-  "actual_result": "PASS: responsive Input Text to Redacted Text interface",
+  "test_command": "pytest tests/test_web_ui.py -q",
+  "actual_result": "PASS: final responsive Web UI",
   "files": {
-    "app/main.py": "e27687445f1a6a26f8f03ba2937aaa9f2da0bc392dcad2761ff70d4d982b60ab"
+    "app/main.py": "e27687445f1a6a26f8f03ba2937aaa9f2da0bc392dcad2761ff70d4d982b60ab",
+    "tests/test_web_ui.py": "b6f0fbada5aabdc4b01cacbd01bf46cf9cdac1839d183ce3085b1689ae903768",
+    "tutorial/chapters/phase_18.md": "97696b32a17fc240b7c483e3b919ba19df2c29817cc45269953ae53471942d68"
   }
 }

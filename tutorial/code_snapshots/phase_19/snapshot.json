@@ -2,14 +2,18 @@
   "phase": "19",
   "verified": true,
   "test_command": "python -m pytest -q",
-  "actual_result": "47 passed",
+  "actual_result": "56 passed",
   "files": {
     "tests/test_acceptance.py": "45839cdb687ee508ae202deadf249f3d93f12edfffc0813d24245db63261fc66",
     "tests/test_api.py": "2ad4f4b7fbc0b0f08746d877e7d824cfe9acdf0a16f693712dea41eed86a786a",
+    "tests/test_file_api.py": "7ccdd93ba2e037c28b1958d5ad998fde5c8db85413dfe57afaad96e72b7e7fbf",
     "tests/test_model.py": "227d2039c739523fbc8cb9daf93e8e9f3d16dc74387be257da34e7a9544e7a2e",
     "tests/test_model_versions.py": "d53542e5794c83ca6fc7bb29aea7bc5355a5cd8550da471deb35c002df420c57",
     "tests/test_prediction.py": "f5c1eff97ad987026aa5eeafec7812e5116ee9c44f51dca8ae38fffb3e567f58",
     "tests/test_preprocessing.py": "06969c95e6ea5057c44ce2a31ca1efbbd3e10ce2e590b72f008382d32d3dc898",
-    "tests/test_redaction.py": "7fdfc2d3738e9714c00c2b72787a8c4047e5185d3bbe7626f5be7390b86c3bd5"
+    "tests/test_redaction.py": "7fdfc2d3738e9714c00c2b72787a8c4047e5185d3bbe7626f5be7390b86c3bd5",
+    "tests/test_text_api.py": "bf3ee474c20c18f91a14fa29f889a9d6fe6f2435edd5c5f6166281c110de5604",
+    "tests/test_web_ui.py": "b6f0fbada5aabdc4b01cacbd01bf46cf9cdac1839d183ce3085b1689ae903768",
+    "tutorial/chapters/phase_19.md": "6a1f34735638353d6241dffe01f313cf3df40327b070ab43153df1c5b02e969e"
   }
 }

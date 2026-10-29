@@ -14,7 +14,7 @@
 
 **5:00-6:30 - Live demo.** Start Uvicorn, open the page, paste `Ahmad Ali studies at Universiti Teknologi Malaysia in Johor Bahru.`, click Detect, point to each entity's type and character offsets, and show `[PER] studies at [ORG] in [LOC].`. Then upload a student-report UTF-8 TXT and a text-layer PDF. Explain that scanned PDFs need OCR and are rejected when no text can be extracted.
 
-**6:30-7:30 - Testing and safety.** Show `47 passed`. Explain visible Web errors, the 5 MB backend upload limit, invalid input handling, checkpoint reload, CPU inference, exact entity-level metrics, and character-span redaction. Emphasise that this student-focused prototype does not detect phone numbers, emails, IDs, passports or all addresses, and high-risk use needs human review.
+**6:30-7:30 - Testing and safety.** Show `56 passed`. Explain visible Web errors, the 5 MB backend upload limit, invalid input handling, checkpoint reload, CPU inference, exact entity-level metrics, and character-span redaction. Emphasise that this student-focused prototype does not detect phone numbers, emails, IDs, passports or all addresses, and high-risk use needs human review.
 
 ## Likely Interview Questions and Suggested Answers
 

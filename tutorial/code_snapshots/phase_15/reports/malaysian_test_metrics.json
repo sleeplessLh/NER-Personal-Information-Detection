@@ -3,7 +3,7 @@
   "sentences": 60,
   "metrics": {
     "PER": {
-      "tp": 52,
+      "tp": 49,
       "fp": 0,
       "fn": 0,
       "precision": 1.0,
@@ -11,7 +11,7 @@
       "f1": 1.0
     },
     "LOC": {
-      "tp": 36,
+      "tp": 34,
       "fp": 0,
       "fn": 0,
       "precision": 1.0,
@@ -19,7 +19,7 @@
       "f1": 1.0
     },
     "ORG": {
-      "tp": 38,
+      "tp": 36,
       "fp": 0,
       "fn": 0,
       "precision": 1.0,
@@ -27,7 +27,7 @@
       "f1": 1.0
     },
     "overall": {
-      "tp": 126,
+      "tp": 119,
       "fp": 0,
       "fn": 0,
       "precision": 1.0,

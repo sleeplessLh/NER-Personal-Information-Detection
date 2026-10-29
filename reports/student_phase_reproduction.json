@@ -1,0 +1,244 @@
+{
+  "target": "D:\\AIROST\\Intern-MachineLearning\\tmp\\NER_Tutorial_Reproduction_Test_2",
+  "method": "phase-by-phase tutorial file transcription equivalence; no final project bulk copy",
+  "environment": "3.12.15 (main, Oct 14 2026, 01:08:45) [MSC v.1944 64 bit (AMD64)]",
+  "results": [
+    {
+      "phase": "00",
+      "copied_from_tutorial": [
+        "README.md"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe -c \"from pathlib import Path; assert Path('README.md').is_file()\"",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "phase": "01",
+      "copied_from_tutorial": [
+        "learning/hello_python.py",
+        "requirements.txt"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe learning/hello_python.py",
+      "exit_code": 0,
+      "output": "NER learning environment is ready.\nPython 3.12.15 | Windows | executable=D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe\n"
+    },
+    {
+      "phase": "02",
+      "copied_from_tutorial": [
+        "learning/python_foundations.py"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe learning/python_foundations.py",
+      "exit_code": 0,
+      "output": "{'B-PER': 1, 'O': 2, 'B-ORG': 1, 'I-ORG': 1}\n{'text': 'Universiti Malaya', 'type': 'ORG', 'start': 15, 'end': 33}\n"
+    },
+    {
+      "phase": "03",
+      "copied_from_tutorial": [
+        "learning/bio_demo.py"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe learning/bio_demo.py",
+      "exit_code": 0,
+      "output": "[('Ali', 'B-PER'), ('studies', 'O'), ('at', 'O'), ('Universiti', 'B-ORG'), ('Malaya', 'I-ORG'), ('.', 'O')]\n[{'text': 'Ali', 'type': 'PER', 'start_token': 0, 'end_token': 1}, {'text': 'Universiti Malaya', 'type': 'ORG', 'start_token': 3, 'end_token': 5}]\n"
+    },
+    {
+      "phase": "04",
+      "copied_from_tutorial": [
+        "pyproject.toml",
+        ".gitignore",
+        "src/constants.py"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe -c \"from src.constants import LABELS; assert len(LABELS)==8; print(LABELS)\"",
+      "exit_code": 0,
+      "output": "['<PAD>', 'O', 'B-PER', 'I-PER', 'B-LOC', 'I-LOC', 'B-ORG', 'I-ORG']\n"
+    },
+    {
+      "phase": "05",
+      "copied_from_tutorial": [
+        "src/preprocessing.py",
+        "src/generate_data.py"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe -m src.generate_data",
+      "exit_code": 0,
+      "output": "{\n  \"train\": {\n    \"rows\": 2400,\n    \"unique_sentences\": 1570\n  },\n  \"validation\": {\n    \"rows\": 300,\n    \"unique_sentences\": 181\n  },\n  \"test\": {\n    \"rows\": 300,\n    \"unique_sentences\": 215\n  },\n  \"malaysian_train\": {\n    \"rows\": 160,\n    \"unique_sentences\": 130\n  },\n  \"malaysian_validation\": {\n    \"rows\": 40,\n    \"unique_sentences\": 31\n  },\n  \"malaysian_test\": {\n    \"rows\": 60,\n    \"unique_sentences\": 48\n  }\n}\n"
+    },
+    {
+      "phase": "06",
+      "copied_from_tutorial": [
+        "src/preprocessing.py",
+        "tests/test_preprocessing.py"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe -m pytest tests/test_preprocessing.py -q",
+      "exit_code": 0,
+      "output": ".......                                                                  [100%]\n7 passed in 0.03s\n"
+    },
+    {
+      "phase": "07",
+      "copied_from_tutorial": [
+        "learning/tensor_demo.py",
+        "src/preprocessing.py",
+        "src/dataset.py"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe -m learning.tensor_demo",
+      "exit_code": 0,
+      "output": "input_ids: torch.int64 (3,)\nfeatures: torch.float32 (3, 4)\nlabels: torch.int64 (3,)\n"
+    },
+    {
+      "phase": "08",
+      "copied_from_tutorial": [
+        "learning/dataloader_demo.py",
+        "src/dataset.py"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe -m learning.dataloader_demo",
+      "exit_code": 0,
+      "output": "input_ids (2, 2) torch.int64\nfeatures (2, 2, 4) torch.float32\nlabels (2, 2) torch.int64\nmask (2, 2) torch.bool\n"
+    },
+    {
+      "phase": "09",
+      "copied_from_tutorial": [
+        "tutorial/model_versions/model_v1.py",
+        "tutorial/model_versions/model_v2.py",
+        "tutorial/model_versions/model_v3.py",
+        "tutorial/model_versions/model_v4.py",
+        "tutorial/model_versions/model_v5.py",
+        "tutorial/model_versions/model_v6.py",
+        "tests/test_model_versions.py",
+        "src/model.py"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe -m pytest tests/test_model_versions.py -q",
+      "exit_code": 0,
+      "output": "......                                                                   [100%]\n6 passed in 1.85s\n"
+    },
+    {
+      "phase": "10",
+      "copied_from_tutorial": [
+        "learning/training_step_demo.py",
+        "src/model.py"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe -m learning.training_step_demo",
+      "exit_code": 0,
+      "output": "logits shape: (1, 4, 8)\nloss: 2.011882\nclassifier changed: True\n"
+    },
+    {
+      "phase": "11",
+      "copied_from_tutorial": [
+        "src/metrics.py",
+        "src/train.py"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe -m src.train --epochs 16 --batch-size 64 --learning-rate 0.003",
+      "exit_code": 0,
+      "output": "\"validation_loss\": 0.3163302739461263, \"validation_precision\": 0.5077519379844961, \"validation_recall\": 0.6131045241809673, \"validation_f1\": 0.5554770318021202, \"duration_seconds\": 2.6792328000301495}\n{\"epoch\": 2, \"train_loss\": 0.1510893334634602, \"validation_loss\": 0.10673821655412515, \"validation_precision\": 0.6879895561357703, \"validation_recall\": 0.8221528861154446, \"validation_f1\": 0.7491115849324804, \"duration_seconds\": 2.2886008999776095}\n{\"epoch\": 3, \"train_loss\": 0.03922936206217855, \"validation_loss\": 0.07910052547231317, \"validation_precision\": 0.7472972972972973, \"validation_recall\": 0.8627145085803433, \"validation_f1\": 0.8008689355539463, \"duration_seconds\": 2.306883499957621}\n{\"epoch\": 4, \"train_loss\": 0.02326142122037709, \"validation_loss\": 0.07761920429766178, \"validation_precision\": 0.7263017356475301, \"validation_recall\": 0.8486739469578783, \"validation_f1\": 0.7827338129496403, \"duration_seconds\": 2.2573928999481723}\n{\"epoch\": 5, \"train_loss\": 0.0156549951643683, \"validation_loss\": 0.06626871088519692, \"validation_precision\": 0.7615803814713896, \"validation_recall\": 0.8720748829953198, \"validation_f1\": 0.813090909090909, \"duration_seconds\": 2.283685400034301}\n{\"epoch\": 6, \"train_loss\": 0.011468984285602345, \"validation_loss\": 0.054953586969835065, \"validation_precision\": 0.7615803814713896, \"validation_recall\": 0.8720748829953198, \"validation_f1\": 0.813090909090909, \"duration_seconds\": 2.4197118999436498}\n{\"epoch\": 7, \"train_loss\": 0.0120649233344011, \"validation_loss\": 0.0424363564622278, \"validation_precision\": 0.7615803814713896, \"validation_recall\": 0.8720748829953198, \"validation_f1\": 0.813090909090909, \"duration_seconds\": 2.3229181999340653}\n{\"epoch\": 8, \"train_loss\": 0.009592904191231355, \"validation_loss\": 0.03202447465931376, \"validation_precision\": 0.8366477272727273, \"validation_recall\": 0.9188767550702028, \"validation_f1\": 0.8758364312267658, \"duration_seconds\": 2.3475296000251547}\n{\"epoch\": 9, \"train_loss\": 0.008697443385608494, \"validation_loss\": 0.030231436520504456, \"validation_precision\": 0.8766328011611031, \"validation_recall\": 0.9422776911076443, \"validation_f1\": 0.9082706766917293, \"duration_seconds\": 2.2842279999749735}\n{\"epoch\": 10, \"train_loss\": 0.009670643735444174, \"validation_loss\": 0.040405414843310915, \"validation_precision\": 0.8497854077253219, \"validation_recall\": 0.9266770670826833, \"validation_f1\": 0.8865671641791044, \"duration_seconds\": 2.3779661000007764}\n{\"epoch\": 11, \"train_loss\": 0.00707762035599444, \"validation_loss\": 0.036880649820280574, \"validation_precision\": 0.8497854077253219, \"validation_recall\": 0.9266770670826833, \"validation_f1\": 0.8865671641791044, \"duration_seconds\": 2.385351699893363}\n{\"epoch\": 12, \"train_loss\": 0.006479280779603869, \"validation_loss\": 0.0298885305528529, \"validation_precision\": 0.8550932568149211, \"validation_recall\": 0.9297971918876755, \"validation_f1\": 0.8908819133034379, \"duration_seconds\": 2.3570621999679133}\n{\"epoch\": 13, \"train_loss\": 0.006572456617141143, \"validation_loss\": 0.0345404620845026, \"validation_precision\": 0.8497854077253219, \"validation_recall\": 0.9266770670826833, \"validation_f1\": 0.8865671641791044, \"duration_seconds\": 2.254962099948898}\n{\"epoch\": 14, \"train_loss\": 0.005493244192621205, \"validation_loss\": 0.03273437025685174, \"validation_precision\": 0.8550932568149211, \"validation_recall\": 0.9297971918876755, \"validation_f1\": 0.8908819133034379, \"duration_seconds\": 2.285066500073299}\n{\"epoch\": 15, \"train_loss\": 0.0062899415730498735, \"validation_loss\": 0.02623305698701491, \"validation_precision\": 0.8577586206896551, \"validation_recall\": 0.9313572542901716, \"validation_f1\": 0.8930441286462228, \"duration_seconds\": 2.248907700064592}\n{\"epoch\": 16, \"train_loss\": 0.005121623328886926, \"validation_loss\": 0.024893675038280588, \"validation_precision\": 0.8903508771929824, \"validation_recall\": 0.9500780031201248, \"validation_f1\": 0.9192452830188679, \"duration_seconds\": 2.238095400040038}\nSaved best model with validation F1=0.9192\n"
+    },
+    {
+      "phase": "12",
+      "copied_from_tutorial": [
+        "src/predict.py"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe -c \"from src.predict import Predictor; print(Predictor().predict('Li Wei visited Toronto.')['entities'])\"",
+      "exit_code": 0,
+      "output": "[{'text': 'Li Wei', 'type': 'PER', 'start_token': 0, 'end_token': 2, 'start': 0, 'end': 6}, {'text': 'Toronto', 'type': 'LOC', 'start_token': 3, 'end_token': 4, 'start': 15, 'end': 22}]\n"
+    },
+    {
+      "phase": "13",
+      "copied_from_tutorial": [
+        "src/redact.py",
+        "tests/test_redaction.py"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe -m pytest tests/test_redaction.py -q",
+      "exit_code": 0,
+      "output": "...                                                                      [100%]\n3 passed in 0.02s\n"
+    },
+    {
+      "phase": "14",
+      "copied_from_tutorial": [
+        "src/generate_data.py",
+        "src/train.py"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe -c \"import torch; c=torch.load('models/best_model.pt',weights_only=False); print(c['dataset_counts']); assert c['dataset_counts']['malaysian_training']==160\"",
+      "exit_code": 0,
+      "output": "{'training': 2560, 'validation': 340, 'malaysian_training': 160, 'malaysian_validation': 40}\n"
+    },
+    {
+      "phase": "15",
+      "copied_from_tutorial": [
+        "src/metrics.py",
+        "src/evaluate.py"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe -m src.evaluate",
+      "exit_code": 0,
+      "output": "{\n  \"dataset\": \"synthetic leakage-safe test split\",\n  \"sentences\": 300,\n  \"metrics\": {\n    \"PER\": {\n      \"tp\": 248,\n      \"fp\": 0,\n      \"fn\": 0,\n      \"precision\": 1.0,\n      \"recall\": 1.0,\n      \"f1\": 1.0\n    },\n    \"LOC\": {\n      \"tp\": 143,\n      \"fp\": 9,\n      \"fn\": 0,\n      \"precision\": 0.9407894736842105,\n      \"recall\": 1.0,\n      \"f1\": 0.9694915254237287\n    },\n    \"ORG\": {\n      \"tp\": 175,\n      \"fp\": 0,\n      \"fn\": 0,\n      \"precision\": 1.0,\n      \"recall\": 1.0,\n      \"f1\": 1.0\n    },\n    \"overall\": {\n      \"tp\": 566,\n      \"fp\": 9,\n      \"fn\": 0,\n      \"precision\": 0.9843478260869565,\n      \"recall\": 1.0,\n      \"f1\": 0.9921121822962313\n    }\n  }\n}\n{\n  \"dataset\": \"synthetic Malaysian local test split\",\n  \"sentences\": 60,\n  \"metrics\": {\n    \"PER\": {\n      \"tp\": 49,\n      \"fp\": 0,\n      \"fn\": 0,\n      \"precision\": 1.0,\n      \"recall\": 1.0,\n      \"f1\": 1.0\n    },\n    \"LOC\": {\n      \"tp\": 34,\n      \"fp\": 0,\n      \"fn\": 0,\n      \"precision\": 1.0,\n      \"recall\": 1.0,\n      \"f1\": 1.0\n    },\n    \"ORG\": {\n      \"tp\": 36,\n      \"fp\": 0,\n      \"fn\": 0,\n      \"precision\": 1.0,\n      \"recall\": 1.0,\n      \"f1\": 1.0\n    },\n    \"overall\": {\n      \"tp\": 119,\n      \"fp\": 0,\n      \"fn\": 0,\n      \"precision\": 1.0,\n      \"recall\": 1.0,\n      \"f1\": 1.0\n    }\n  }\n}\n"
+    },
+    {
+      "phase": "16",
+      "copied_from_tutorial": [
+        "tutorial/app_versions/app_v1_text_api.py",
+        "tests/test_text_api.py"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe -m pytest tests/test_text_api.py -q",
+      "exit_code": 0,
+      "output": "...                                                                      [100%]\n3 passed in 2.16s\n"
+    },
+    {
+      "phase": "17",
+      "copied_from_tutorial": [
+        "tutorial/app_versions/app_v2_file_api.py",
+        "tests/test_file_api.py"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe -m pytest tests/test_file_api.py -q",
+      "exit_code": 0,
+      "output": "....                                                                     [100%]\n4 passed in 2.48s\n"
+    },
+    {
+      "phase": "18",
+      "copied_from_tutorial": [
+        "app/main.py",
+        "tests/test_web_ui.py"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe -m pytest tests/test_web_ui.py -q",
+      "exit_code": 0,
+      "output": "..                                                                       [100%]\n2 passed in 2.62s\n"
+    },
+    {
+      "phase": "19",
+      "copied_from_tutorial": [
+        "tests/test_acceptance.py",
+        "tests/test_api.py",
+        "tests/test_file_api.py",
+        "tests/test_model.py",
+        "tests/test_model_versions.py",
+        "tests/test_prediction.py",
+        "tests/test_preprocessing.py",
+        "tests/test_redaction.py",
+        "tests/test_text_api.py",
+        "tests/test_web_ui.py"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe -m pytest -q",
+      "exit_code": 0,
+      "output": "........................................................                 [100%]\n56 passed in 4.38s\n"
+    },
+    {
+      "phase": "20",
+      "copied_from_tutorial": [
+        "README.md",
+        "MODEL_ACCEPTANCE_REPORT.md",
+        "PRESENTATION_MATERIALS.md"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe -c \"from pathlib import Path; assert all(Path(x).is_file() for x in ['README.md','MODEL_ACCEPTANCE_REPORT.md','PRESENTATION_MATERIALS.md'])\"",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "phase": "21",
+      "copied_from_tutorial": [
+        "scripts/reproduce_tutorial.py",
+        "scripts/validate_tutorial.py",
+        "scripts/verify_tutorial.py",
+        "scripts/qa_tutorial_pdf.py"
+      ],
+      "command": "D:\\AIROST\\Intern-MachineLearning\\.venv\\Scripts\\python.exe -m pytest -q",
+      "exit_code": 0,
+      "output": "........................................................                 [100%]\n56 passed in 3.71s\n"
+    }
+  ],
+  "passed": 22,
+  "total_required": 22
+}

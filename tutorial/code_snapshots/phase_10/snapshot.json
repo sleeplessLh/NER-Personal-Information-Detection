@@ -1,12 +1,11 @@
 {
   "phase": "10",
   "verified": true,
-  "test_command": "pytest single training step",
-  "actual_result": "PASS: backward and optimizer changed parameters",
+  "test_command": "python -m learning.training_step_demo",
+  "actual_result": "PASS: loss backward optimizer update",
   "files": {
-    "src\\model.py": "3c2f908147d8fd0ed69c7c4cd983e9e34d738325957c5421ac1f37bc5a8ad8ff",
-    "src\\train.py": "8cafe28b356c77a6466790efaa973a78a4f17a8a2904b057a5e9ed702c6eff6f",
-    "tests\\test_acceptance.py": "28fcb19a32a43f735d1a7c847d1e30f9882872ab3cbfd52328bc562ad0b230be",
-    "tutorial\\chapters\\phase_10.md": "a530e96e3aad1799b3d788a4c7fdc3e644d0800fc2816e8dbfe0114863c257ef"
+    "learning/training_step_demo.py": "5de795d8f1d3c1aa94646aa70229078b972e8400d5666c8127803405b62c469c",
+    "src/model.py": "3c2f908147d8fd0ed69c7c4cd983e9e34d738325957c5421ac1f37bc5a8ad8ff",
+    "tutorial/chapters/phase_10.md": "09ccebf2c7973587f24970df96fe59ecd408950e2ef3b87055c95099380d0cca"
   }
 }

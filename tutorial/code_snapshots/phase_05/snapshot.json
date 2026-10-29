@@ -2,12 +2,10 @@
   "phase": "05",
   "verified": true,
   "test_command": "python -m src.generate_data",
-  "actual_result": "PASS: general 2400/300/300 and Malaysian 160/40/60 generated without cross-split sentence leakage",
+  "actual_result": "PASS: generated general and Malaysian splits",
   "files": {
-    "src\\constants.py": "1ed10ebd07f0ce8fba31a16f3d1285e3b19ce1b3ae122f1f5c98e0ce5b9f70c0",
-    "src\\preprocessing.py": "e8c540bb87a3ff02237044ab002751fad90e423228bb00af90b4f7e7f4ac7a05",
-    "src\\generate_data.py": "1aa276a072a1cb0156332ed73f07fb22556ebf933865a2c67c093854d705afc5",
-    "data\\processed\\summary.json": "59d2357d7d72f0b26ab387b6897e86b1a0625af349d0f1d4ab31ecb6217fa326",
-    "tutorial\\chapters\\phase_05.md": "b8537fa74610b84217bfec47eef8d31cadb4103913875d726d5ac3fb41472f0f"
+    "src/preprocessing.py": "e8c540bb87a3ff02237044ab002751fad90e423228bb00af90b4f7e7f4ac7a05",
+    "src/generate_data.py": "289267bbf55084c95f30941fa4a714cfec59a90fe1c83cfdb249b5ecab0a62b5",
+    "tutorial/chapters/phase_05.md": "b8537fa74610b84217bfec47eef8d31cadb4103913875d726d5ac3fb41472f0f"
   }
 }

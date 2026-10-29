@@ -1,10 +1,11 @@
 {
   "phase": "16",
   "verified": true,
-  "test_command": "python -m pytest tests/test_api.py -q",
-  "actual_result": "PASS: simple Web redact API and visible error handling",
+  "test_command": "pytest tests/test_text_api.py -q",
+  "actual_result": "PASS: incremental text API",
   "files": {
-    "app/main.py": "e27687445f1a6a26f8f03ba2937aaa9f2da0bc392dcad2761ff70d4d982b60ab",
-    "tests/test_api.py": "2ad4f4b7fbc0b0f08746d877e7d824cfe9acdf0a16f693712dea41eed86a786a"
+    "tutorial/app_versions/app_v1_text_api.py": "f956aa7554b718da8a7564aef8268d1461078aaedbddef26e2b09e11028773cc",
+    "tests/test_text_api.py": "bf3ee474c20c18f91a14fa29f889a9d6fe6f2435edd5c5f6166281c110de5604",
+    "tutorial/chapters/phase_16.md": "43cd9ec4fc2d01394e73cf8927fdf197487dc521dd7cf4425b0b99283127cbe2"
   }
 }

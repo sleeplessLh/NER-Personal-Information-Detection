@@ -1,8 +1,8 @@
 {
   "phase": "21",
   "verified": true,
-  "test_command": "python -m pytest -q; python scripts/verify_tutorial.py",
-  "actual_result": "PASS: 47 tests; portable tutorial synchronization",
+  "test_command": "student phase reproduction; pytest; validators",
+  "actual_result": "PASS: 22/22 phases; 56 tests; real browser deployment",
   "files": {
     "app/main.py": "e27687445f1a6a26f8f03ba2937aaa9f2da0bc392dcad2761ff70d4d982b60ab",
     "pyproject.toml": "d6043bd3b833491c65244bde5e019f2e89c1fad9e844a9c479a726eb96719712",
@@ -16,8 +16,9 @@
     "src/preprocessing.py": "e8c540bb87a3ff02237044ab002751fad90e423228bb00af90b4f7e7f4ac7a05",
     "src/redact.py": "0177e0ce469488c02c5b942b960772c817ade8ba0e0b88f640bf9d6b0a8f1380",
     "src/train.py": "8cafe28b356c77a6466790efaa973a78a4f17a8a2904b057a5e9ed702c6eff6f",
-    "tutorial/build_pdf.py": "3116056354dd7f63366d5c6cfae93e7c2e8345f4ec803b9d7d3577b4c589e9fd",
-    "tutorial/chapters/phase_21.md": "d5a6035bd63f33e8a134935898d3dbab6af3c26e43d5027a12301c1d78d8632c",
+    "tutorial/build_pdf.py": "18c6c7bc202f81c6c57c7182a63f7529cd1d9e92accf81a0dd9b306b4034fc15",
+    "tutorial/chapters/phase_21.md": "7f61d54491d380b69d2a4a054b552b279ec0a17f1af43a9b23021f28576bf4ad",
+    "scripts/student_reproduction_audit.py": "99d21459f2d7da35035b087f4ff33eee8f033c35a4c538fdb55446d4de745378",
     "scripts/reproduce_tutorial.py": "a6f7472a4c00b946496e8f78cfafc7708aff9f209527b705838e26635700ddab",
     "scripts/validate_tutorial.py": "4f9b9051866c8d5b19dacdf04243988c75ec2038727dd0ea2eda7a7d59cd791b",
     "scripts/verify_tutorial.py": "137707227e46c690f208ee4171972612619977f02aa9043fe940676aa3b7421e",
