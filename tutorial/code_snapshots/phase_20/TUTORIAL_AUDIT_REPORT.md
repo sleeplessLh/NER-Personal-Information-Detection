@@ -70,7 +70,7 @@
 - Evaluation：general student 300 + Malaysian student 60
 - Deployment：复现目录的 Uvicorn `127.0.0.1:8776`
 - Browser：输入 Ahmad Ali 示例，实际显示 `[PER] studies at [ORG] in [LOC].`
-- PDF：重新生成后必须再执行 100% render QA，结果写入 `reports/tutorial_pdf_qa.json`
+- PDF：最终版 141/141 页已渲染；22 个 Phase 标题齐全，0 个替代字符、0 个空白文本页；结果见 `reports/tutorial_pdf_qa.json`
 
 ## 5. Final Criteria
 
@@ -81,7 +81,7 @@
 | C Environment Completeness | PASS | 新 `.venv`、55 dependencies、pip check |
 | D Training Completeness | PASS | 新目录真实 16-epoch CPU training |
 | E Deployment Completeness | PASS | 新目录 Uvicorn + real browser |
-| F Documentation Consistency | PASS after final validators | snapshot/source/PDF 需在最终 commit 再跑 |
+| F Documentation Consistency | PASS | 22 Phase validator、20 path synchronization 与 141-page PDF QA 均已通过 |
 | G Fresh Reproduction | PASS（工程模拟） | 逐阶段而非整包复制；真实人类学习实验不包含在内 |
 | Independent novice human study | NOT VERIFIED | 当前没有独立一年级学生参与者 |
 
