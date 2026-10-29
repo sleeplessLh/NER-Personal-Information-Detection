@@ -1,8 +1,8 @@
 {
   "phase": "21",
   "verified": true,
-  "test_command": "python -m pytest -q",
-  "actual_result": "39 passed",
+  "test_command": "python -m pytest -q; python scripts/verify_tutorial.py",
+  "actual_result": "PASS: 39 tests; portable fresh-clone tutorial synchronization",
   "files": {
     "app/main.py": "0cb21a51c663ab1ba2c1542f860f90e413c77e5488f4374b64d50e41b52e6c4f",
     "pyproject.toml": "d6043bd3b833491c65244bde5e019f2e89c1fad9e844a9c479a726eb96719712",
@@ -16,7 +16,11 @@
     "src/preprocessing.py": "e8c540bb87a3ff02237044ab002751fad90e423228bb00af90b4f7e7f4ac7a05",
     "src/redact.py": "0177e0ce469488c02c5b942b960772c817ade8ba0e0b88f640bf9d6b0a8f1380",
     "src/train.py": "8cafe28b356c77a6466790efaa973a78a4f17a8a2904b057a5e9ed702c6eff6f",
-    "tutorial/build_pdf.py": "0ad5616cef52aea94989889eed8d2af0fb2a60bcbaa9cc5109ae2cd0557262db",
-    "tutorial/chapters/phase_21.md": "ed04a0abcf4f33e99952e99623269bcf41dc3bc10f66e5c6ec5cc20756412624"
+    "tutorial/build_pdf.py": "5fe1eb1e7215834668b587f9b59e3891b45deac059d73b7cfbe8fb364cf5d3e8",
+    "tutorial/chapters/phase_21.md": "ed04a0abcf4f33e99952e99623269bcf41dc3bc10f66e5c6ec5cc20756412624",
+    "scripts/reproduce_tutorial.py": "a6f7472a4c00b946496e8f78cfafc7708aff9f209527b705838e26635700ddab",
+    "scripts/validate_tutorial.py": "4f9b9051866c8d5b19dacdf04243988c75ec2038727dd0ea2eda7a7d59cd791b",
+    "scripts/verify_tutorial.py": "137707227e46c690f208ee4171972612619977f02aa9043fe940676aa3b7421e",
+    "scripts/qa_tutorial_pdf.py": "39919012f22a5cb1ef5c951cf7f83d9f40d990177fc03fdce2268ea692c2b2ef"
   }
 }

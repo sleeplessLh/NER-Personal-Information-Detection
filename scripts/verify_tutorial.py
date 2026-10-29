@@ -19,7 +19,11 @@ FINAL_SOURCE = [
 
 
 def digest(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    # Git on Windows may check out text as CRLF even when the verified snapshot
+    # was created with LF.  Normalize line endings so this content check remains
+    # portable and does not report a false mismatch after a fresh clone.
+    normalized = path.read_bytes().replace(b"\r\n", b"\n")
+    return hashlib.sha256(normalized).hexdigest()
 
 
 def main() -> None:
