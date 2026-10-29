@@ -184,6 +184,14 @@ MODEL_ACCEPTANCE_REPORT.md  完整工程验收记录
 TUTORIAL_AUDIT_REPORT.md    22 阶段零基础教程审计与复现边界
 ```
 
+## 30-Day Learning Materials
+
+- `NER_30_Day_Learning_Plan.md` and `output/pdf/NER_30_Day_Learning_Plan.pdf`: 30 days × 3–5 hours, with exact main-tutorial pages, files, code tasks, commands, expected output and failure checks.
+- `PHASE_LEARNING_CHECKLIST.md`: objective Knowledge/Coding/Execution/Completion checks and function contracts for all 22 phases.
+- `INTERVIEW_PREPARATION.md`: 15 technically accurate beginner-level answers and a 5–10 minute demo sequence.
+
+Automated engineering reproduction is not treated as a human teaching study. The current evidence boundary remains: `Independent Human Learning Test: NOT VERIFIED`.
+
 ## Limitations
 
 - 模型针对学生报告、学生支持聊天、投诉、反馈、大学行政报告和学生活动进行优化；不提供医院病人、公司员工或客户场景的专项保证。
