@@ -5,7 +5,8 @@ from fastapi import HTTPException
 from pydantic import ValidationError
 from reportlab.pdfgen import canvas
 
-from app.main import MAX_TEXT_CHARS, TextRequest, analyze_uploaded_content, home, predict
+import app.main as web_app
+from app.main import MAX_TEXT_CHARS, TextRequest, analyze_uploaded_content, app, home, predict, redact
 
 
 def test_predict_endpoint():
@@ -21,10 +22,55 @@ def test_empty_text_is_rejected():
         TextRequest(text="   \n")
 
 
-def test_web_interface_has_input_results_redaction_and_file_controls():
+def test_web_interface_is_simple_responsive_and_calls_real_redact_api():
     html = home()
-    for expected in ("Student Privacy Protection", "Student report or support text", "Detect Entities", "id='entities'", "Redacted Text", "accept='.txt,.pdf'", "Please select a TXT or PDF file"):
+    for expected in ("Student Privacy Redaction", "Input Text", "Redacted Text", "Redact Text", "Clear", "fetch('/api/redact'", "readonly", "@media(max-width:700px)"):
         assert expected in html
+    assert "keyword" not in html.lower()
+
+
+def test_redact_endpoint_uses_model_and_preserves_input():
+    text = "Ahmad Ali studies at Universiti Teknologi Malaysia in Johor Bahru."
+    response = redact(TextRequest(text=text))
+    assert response.model_dump() == {"redacted_text": "[PER] studies at [ORG] in [LOC]."}
+    assert text == "Ahmad Ali studies at Universiti Teknologi Malaysia in Johor Bahru."
+    assert any(route.path == "/api/redact" for route in app.routes)
+
+
+@pytest.mark.parametrize("text", ["", "   ", "\n\t"])
+def test_redact_endpoint_rejects_empty_or_blank_text(text):
+    with pytest.raises(ValidationError):
+        TextRequest(text=text)
+
+
+def test_redact_endpoint_rejects_overlong_text():
+    with pytest.raises(ValidationError):
+        TextRequest(text="a" * (MAX_TEXT_CHARS + 1))
+
+
+def test_redact_endpoint_handles_multiline_punctuation_and_no_entity_text():
+    text = "Ahmad Ali studies at Universiti Teknologi Malaysia in Johor Bahru.\nThe submitted form contains no named entity."
+    redacted = redact(TextRequest(text=text)).redacted_text
+    assert redacted.startswith("[PER] studies at [ORG] in [LOC].\n")
+    assert redacted.endswith("The submitted form contains no named entity.")
+
+
+def test_redact_endpoint_supports_consecutive_requests():
+    first = redact(TextRequest(text="Li Wei visited Toronto."))
+    second = redact(TextRequest(text="Nur Aisyah studies at Universiti Malaya."))
+    assert first.redacted_text == "[PER] visited [LOC]."
+    assert second.redacted_text == "[PER] studies at [ORG]."
+
+
+def test_redact_endpoint_reports_missing_model(monkeypatch):
+    def fail(_text):
+        raise FileNotFoundError("checkpoint missing")
+
+    monkeypatch.setattr(web_app, "analyze", fail)
+    with pytest.raises(HTTPException) as captured:
+        redact(TextRequest(text="Student report"))
+    assert captured.value.status_code == 503
+    assert "model" in captured.value.detail.lower()
 
 
 def test_txt_upload():

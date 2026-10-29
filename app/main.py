@@ -30,6 +30,12 @@ class TextRequest(BaseModel):
         return value
 
 
+class RedactResponse(BaseModel):
+    """精简网页只需要脱敏文本；结果仍来自同一个模型推理流程。"""
+
+    redacted_text: str
+
+
 def get_predictor() -> Predictor:
     """首次调用时从 checkpoint 加载模型，之后在同一进程内复用。"""
     global predictor
@@ -47,30 +53,90 @@ def analyze(text: str) -> dict:
 
 @app.get("/", response_class=HTMLResponse)
 def home() -> str:
-    """返回教学版单页界面；JavaScript 通过 fetch 调用后端 API。"""
-    return """<!doctype html><html><head><meta charset='utf-8'><title>NER Demo</title>
-    <style>body{font-family:Segoe UI,sans-serif;max-width:900px;margin:40px auto;padding:0 20px}textarea{width:100%;min-height:160px}button{padding:10px 16px;margin:10px 6px 10px 0}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ccd3da;padding:8px;text-align:left}.panel{white-space:pre-wrap;background:#f4f6f8;padding:16px}.error{color:#a40000}</style></head>
-    <body><h1>Student Privacy Protection</h1><p>Detect and redact PERSON, LOCATION and ORGANISATION entities in English student-related text.</p>
-    <label for='text'>Student report or support text</label><textarea id='text'>Ahmad Ali, a student from Universiti Teknologi Malaysia, attended an event in Johor Bahru.</textarea><br>
-    <button id='detect' onclick='runDetection()'>Detect Entities</button>
-    <input type='file' id='file' accept='.txt,.pdf'><button id='upload' onclick='uploadFile()'>Upload File</button>
-    <p id='status' role='status'></p><h2>Entities</h2><div id='entities'></div>
-    <h2>Redacted Text</h2><div id='redacted' class='panel'></div>
-    <script>
-    const statusNode=document.getElementById('status'),entitiesNode=document.getElementById('entities'),redactedNode=document.getElementById('redacted');
-    function showError(message){statusNode.className='error';statusNode.textContent=message;entitiesNode.innerHTML='';redactedNode.textContent='';}
-    function render(data){statusNode.className='';statusNode.textContent=`Detected ${data.entities.length} entities.`;entitiesNode.innerHTML='<table><thead><tr><th>Text</th><th>Type</th><th>Start</th><th>End</th></tr></thead><tbody>'+data.entities.map(e=>`<tr><td>${escapeHtml(e.text)}</td><td>${escapeHtml(e.type)}</td><td>${e.start}</td><td>${e.end}</td></tr>`).join('')+'</tbody></table>';redactedNode.textContent=data.redacted_text;}
-    function escapeHtml(value){const node=document.createElement('div');node.textContent=String(value);return node.innerHTML;}
-    async function request(url,options){try{const response=await fetch(url,options);const data=await response.json();if(!response.ok){throw new Error(data.detail instanceof Array?data.detail.map(x=>x.msg).join('; '):(data.detail||`HTTP ${response.status}`));}render(data);}catch(error){showError(error.message||'Request failed');}}
-    async function runDetection(){const text=document.getElementById('text').value;if(!text.trim()){showError('Please enter English text.');return;}await request('/api/predict',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text})});}
-    async function uploadFile(){const file=document.getElementById('file').files[0];if(!file){showError('Please select a TXT or PDF file.');return;}const form=new FormData();form.append('file',file);await request('/api/upload',{method:'POST',body:form});}
-    </script></body></html>"""
+    """返回零构建步骤的响应式单页前端；NER 只在 FastAPI 后端执行。"""
+    return """<!doctype html>
+<html lang='en'>
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <title>Student Privacy Redaction</title>
+  <style>
+    :root{font-family:Inter,"Segoe UI",sans-serif;color:#172033;background:#f3f6fb}
+    *{box-sizing:border-box}body{margin:0;padding:32px 16px}
+    main{max-width:920px;margin:auto;background:#fff;border:1px solid #dbe3ef;border-radius:18px;padding:clamp(20px,4vw,40px);box-shadow:0 18px 50px #1d35571a}
+    h1{margin:0 0 10px;font-size:clamp(1.8rem,5vw,2.6rem);color:#123b6d}
+    .intro{margin:0 0 30px;color:#53657d;line-height:1.6}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+    label{display:block;font-weight:700;margin-bottom:9px;color:#243b5a}
+    textarea{width:100%;min-height:280px;resize:vertical;border:1px solid #b8c6d9;border-radius:12px;padding:15px;font:inherit;line-height:1.55;color:#172033;background:#fff}
+    textarea:focus{outline:3px solid #2d73c733;border-color:#2d73c7}
+    textarea[readonly]{background:#f7f9fc}
+    .actions{display:flex;gap:10px;align-items:center;margin-top:20px;flex-wrap:wrap}
+    button{border:0;border-radius:10px;padding:12px 18px;font:700 1rem inherit;cursor:pointer}
+    #redact{background:#1769aa;color:#fff}#redact:hover{background:#10588f}
+    #clear{background:#e8eef6;color:#26415f}button:disabled{opacity:.6;cursor:not-allowed}
+    #status{min-height:24px;margin:16px 0 0;color:#325f3b;font-weight:600}
+    #status.error{color:#a32727}
+    @media(max-width:700px){body{padding:16px 10px}.grid{grid-template-columns:1fr}textarea{min-height:210px}}
+  </style>
+</head>
+<body>
+<main>
+  <h1>Student Privacy Redaction</h1>
+  <p class='intro'>Paste English student-related text. The trained NER model will replace detected PERSON, ORGANISATION and LOCATION entities.</p>
+  <div class='grid'>
+    <section><label for='input-text'>Input Text</label><textarea id='input-text' maxlength='100000' placeholder='Ahmad Ali is studying at Universiti Teknologi Malaysia in Johor Bahru.'></textarea></section>
+    <section><label for='redacted-text'>Redacted Text</label><textarea id='redacted-text' readonly aria-live='polite' placeholder='The redacted result will appear here.'></textarea></section>
+  </div>
+  <div class='actions'><button id='redact' type='button'>Redact Text</button><button id='clear' type='button'>Clear</button></div>
+  <p id='status' role='status' aria-live='polite'></p>
+</main>
+<script>
+  const input=document.getElementById('input-text');
+  const output=document.getElementById('redacted-text');
+  const statusNode=document.getElementById('status');
+  const redactButton=document.getElementById('redact');
+  const clearButton=document.getElementById('clear');
+  function showStatus(message,isError=false){statusNode.textContent=message;statusNode.className=isError?'error':'';}
+  async function redactText(){
+    const text=input.value;
+    output.value='';
+    if(!text.trim()){showStatus('Please enter English text before redacting.',true);input.focus();return;}
+    redactButton.disabled=true;showStatus('Redacting text...');
+    try{
+      const response=await fetch('/api/redact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text})});
+      let data;try{data=await response.json();}catch{throw new Error('The server returned an invalid response.');}
+      if(!response.ok){const detail=Array.isArray(data.detail)?data.detail.map(item=>item.msg).join('; '):data.detail;throw new Error(detail||`Request failed (HTTP ${response.status}).`);}
+      output.value=data.redacted_text;showStatus('Redaction complete.');
+    }catch(error){showStatus(error.message||'Unable to contact the redaction service.',true);}
+    finally{redactButton.disabled=false;}
+  }
+  function clearText(){input.value='';output.value='';showStatus('');input.focus();}
+  redactButton.addEventListener('click',redactText);
+  clearButton.addEventListener('click',clearText);
+</script>
+</body>
+</html>"""
 
 
 @app.post("/api/predict")
 def predict(request: TextRequest) -> dict:
     """接收原始文本 JSON，成功时返回 HTTP 200 与模型结果。"""
     return analyze(request.text)
+
+
+@app.post("/api/redact", response_model=RedactResponse)
+def redact(request: TextRequest) -> RedactResponse:
+    """供简易网页调用；实体识别与 /api/predict 使用同一训练模型。"""
+    try:
+        result = analyze(request.text)
+    except (FileNotFoundError, RuntimeError) as error:
+        raise HTTPException(status_code=503, detail="The trained NER model is not available") from error
+    except HTTPException:
+        raise
+    except Exception as error:
+        raise HTTPException(status_code=500, detail="The redaction service could not process this text") from error
+    return RedactResponse(redacted_text=result["redacted_text"])
 
 
 @app.post("/api/upload")

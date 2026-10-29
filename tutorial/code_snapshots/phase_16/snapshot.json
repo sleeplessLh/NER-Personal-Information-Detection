@@ -1,12 +1,10 @@
 {
   "phase": "16",
   "verified": true,
-  "test_command": "independent Uvicorn POST /api/predict",
-  "actual_result": "PASS: HTTP redacted [PER] lives in [LOC]. and two entities",
+  "test_command": "python -m pytest tests/test_api.py -q",
+  "actual_result": "PASS: simple Web redact API and visible error handling",
   "files": {
-    "app\\main.py": "0a495c2b1af1ecee610343919403710671520636a49166cfe4339fde0c125138",
-    "src\\predict.py": "3bd5a9053e8311c7e1020677fe8b2c4cc3c17b723731b6942675e06b9862339f",
-    "src\\redact.py": "0177e0ce469488c02c5b942b960772c817ade8ba0e0b88f640bf9d6b0a8f1380",
-    "tutorial\\chapters\\phase_16.md": "88cb1b994d73a175184f97fb9fac1647e327620c60d1fd71e73ddc81a271d023"
+    "app/main.py": "e27687445f1a6a26f8f03ba2937aaa9f2da0bc392dcad2761ff70d4d982b60ab",
+    "tests/test_api.py": "2ad4f4b7fbc0b0f08746d877e7d824cfe9acdf0a16f693712dea41eed86a786a"
   }
 }

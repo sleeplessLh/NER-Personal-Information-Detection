@@ -24,9 +24,9 @@
 - 原始英文文本预测、BIO tags、实体类型、token span、字符 `[start,end)`。
 - `[PER]`、`[LOC]`、`[ORG]` 自动脱敏。
 - Malaysian 学生姓名、地点、大学、学校、学生组织与教育机构合成标注数据。
-- FastAPI JSON API 和单页 Web 界面。
+- FastAPI JSON API 和响应式单页 Web 界面（Input Text、Redact Text、只读结果、Clear）。
 - UTF-8 `.txt` 与带文本层 `.pdf` 上传；5 MB 限制和错误响应。
-- 39 项自动化测试、13 项学生场景固定挑战矩阵及独立 general/Malaysian test evaluation。
+- 47 项自动化测试、13 项学生场景固定挑战矩阵及独立 general/Malaysian test evaluation。
 
 ## Model Architecture
 
@@ -48,7 +48,14 @@
 
 ## Installation - Windows 11 / PowerShell
 
-需要 64-bit Python 3.11 或 3.12、Git。以下命令已经按本项目结构验证：
+推荐使用 **Visual Studio Code**，并安装 Microsoft 发布的 Python 扩展。运行项目还需要：
+
+- 64-bit Python 3.11 或 3.12（安装时勾选 `Add Python to PATH`）
+- Git for Windows
+- PowerShell（Windows 11 已包含）
+- Chrome、Edge 或 Firefox 浏览器
+
+不需要 Node.js、npm、React、Vue、数据库、NVIDIA GPU 或重新训练模型。以下命令已经按本项目结构验证：
 
 ```powershell
 git clone https://github.com/sleeplessLh/NER-Personal-Information-Detection.git
@@ -72,6 +79,32 @@ python -m uvicorn app.main:app --reload
 
 打开 <http://127.0.0.1:8000>。停止服务按 `Ctrl+C`。
 
+## Web Interface
+
+网页只保留完成任务所需的流程：
+
+1. 在 **Input Text** 输入或粘贴英文学生文本。
+2. 点击 **Redact Text**。
+3. JavaScript 将原文以 JSON 发送到 `POST /api/redact`。
+4. FastAPI 使用仓库中的自训练 checkpoint 推理。
+5. **Redacted Text** 只读框显示模型生成的结果。
+6. 点击 **Clear** 清空两个文本框。
+
+网页没有 JavaScript 关键词表或姓名硬编码。核心 NER 始终在后端执行。空白、超过 100,000 字符、模型不可用、服务器错误和网络失败都会显示用户可见提示。
+
+也可以直接测试精简 API：
+
+```powershell
+$body = @{ text = "Ahmad Ali studies at Universiti Teknologi Malaysia in Johor Bahru." } | ConvertTo-Json
+Invoke-RestMethod -Uri http://127.0.0.1:8000/api/redact -Method Post -ContentType "application/json" -Body $body
+```
+
+预期响应：
+
+```json
+{"redacted_text":"[PER] studies at [ORG] in [LOC]."}
+```
+
 ## Model Prediction
 
 输入 `Ahmad Ali studies at Universiti Teknologi Malaysia in Johor Bahru.`，实际模型返回 `Ahmad Ali/PER`、`Universiti Teknologi Malaysia/ORG`、`Johor Bahru/LOC` 及字符位置。
@@ -93,7 +126,7 @@ print(result["entities"])
 
 ## File Upload
 
-Web 页面可上传 `.txt` 或 `.pdf`。TXT 必须 UTF-8；PDF 必须有文本层；扫描件不支持 OCR；单文件最大 5 MB。无效类型、超大文件、空文件或不可提取 PDF 返回明确 4xx。
+后端仍保留 `POST /api/upload` 供 TXT/PDF 客户端调用。TXT 必须 UTF-8；PDF 必须有文本层；扫描件不支持 OCR；单文件最大 5 MB。为了保持本次网页极简，主页不显示文件上传控件。
 
 ## Model Training
 
@@ -128,7 +161,7 @@ $env:MKL_NUM_THREADS="1"
 python -m pytest -q
 ```
 
-最新实测：`39 passed`。覆盖学生数据、合并实体池泄漏、preprocessing、vocabulary、BIO、model、forward、loss/backpropagation、checkpoint、prediction、三类实体、标点 span、长文本、重复实体、redaction、Malaysian data、TXT、单页/多页/损坏 PDF、API/Web、空输入、非法/超大文件、CPU inference 与 end-to-end。
+最新实测：`47 passed`。覆盖学生数据、合并实体池泄漏、preprocessing、vocabulary、BIO、model、forward、loss/backpropagation、checkpoint、prediction、三类实体、标点 span、长文本、重复实体、redaction、Malaysian data、TXT、单页/多页/损坏 PDF、API/Web、空白/超长输入、连续提交、模型不可用、CPU inference 与 end-to-end。
 
 ## Project Structure
 
@@ -142,7 +175,7 @@ src/train.py                Training、validation、checkpoint、history
 src/evaluate.py             General/Malaysian 独立 test evaluation
 src/predict.py              CPU checkpoint loading、BIO/entity extraction
 src/redact.py               基于字符 span 的可靠脱敏
-tests/                      39 项自动化测试
+tests/                      47 项自动化测试
 models/best_model.pt        已训练 checkpoint；Clone 后直接使用
 data/processed/             可分发的合成 general 数据
 data/malaysian/             可分发的合成 Malaysian 数据

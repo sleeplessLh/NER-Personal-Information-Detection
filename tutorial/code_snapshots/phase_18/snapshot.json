@@ -1,10 +1,9 @@
 {
   "phase": "18",
   "verified": true,
-  "test_command": "real Uvicorn browser/API path",
-  "actual_result": "PASS: HTML fetch uses trained API and renders JSON",
+  "test_command": "python -m pytest tests/test_api.py -q",
+  "actual_result": "PASS: responsive Input Text to Redacted Text interface",
   "files": {
-    "app\\main.py": "0a495c2b1af1ecee610343919403710671520636a49166cfe4339fde0c125138",
-    "tutorial\\chapters\\phase_18.md": "aba44195d20a8fb56a9f331ed5e285e133caf8360ce507bf04ead2a7086e4c6b"
+    "app/main.py": "e27687445f1a6a26f8f03ba2937aaa9f2da0bc392dcad2761ff70d4d982b60ab"
   }
 }

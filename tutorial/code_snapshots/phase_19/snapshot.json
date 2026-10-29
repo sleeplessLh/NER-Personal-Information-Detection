@@ -2,15 +2,14 @@
   "phase": "19",
   "verified": true,
   "test_command": "python -m pytest -q",
-  "actual_result": "39 passed",
+  "actual_result": "47 passed",
   "files": {
     "tests/test_acceptance.py": "45839cdb687ee508ae202deadf249f3d93f12edfffc0813d24245db63261fc66",
-    "tests/test_api.py": "83c46ea22bd3e0eb8197769a77d5eaffe9fd8f2276ac39c0d42a545247d28ac8",
+    "tests/test_api.py": "2ad4f4b7fbc0b0f08746d877e7d824cfe9acdf0a16f693712dea41eed86a786a",
     "tests/test_model.py": "227d2039c739523fbc8cb9daf93e8e9f3d16dc74387be257da34e7a9544e7a2e",
     "tests/test_model_versions.py": "d53542e5794c83ca6fc7bb29aea7bc5355a5cd8550da471deb35c002df420c57",
     "tests/test_prediction.py": "f5c1eff97ad987026aa5eeafec7812e5116ee9c44f51dca8ae38fffb3e567f58",
     "tests/test_preprocessing.py": "06969c95e6ea5057c44ce2a31ca1efbbd3e10ce2e590b72f008382d32d3dc898",
-    "tests/test_redaction.py": "7fdfc2d3738e9714c00c2b72787a8c4047e5185d3bbe7626f5be7390b86c3bd5",
-    "tutorial/chapters/phase_19.md": "c9a856243068288473ddf5f4c04838cd3b610d05fef01db6db64d1ab67ada877"
+    "tests/test_redaction.py": "7fdfc2d3738e9714c00c2b72787a8c4047e5185d3bbe7626f5be7390b86c3bd5"
   }
 }
