@@ -86,6 +86,17 @@ Redacted: [PER], a student from [ORG], attended an event in [LOC].
 - CPU inference：PASS
 - Scanned PDF OCR：NOT CLAIMED
 
+GitHub 提交 `067b77cc4db19dffec330581f9afc0bd422730bf` 推送后，从公开远程仓库全新 Clone 到独立目录，并在新虚拟环境安装 55 个锁定依赖。该 Clone 的实测结果：
+
+- `pytest -q`：**39 passed in 20.67s**
+- 两套 `src.evaluate` 指标与上表逐项一致
+- student manual matrix：**13/13 passed**
+- checkpoint SHA-256 与开发目录一致
+- checkpoint CPU 加载和题目示例：3 个实体与精确脱敏文本一致
+- 真实 Uvicorn localhost：JSON/TXT/PDF 均 HTTP 200
+- 两页 PDF 的文本均成功提取，并由自训练模型推理
+- 教学 PDF 存在于 Clone，131 页
+
 ## 7. Changes for Student Scope
 
 1. README、FastAPI title、Web description、demo text 与 presentation 改为 Student Privacy Protection。
@@ -111,8 +122,9 @@ Redacted: [PER], a student from [ORG], attended an event in [LOC].
 | TXT/PDF | PASS | real localhost requests |
 | Web interface | PASS | real browser click and visible table |
 | Automated tests | PASS | 39 passed |
-| GitHub update | PENDING | awaiting commit/push |
-| Final remote re-clone | PENDING | execute after push |
+| GitHub update | PASS | public main commit `067b77c` |
+| Final remote re-clone | PASS | new venv；39 tests；evaluate；13 cases；JSON/TXT/PDF HTTP |
+| Tutorial PDF | PASS | 131/131 rendered；22 phases；no missing glyph/replacement/empty text page |
 | Production deployment | NOT APPROVED | requires real student data and human review |
 
 ## 9. Limitations
@@ -126,4 +138,6 @@ Redacted: [PER], a student from [ORG], attended an event in [LOC].
 
 ## 10. Current Verdict
 
-**PENDING FINAL RE-CLONE — 本地学生场景代码、训练、评估、Web、TXT/PDF 与测试已通过；必须 Push 后从 GitHub 全新 Clone 才能最终放行。**
+**PASS — Student Privacy Protection 比赛原型的代码、训练模型、评估、Web、TXT/PDF、教学 PDF、GitHub 发布和远程全新 Clone 均通过验收。**
+
+该 PASS 只适用于当前比赛/教学原型范围；由于训练与测试数据主要为合成学生文本，仍不批准直接用于真实高风险学生资料的无人复核生产脱敏。

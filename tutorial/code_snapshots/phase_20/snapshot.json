@@ -2,10 +2,10 @@
   "phase": "20",
   "verified": true,
   "test_command": "pytest -q; verify_tutorial.py; git diff --check",
-  "actual_result": "PASS: student scope local checks complete; 39 tests passed; remote re-clone pending",
+  "actual_result": "PASS: public GitHub and fresh-clone acceptance complete; 39 tests passed",
   "files": {
     "README.md": "ec1f3675fba02ce25ec1f6df3accb932c4b73e049ef80daa060df1329fcb4c5d",
-    "MODEL_ACCEPTANCE_REPORT.md": "1ef5c848a1a6b123f77d245bb5cba46ca48c93feebd24ebfb3b3b0f117651eaf",
+    "MODEL_ACCEPTANCE_REPORT.md": "f47f4f39dc92928f8ee154d62aeaea5293b5ea58592ae856c9dd6d6197f8a0fb",
     "PRESENTATION_MATERIALS.md": "fa101067f8b6a93217e86bbac3065b5641fdeb84ea78b63ae4a5de1e52cca39c",
     "tutorial/FILE_EVOLUTION.md": "a55b964b79c84f92380182137a1e3ec8b93919e176c781107d1f48948164a58b",
     "tutorial/chapters/phase_20.md": "ff0a1beaa6b421095b32137cf335b7b0690f39ed826a095b16ae8484b122e71f"
