@@ -49,7 +49,7 @@ Intern-MachineLearning/
 输入示例：
 
 ```text
-Sarah works at Microsoft in Kuala Lumpur.
+Ahmad Ali studies at Universiti Teknologi Malaysia in Johor Bahru.
 ```
 
 目标实体是 Sarah/PER、Microsoft/ORG、Kuala Lumpur/LOC。脱敏目标是：

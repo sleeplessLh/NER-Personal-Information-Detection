@@ -9,8 +9,8 @@ from app.main import MAX_TEXT_CHARS, TextRequest, analyze_uploaded_content, home
 
 
 def test_predict_endpoint():
-    response = predict(TextRequest(text="John lives in London."))
-    assert response["redacted_text"] == "[PER] lives in [LOC]."
+    response = predict(TextRequest(text="Ahmad Ali studies at Universiti Teknologi Malaysia in Johor Bahru."))
+    assert response["redacted_text"] == "[PER] studies at [ORG] in [LOC]."
     assert response["entities"][0]["start"] == 0
 
 
@@ -23,19 +23,19 @@ def test_empty_text_is_rejected():
 
 def test_web_interface_has_input_results_redaction_and_file_controls():
     html = home()
-    for expected in ("id='text'", "Detect Entities", "id='entities'", "Redacted Text", "accept='.txt,.pdf'", "Please select a TXT or PDF file"):
+    for expected in ("Student Privacy Protection", "Student report or support text", "Detect Entities", "id='entities'", "Redacted Text", "accept='.txt,.pdf'", "Please select a TXT or PDF file"):
         assert expected in html
 
 
 def test_txt_upload():
-    response = analyze_uploaded_content("sample.txt", b"Ali studies at Universiti Teknologi Malaysia.")
+    response = analyze_uploaded_content("sample.txt", b"Ali Hassan studies at Universiti Teknologi Malaysia.")
     assert "ORG" in {entity["type"] for entity in response["entities"]}
 
 
 def test_text_pdf_upload():
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
-    pdf.drawString(72, 750, "Sarah works at Microsoft in Kuala Lumpur.")
+    pdf.drawString(72, 750, "Ahmad Ali studies at Universiti Teknologi Malaysia in Johor Bahru.")
     pdf.save()
     response = analyze_uploaded_content("sample.pdf", buffer.getvalue())
     assert {entity["type"] for entity in response["entities"]} == {"PER", "ORG", "LOC"}
@@ -44,12 +44,12 @@ def test_text_pdf_upload():
 def test_multi_page_pdf_upload_extracts_every_page():
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
-    pdf.drawString(72, 750, "Sarah works at Microsoft in Kuala Lumpur.")
+    pdf.drawString(72, 750, "Ahmad Ali studies at Universiti Teknologi Malaysia in Johor Bahru.")
     pdf.showPage()
-    pdf.drawString(72, 750, "John lives in London.")
+    pdf.drawString(72, 750, "Li Wei studies at Stanford University in Toronto.")
     pdf.save()
     response = analyze_uploaded_content("two-pages.pdf", buffer.getvalue())
-    assert "Sarah" in response["text"] and "John" in response["text"]
+    assert "Ahmad Ali" in response["text"] and "Li Wei" in response["text"]
     assert response["entities"]  # 两页合并后的文本确实进入自己的模型，而非只做文件解析。
 
 

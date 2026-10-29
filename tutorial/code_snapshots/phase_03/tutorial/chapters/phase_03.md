@@ -158,7 +158,7 @@ python -c "from learning.bio_demo import bio_to_entities; print(bio_to_entities(
 
 ## 15. 学生练习
 
-1. 标注 `Sarah works at Microsoft in London.`。
+1. 标注 `Ahmad studies at Universiti Malaya in Kuala Lumpur.`。
 2. 构造包含两个相邻 PER 的合法 BIO。
 3. 故意制造长度不等并解释错误。
 4. 给 validate 增加未知标签 `B-MISC` 的失败测试。

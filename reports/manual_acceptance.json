@@ -1,69 +1,90 @@
 {
-  "purpose": "manual robustness evidence only; never used for training or model selection",
-  "passed": 11,
+  "purpose": "student-privacy robustness evidence only; never used for training or model selection",
+  "passed": 13,
   "total": 13,
   "results": [
     {
-      "name": "PERSON-US",
-      "text": "Barack Obama spoke yesterday.",
+      "name": "MALAYSIAN-STUDENT",
+      "text": "Ahmad Ali, a student from Universiti Teknologi Malaysia, attended an event in Johor Bahru.",
       "expected": [
         [
-          "Barack Obama",
+          "Ahmad Ali",
           "PER"
+        ],
+        [
+          "Universiti Teknologi Malaysia",
+          "ORG"
+        ],
+        [
+          "Johor Bahru",
+          "LOC"
         ]
       ],
       "actual": [
         [
-          "Barack Obama",
+          "Ahmad Ali",
           "PER"
+        ],
+        [
+          "Universiti Teknologi Malaysia",
+          "ORG"
+        ],
+        [
+          "Johor Bahru",
+          "LOC"
         ]
       ],
       "offsets_ok": true,
-      "redacted": "[PER] spoke yesterday.",
+      "redacted": "[PER], a student from [ORG], attended an event in [LOC].",
       "passed": true
     },
     {
-      "name": "PERSON-Indian",
-      "text": "Priyanka Chopra arrived early.",
+      "name": "STUDENT-COMPLAINT",
+      "text": "Nur Aisyah submitted a complaint to Taylor University in Subang Jaya.",
       "expected": [
         [
-          "Priyanka Chopra",
+          "Nur Aisyah",
           "PER"
+        ],
+        [
+          "Taylor University",
+          "ORG"
+        ],
+        [
+          "Subang Jaya",
+          "LOC"
         ]
       ],
       "actual": [
         [
-          "Priyanka Chopra",
+          "Nur Aisyah",
           "PER"
+        ],
+        [
+          "Taylor University",
+          "ORG"
+        ],
+        [
+          "Subang Jaya",
+          "LOC"
         ]
       ],
       "offsets_ok": true,
-      "redacted": "[PER] arrived early.",
+      "redacted": "[PER] submitted a complaint to [ORG] in [LOC].",
       "passed": true
     },
     {
-      "name": "PERSON-Chinese",
-      "text": "Li Wei submitted the report.",
+      "name": "INTERNATIONAL-STUDENT",
+      "text": "Li Wei studies at Stanford University in Toronto.",
       "expected": [
         [
           "Li Wei",
           "PER"
-        ]
-      ],
-      "actual": [
+        ],
         [
-          "Li Wei",
-          "PER"
-        ]
-      ],
-      "offsets_ok": true,
-      "redacted": "[PER] submitted the report.",
-      "passed": true
-    },
-    {
-      "name": "LOCATION",
-      "text": "The conference took place in Toronto.",
-      "expected": [
+          "Stanford University",
+          "ORG"
+        ],
         [
           "Toronto",
           "LOC"
@@ -71,107 +92,118 @@
       ],
       "actual": [
         [
+          "Li Wei",
+          "PER"
+        ],
+        [
+          "Stanford University",
+          "ORG"
+        ],
+        [
           "Toronto",
           "LOC"
         ]
       ],
       "offsets_ok": true,
-      "redacted": "The conference took place in [LOC].",
+      "redacted": "[PER] studies at [ORG] in [LOC].",
       "passed": true
     },
     {
-      "name": "ORG-university",
-      "text": "Stanford University opened a laboratory.",
+      "name": "SCHOOL-INCIDENT",
+      "text": "Siti Hajar reported an incident at Victoria Secondary School in Kuala Lumpur.",
       "expected": [
         [
-          "Stanford University",
-          "ORG"
-        ]
-      ],
-      "actual": [
-        [
-          "Stanford University",
-          "ORG"
-        ]
-      ],
-      "offsets_ok": true,
-      "redacted": "[ORG] opened a laboratory.",
-      "passed": true
-    },
-    {
-      "name": "ORG-hospital",
-      "text": "Johns Hopkins Hospital hired a specialist.",
-      "expected": [
-        [
-          "Johns Hopkins Hospital",
-          "ORG"
-        ]
-      ],
-      "actual": [
-        [
-          "Johns Hopkins Hospital",
-          "ORG"
-        ]
-      ],
-      "offsets_ok": true,
-      "redacted": "[ORG] hired a specialist.",
-      "passed": true
-    },
-    {
-      "name": "MIXED",
-      "text": "Aisha Rahman joined Google in Singapore.",
-      "expected": [
-        [
-          "Aisha Rahman",
+          "Siti Hajar",
           "PER"
         ],
         [
-          "Google",
+          "Victoria Secondary School",
           "ORG"
         ],
         [
-          "Singapore",
+          "Kuala Lumpur",
           "LOC"
         ]
       ],
       "actual": [
         [
-          "Aisha Rahman",
+          "Siti Hajar",
           "PER"
         ],
         [
-          "Google",
+          "Victoria Secondary School",
           "ORG"
         ],
         [
-          "Singapore",
+          "Kuala Lumpur",
           "LOC"
         ]
       ],
       "offsets_ok": true,
-      "redacted": "[PER] joined [ORG] in [LOC].",
+      "redacted": "[PER] reported an incident at [ORG] in [LOC].",
       "passed": true
     },
     {
-      "name": "NO-ENTITY",
-      "text": "The weather is beautiful and the room is quiet.",
-      "expected": [],
-      "actual": [],
-      "offsets_ok": true,
-      "redacted": "The weather is beautiful and the room is quiet.",
-      "passed": true
-    },
-    {
-      "name": "MALAYSIAN",
-      "text": "Nurul Izzah met Petronas executives in Putrajaya.",
+      "name": "SUPPORT-CHAT",
+      "text": "The student support team contacted Arjun Nair at Monash University.",
       "expected": [
         [
-          "Nurul Izzah",
+          "Arjun Nair",
           "PER"
         ],
         [
-          "Petronas",
+          "Monash University",
           "ORG"
+        ]
+      ],
+      "actual": [
+        [
+          "Arjun Nair",
+          "PER"
+        ],
+        [
+          "Monash University",
+          "ORG"
+        ]
+      ],
+      "offsets_ok": true,
+      "redacted": "The student support team contacted [PER] at [ORG].",
+      "passed": true
+    },
+    {
+      "name": "STUDENT-FEEDBACK",
+      "text": "Priyanka Chopra submitted feedback about a course at Sunway College.",
+      "expected": [
+        [
+          "Priyanka Chopra",
+          "PER"
+        ],
+        [
+          "Sunway College",
+          "ORG"
+        ]
+      ],
+      "actual": [
+        [
+          "Priyanka Chopra",
+          "PER"
+        ],
+        [
+          "Sunway College",
+          "ORG"
+        ]
+      ],
+      "offsets_ok": true,
+      "redacted": "[PER] submitted feedback about a course at [ORG].",
+      "passed": true
+    },
+    {
+      "name": "STUDENT-ACTIVITY",
+      "text": "Daniel Wong attended a student activity in Putrajaya.",
+      "expected": [
+        [
+          "Daniel Wong",
+          "PER"
         ],
         [
           "Putrajaya",
@@ -180,11 +212,7 @@
       ],
       "actual": [
         [
-          "Nurul Izzah",
-          "PER"
-        ],
-        [
-          "Petronas executives",
+          "Daniel Wong",
           "PER"
         ],
         [
@@ -193,12 +221,39 @@
         ]
       ],
       "offsets_ok": true,
-      "redacted": "[PER] met [PER] in [LOC].",
-      "passed": false
+      "redacted": "[PER] attended a student activity in [LOC].",
+      "passed": true
     },
     {
-      "name": "REPEATED",
-      "text": "Sarah met Sarah at Microsoft in London.",
+      "name": "ADMIN-REPORT",
+      "text": "The university report says Mei Lin lives in George Town.",
+      "expected": [
+        [
+          "Mei Lin",
+          "PER"
+        ],
+        [
+          "George Town",
+          "LOC"
+        ]
+      ],
+      "actual": [
+        [
+          "Mei Lin",
+          "PER"
+        ],
+        [
+          "George Town",
+          "LOC"
+        ]
+      ],
+      "offsets_ok": true,
+      "redacted": "The university report says [PER] lives in [LOC].",
+      "passed": true
+    },
+    {
+      "name": "REPEATED-STUDENT",
+      "text": "Sarah met Sarah at New York University in New York.",
       "expected": [
         [
           "Sarah",
@@ -209,11 +264,11 @@
           "PER"
         ],
         [
-          "Microsoft",
+          "New York University",
           "ORG"
         ],
         [
-          "London",
+          "New York",
           "LOC"
         ]
       ],
@@ -227,11 +282,11 @@
           "PER"
         ],
         [
-          "Microsoft",
+          "New York University",
           "ORG"
         ],
         [
-          "London",
+          "New York",
           "LOC"
         ]
       ],
@@ -241,22 +296,10 @@
     },
     {
       "name": "MULTI-SENTENCE",
-      "text": "John works at Apple in New York. Sarah studies at Oxford University in London.",
+      "text": "John studies at Oxford University in London. Aisha Rahman requested support from Universiti Malaya.",
       "expected": [
         [
           "John",
-          "PER"
-        ],
-        [
-          "Apple",
-          "ORG"
-        ],
-        [
-          "New York",
-          "LOC"
-        ],
-        [
-          "Sarah",
           "PER"
         ],
         [
@@ -266,6 +309,14 @@
         [
           "London",
           "LOC"
+        ],
+        [
+          "Aisha Rahman",
+          "PER"
+        ],
+        [
+          "Universiti Malaya",
+          "ORG"
         ]
       ],
       "actual": [
@@ -274,40 +325,36 @@
           "PER"
         ],
         [
-          "Apple",
-          "ORG"
-        ],
-        [
-          "New York",
-          "LOC"
-        ],
-        [
-          "Sarah",
-          "PER"
-        ],
-        [
           "Oxford University",
           "ORG"
         ],
         [
           "London",
           "LOC"
+        ],
+        [
+          "Aisha Rahman",
+          "PER"
+        ],
+        [
+          "Universiti Malaya",
+          "ORG"
         ]
       ],
       "offsets_ok": true,
-      "redacted": "[PER] works at [ORG] in [LOC]. [PER] studies at [ORG] in [LOC].",
+      "redacted": "[PER] studies at [ORG] in [LOC]. [PER] requested support from [ORG].",
       "passed": true
     },
     {
       "name": "PUNCTUATION",
-      "text": "(John Carter), from Microsoft, visited London!",
+      "text": "(John Carter), a student at Oxford University, visited London!",
       "expected": [
         [
           "John Carter",
           "PER"
         ],
         [
-          "Microsoft",
+          "Oxford University",
           "ORG"
         ],
         [
@@ -317,8 +364,12 @@
       ],
       "actual": [
         [
-          "Microsoft",
-          "LOC"
+          "John Carter",
+          "PER"
+        ],
+        [
+          "Oxford University",
+          "ORG"
         ],
         [
           "London",
@@ -326,19 +377,28 @@
         ]
       ],
       "offsets_ok": true,
-      "redacted": "(John Carter), from [LOC], visited [LOC]!",
-      "passed": false
+      "redacted": "([PER]), a student at [ORG], visited [LOC]!",
+      "passed": true
     },
     {
-      "name": "UNKNOWN-WORDS",
-      "text": "Xylophonia Zqv works for Quasarion Labs in Vexford.",
+      "name": "NO-ENTITY",
+      "text": "The assignment deadline is next week and the classroom is quiet.",
+      "expected": [],
+      "actual": [],
+      "offsets_ok": true,
+      "redacted": "The assignment deadline is next week and the classroom is quiet.",
+      "passed": true
+    },
+    {
+      "name": "UNKNOWN-STUDENT",
+      "text": "Xylophonia Zqv studies at Quasarion University in Vexford.",
       "expected": [
         [
           "Xylophonia Zqv",
           "PER"
         ],
         [
-          "Quasarion Labs",
+          "Quasarion University",
           "ORG"
         ],
         [
@@ -352,7 +412,7 @@
           "PER"
         ],
         [
-          "Quasarion Labs",
+          "Quasarion University",
           "ORG"
         ],
         [
@@ -361,7 +421,7 @@
         ]
       ],
       "offsets_ok": true,
-      "redacted": "[PER] works for [ORG] in [LOC].",
+      "redacted": "[PER] studies at [ORG] in [LOC].",
       "passed": true
     }
   ]

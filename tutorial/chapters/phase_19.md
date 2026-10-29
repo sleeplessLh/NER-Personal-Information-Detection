@@ -67,7 +67,7 @@ def test_checkpoint_cpu_inference_and_end_to_end_redaction():
 python -m pytest -q --cov=src --cov=app --cov-report=term-missing
 ```
 
-本项目真实证据：补齐数据泄漏、标点 span、长文本、多页/损坏 PDF 与 Web 测试后完整套件 38 passed；旧正式验收全部保留。 学生电脑的时间可能不同，但结构、断言和文件数量应一致。命令失败时保留完整 traceback，从最后一行向上找第一个自己的文件行号；修复后重跑同一命令。
+本项目真实证据：补齐跨来源数据泄漏、学生场景、标点 span、长文本、多页/损坏 PDF 与 Web 测试后完整套件 39 passed；旧正式验收全部保留。 学生电脑的时间可能不同，但结构、断言和文件数量应一致。命令失败时保留完整 traceback，从最后一行向上找第一个自己的文件行号；修复后重跑同一命令。
 
 ## 10. 完整代码回顾
 

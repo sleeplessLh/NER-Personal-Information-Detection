@@ -1,134 +1,129 @@
-# MODEL ACCEPTANCE REPORT
+# MODEL ACCEPTANCE REPORT — STUDENT PRIVACY PROTECTION
 
 执行日期：2026-10-29（Asia/Singapore）
-项目：Personal Information Detection in Text (NER)
 仓库：<https://github.com/sleeplessLh/NER-Personal-Information-Detection>
 
-## 1. 核心问题
+## 1. Scope
 
-结论：**YES**。仓库包含已训练的 `models/best_model.pt`。在全新的 Windows 11 目录和虚拟环境中安装 `requirements.txt` 后，可以直接加载模型、预测、脱敏并启动 FastAPI，**不需要重新训练**。这一结论已由修复版本的最终远程 Clone 证明，而不是根据 README 推断。
+项目应用范围已限定为 **Student Personal Information Detection and Redaction**，重点处理英文 Student Incident Reports、Student Support Chats、Student Complaints、Student Feedback、University Administrative Reports 与 Student Activity Reports。
 
-## 2. 环境与首次 Fresh Clone
+模型仍识别比赛要求的 `PERSON`、`LOCATION`、`ORGANISATION`，没有简化成只识别学生姓名。医院病人、公司员工、客户等非学生场景不再作为专项优化目标。
 
-- Windows 11 原生环境；PowerShell
-- Python 3.12.15；PyTorch 2.9.0+cpu；CPU inference
-- 首次审计 Clone：`tmp/full-acceptance-20261029`
-- 审计起点 commit：`80b29ae2f36e05d947bd729da11aaa56d4a3e809`
-- `python -m venv .venv`：PASS
-- `.venv\\Scripts\\python.exe -m pip install -r requirements.txt`：PASS
-- 初始仓库测试：28 passed
-- 未设置必需环境变量；源码使用项目相对路径
+## 2. Model and Training
 
-修复 Push 后再次 Clone 到第三个全新目录 `tmp/final-reclone-20261029`：
-
-- 检出功能修复 commit：`7919565e82c2dd147f3acb55eec60613be169165`
-- 创建全新 `.venv` 并完整安装 `requirements.txt`：PASS
-- `pip check`：`No broken requirements found.`
-- checkpoint SHA-256：`4CB9276D78120406F7C2FDD40C2B7F5498659B8E0A5FC3F9C2D7E8657FD15945`
-- 未重新训练，直接 CPU 加载、预测和脱敏：PASS
-- final Clone tests：**38 passed in 5.40s**
-- final Clone Uvicorn：主页、JSON API、TXT、两页 PDF 均 HTTP 200
-
-教程 PDF 构建脚本引用 `C:\\Windows\\Fonts`，这是 Windows 教程制品构建的显式字体依赖，不影响模型、API、测试或 Clone 后运行。运行应用不依赖开发机绝对路径。
-
-## 3. 模型与训练
-
-- Architecture：trainable Embedding(64) + casing projection(4→8) + one-layer BiLSTM(96/方向) + Dropout(0.25) + Linear(192→8)
+- Architecture：Embedding(64) + casing projection(4→8) + one-layer BiLSTM(96/方向) + Dropout(0.25) + Linear(192→8)
 - Parameters：143,536
 - Labels：`<PAD>, O, B/I-PER, B/I-LOC, B/I-ORG`
-- Random seed：42；Adam；learning rate 0.003；batch size 64；8 epochs
-- Training：general 2,400 + Malaysian 160
-- Validation：general 300 + Malaysian 40
-- Test：general 300；Malaysian 60；不参与训练或选模
-- 本轮训练时间：15.9974 秒（Windows CPU）
-- Best epoch：6；best validation entity F1：0.997389
-- Checkpoint：585,397 bytes；CPU 可加载
-- Checkpoint 内含 weights、vocabulary（178 entries）、label mapping、model config、seed、dataset counts、best epoch/F1
+- Training：general student 2,400 + Malaysian student 160
+- Validation：general student 300 + Malaysian student 40
+- Test：general student 300 + Malaysian student 60；不参与训练或选模
+- Adam；learning rate 0.003；batch size 64；seed 42
+- Epochs：16；best epoch：16
+- Best validation entity F1：0.919245
+- Windows CPU training-loop time：14.2677 seconds
+- Checkpoint：`models/best_model.pt`，586,229 bytes
+- SHA-256：`C0F68A78DD13599229EDA6C42799C84D68FF3942FAC600E8B5626571DB6F3575`
 
-本轮修复了实体池跨 split 重复，并扩充了通用上下文模板。模型仍从随机权重训练，不加载第三方 NER 权重，不调用外部 NER API。
+Checkpoint 含 weights、vocabulary、labels、model configuration、seed、dataset counts、best epoch/F1。模型从随机权重训练，不调用外部 NER API，不加载现成 NER pipeline。
 
-## 4. 独立测试集评估
+## 3. Student Data
+
+训练语境覆盖学生报告、投诉、反馈、支持聊天、大学行政报告、学生组织和学生活动。实体池重点覆盖 Malaysian student names、universities、schools、student organisations 和 Malaysian locations。
+
+数据生成阶段和自动化测试同时验证：
+
+- 完整句子跨 split 隔离
+- general 与 Malaysian 合并实体池跨 train/validation/test 隔离
+- test 不参与训练或 validation 选模
+- 数据为透明的合成数据，不声称等同于真实学生记录
+
+## 4. Evaluation
 
 实际执行 `python -m src.evaluate`：
 
-| Dataset | Sentences | PER Precision | PER Recall | PER F1 | LOC F1 | ORG F1 | Overall P/R/F1 |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| Synthetic general test | 300 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 / 1.0000 / 1.0000 |
-| Synthetic Malaysian test | 60 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 / 1.0000 / 1.0000 |
+| Dataset | PER P/R/F1 | LOC P/R/F1 | ORG P/R/F1 | Overall P/R/F1 |
+|---|---:|---:|---:|---:|
+| General student synthetic test（300） | 1.0000 / 1.0000 / 1.0000 | 0.9408 / 1.0000 / 0.9695 | 1.0000 / 1.0000 / 1.0000 | 0.9843 / 1.0000 / 0.9921 |
+| Malaysian student synthetic test（60） | 1.0000 / 1.0000 / 1.0000 | 1.0000 / 1.0000 / 1.0000 | 1.0000 / 1.0000 / 1.0000 | 1.0000 / 1.0000 / 1.0000 |
 
-完整句子和实体字符串跨 split 隔离，但模板分布仍共享，所以 1.0 高估真实泛化；它不能被宣传为生产性能。
+Overall F1 ≥ 0.75 与 PERSON Recall ≥ 0.80 的内部目标均达到。模板仍跨 split 共享，因此指标会高估真实学生文本泛化。
 
-## 5. 固定真实英文挑战矩阵
+## 5. Student Challenge Matrix
 
-实际执行 `python scripts/run_manual_acceptance.py`：**11/13 cases passed**，且全部已预测实体的字符 offset 与原文一致。完整逐例 JSON 在 `reports/manual_acceptance.json`。
+实际执行 `python scripts/run_manual_acceptance.py`：**13/13 passed**。
 
-成功覆盖美国、印度、中国姓名，陌生地点，大学、医院，mixed/no-entity，重复实体，多句文本和未知词。保留两项真实失败：
+覆盖：
 
-1. `Nurul Izzah met Petronas executives in Putrajaya.`：把 `Petronas executives` 误判为 PER。
-2. `(John Carter), from Microsoft, visited London!`：漏检括号内姓名，并把 Microsoft 误判为 LOC。
+- Malaysian 与国际学生姓名
+- Malaysian university、school 与 location
+- Student complaint、support chat、feedback、activity、administrative report
+- Mixed PER/LOC/ORG
+- No entity
+- Repeated student names
+- Multiple sentences
+- Punctuation
+- Unknown student/university/location names
 
-因此项目适合比赛原型展示，但不适合无人复核的真实敏感资料脱敏。
+全部预测实体满足 `original_text[start:end] == entity_text`。完整输出保存在 `reports/manual_acceptance.json`。
 
-## 6. 自动化、文件与 Web 验收
+题目示例实际输出：
 
-- `python -m pytest -q`：**38 passed in 3.61s**（修复后开发目录）
-- 浏览器真实点击 Detect：显示 3 entities 表格（Sarah/PER、Microsoft/ORG、Kuala Lumpur/LOC）
-- 浏览器显示脱敏：`[PER] works at [ORG] in [LOC].`
-- 浏览器空输入：显示 `Please enter English text.`
-- `GET /`：HTTP 200
+```text
+Original: Ahmad Ali, a student from Universiti Teknologi Malaysia, attended an event in Johor Bahru.
+Redacted: [PER], a student from [ORG], attended an event in [LOC].
+```
+
+## 6. Software, Web and File Tests
+
+- Automated tests：**39 passed in 4.06s**（开发目录）
+- Windows browser：Student Privacy Protection 页面正常显示
+- 浏览器点击 Detect：3 entities，PER/ORG/LOC 表格与 offset 正确
+- 浏览器 Redacted Text：题目示例完全匹配
 - `POST /api/predict`：HTTP 200，3 entities
-- TXT：HTTP 200
-- 两页 text-layer PDF：HTTP 200，两页文本均提取并进入自训练模型
-- 空 TXT：HTTP 400
-- 损坏 PDF：HTTP 400
-- 不支持 CSV：HTTP 415
-- 5 MB 超限文件：HTTP 413
-- 空 JSON text：HTTP 422
-- 扫描 PDF OCR：不支持，NOT CLAIMED
+- Student-report TXT：HTTP 200，脱敏正确
+- Two-page student PDF：HTTP 200，两页均提取并送入自训练模型
+- Empty/corrupt/unsupported/oversized files：400/415/413 回归测试覆盖
+- CPU inference：PASS
+- Scanned PDF OCR：NOT CLAIMED
 
-## 7. 本轮实际修复
+## 7. Changes for Student Scope
 
-1. 纯标点被吸入实体 span：解码时把纯标点 tag 安全归为 `O`，保护字符 offset 和原标点。
-2. general validation/test 实体池重复：替换重复 LOC/ORG，并新增自动化 disjoint 测试和生成时失败保护。
-3. 陌生上下文泛化弱：新增姓名、地点、大学、医院上下文模板后重新训练；多项人工失败转为正确。
-4. Web 页面只打印 JSON：新增实体表格、类型、offset、脱敏区域、状态和错误信息。
-5. 未选文件时前端无提示：新增明确提示。
-6. 上传内容仅限制文件字节：新增提取文本 100,000 字符上限。
-7. 缺少多页/空/损坏 PDF、长文本、重复实体、标点 span 测试：补齐回归覆盖。
-8. 缺少 Windows CI：新增 `.github/workflows/windows-tests.yml`。
-9. 人工验收不可复现：新增 `scripts/run_manual_acceptance.py` 和实际 JSON 证据。
-10. 人工脚本直接运行找不到 `src`：加入可靠项目根目录引导。
+1. README、FastAPI title、Web description、demo text 与 presentation 改为 Student Privacy Protection。
+2. general 与 Malaysian 数据池改为学生姓名、大学、学校、学生组织、教育机构和地点。
+3. 模板改为 incident、complaint、feedback、support、activity 和 administration 语境。
+4. 增加 general/Malaysian 合并实体池跨 split 泄漏保护。
+5. 增加单词姓名与重复学生姓名结构，不使用姓名硬编码替代训练。
+6. 重新生成全部数据，实际训练 16 epochs 并替换 checkpoint。
+7. 将 API、Web、prediction、redaction、TXT、PDF 测试示例切换为学生场景。
+8. 将固定人工验收矩阵完全重写为 13 个学生隐私场景。
 
-## 8. Malaysian Bonus 证据
+## 8. Acceptance Matrix
 
-- 数据存在：160 train / 40 validation / 60 test
-- 覆盖 Malaysian 姓名、地点、大学、公司、医院和政府机构
-- train/validation/test 实体池与完整句子互斥
-- checkpoint `dataset_counts` 明确记录 `malaysian_training=160`、`malaysian_validation=40`
-- 独立 Malaysian test entity F1=1.0000（仅合成模板域）
-- 数据为合理构造并人工可检查的合成数据，不冒充真实用户数据
-
-## 9. 最终验收矩阵
-
-| 验收项目 | 状态 | 证据 |
+| Item | Status | Evidence |
 |---|---|---|
-| Fresh Clone | PASS | 第三个全新目录检出 `7919565`，不重新训练运行 |
-| Dependency Installation | PASS | 全新 venv 安装；`pip check` 无冲突 |
-| Model Loading | PASS | checkpoint CPU load + inference |
-| PERSON Detection | PASS WITH LIMITATION | synthetic PER recall 1.0；人工矩阵有括号姓名漏检 |
-| LOCATION Detection | PASS WITH LIMITATION | synthetic LOC F1 1.0；人工样本通过 |
-| ORGANISATION Detection | PASS WITH LIMITATION | synthetic ORG F1 1.0；人工矩阵有类型误判 |
-| Text Redaction | PASS | offset 回归、重复/多句/标点测试 |
-| Malaysian Dataset | PASS WITH LIMITATION | 实际合入训练并独立评估；合成域 |
-| TXT Input | PASS | HTTP 200；空文件 400 |
-| PDF Input | PASS | 单页/多页 200；损坏 400；无 OCR |
-| FastAPI | PASS | 真实 Uvicorn HTTP 请求 |
-| Web Interface | PASS | 真实浏览器点击、表格与脱敏可见 |
-| Automated Tests | PASS | 38 passed |
-| Model Evaluation | PASS WITH LIMITATION | synthetic overall F1 1.0；manual 11/13 |
-| Windows 11 | PASS | 本轮为 Windows 11 原生执行；另增 Windows Actions |
-| GitHub Sync | PASS | 功能修复 commit `7919565e82c2dd147f3acb55eec60613be169165` |
+| Student scope | PASS | README/data/UI/tests updated |
+| Trained ML checkpoint | PASS | 16 epochs CPU；checkpoint load |
+| PERSON | PASS | synthetic recall 1.0；student matrix |
+| LOCATION | PASS | general F1 0.9695；Malaysian F1 1.0 |
+| ORGANISATION | PASS | both synthetic F1 1.0 |
+| Student redaction | PASS | exact Ahmad Ali example |
+| Malaysian student data | PASS WITH LIMITATION | trained/evaluated synthetic dataset |
+| TXT/PDF | PASS | real localhost requests |
+| Web interface | PASS | real browser click and visible table |
+| Automated tests | PASS | 39 passed |
+| GitHub update | PENDING | awaiting commit/push |
+| Final remote re-clone | PENDING | execute after push |
+| Production deployment | NOT APPROVED | requires real student data and human review |
 
-## 10. 当前 Verdict
+## 9. Limitations
 
-**PARTIAL PASS — GitHub 最终功能版本可在全新 Windows 环境直接运行，不需要重新训练；但固定人工挑战矩阵仍有 2/13 项模型泛化失败，因此不能宣布无条件 PASS。**
+- 合成学生文本不等于真实大学 incident reports 或 support chats。
+- 小型 13-case challenge matrix 不等于大规模独立真实语料评估。
+- PER/LOC/ORG 不覆盖 email、phone、student ID、passport、完整地址等所有学生 PII。
+- 扫描 PDF 无 OCR。
+- 高风险学生资料必须人工复核，尤其要防止姓名漏检。
+- 非学生场景没有专项性能保证。
+
+## 10. Current Verdict
+
+**PENDING FINAL RE-CLONE — 本地学生场景代码、训练、评估、Web、TXT/PDF 与测试已通过；必须 Push 后从 GitHub 全新 Clone 才能最终放行。**

@@ -14,19 +14,19 @@ from src.predict import Predictor
 from src.redact import redact_text
 
 CASES = [
-    ("PERSON-US", "Barack Obama spoke yesterday.", [("Barack Obama", "PER")]),
-    ("PERSON-Indian", "Priyanka Chopra arrived early.", [("Priyanka Chopra", "PER")]),
-    ("PERSON-Chinese", "Li Wei submitted the report.", [("Li Wei", "PER")]),
-    ("LOCATION", "The conference took place in Toronto.", [("Toronto", "LOC")]),
-    ("ORG-university", "Stanford University opened a laboratory.", [("Stanford University", "ORG")]),
-    ("ORG-hospital", "Johns Hopkins Hospital hired a specialist.", [("Johns Hopkins Hospital", "ORG")]),
-    ("MIXED", "Aisha Rahman joined Google in Singapore.", [("Aisha Rahman", "PER"), ("Google", "ORG"), ("Singapore", "LOC")]),
-    ("NO-ENTITY", "The weather is beautiful and the room is quiet.", []),
-    ("MALAYSIAN", "Nurul Izzah met Petronas executives in Putrajaya.", [("Nurul Izzah", "PER"), ("Petronas", "ORG"), ("Putrajaya", "LOC")]),
-    ("REPEATED", "Sarah met Sarah at Microsoft in London.", [("Sarah", "PER"), ("Sarah", "PER"), ("Microsoft", "ORG"), ("London", "LOC")]),
-    ("MULTI-SENTENCE", "John works at Apple in New York. Sarah studies at Oxford University in London.", [("John", "PER"), ("Apple", "ORG"), ("New York", "LOC"), ("Sarah", "PER"), ("Oxford University", "ORG"), ("London", "LOC")]),
-    ("PUNCTUATION", "(John Carter), from Microsoft, visited London!", [("John Carter", "PER"), ("Microsoft", "ORG"), ("London", "LOC")]),
-    ("UNKNOWN-WORDS", "Xylophonia Zqv works for Quasarion Labs in Vexford.", [("Xylophonia Zqv", "PER"), ("Quasarion Labs", "ORG"), ("Vexford", "LOC")]),
+    ("MALAYSIAN-STUDENT", "Ahmad Ali, a student from Universiti Teknologi Malaysia, attended an event in Johor Bahru.", [("Ahmad Ali", "PER"), ("Universiti Teknologi Malaysia", "ORG"), ("Johor Bahru", "LOC")]),
+    ("STUDENT-COMPLAINT", "Nur Aisyah submitted a complaint to Taylor University in Subang Jaya.", [("Nur Aisyah", "PER"), ("Taylor University", "ORG"), ("Subang Jaya", "LOC")]),
+    ("INTERNATIONAL-STUDENT", "Li Wei studies at Stanford University in Toronto.", [("Li Wei", "PER"), ("Stanford University", "ORG"), ("Toronto", "LOC")]),
+    ("SCHOOL-INCIDENT", "Siti Hajar reported an incident at Victoria Secondary School in Kuala Lumpur.", [("Siti Hajar", "PER"), ("Victoria Secondary School", "ORG"), ("Kuala Lumpur", "LOC")]),
+    ("SUPPORT-CHAT", "The student support team contacted Arjun Nair at Monash University.", [("Arjun Nair", "PER"), ("Monash University", "ORG")]),
+    ("STUDENT-FEEDBACK", "Priyanka Chopra submitted feedback about a course at Sunway College.", [("Priyanka Chopra", "PER"), ("Sunway College", "ORG")]),
+    ("STUDENT-ACTIVITY", "Daniel Wong attended a student activity in Putrajaya.", [("Daniel Wong", "PER"), ("Putrajaya", "LOC")]),
+    ("ADMIN-REPORT", "The university report says Mei Lin lives in George Town.", [("Mei Lin", "PER"), ("George Town", "LOC")]),
+    ("REPEATED-STUDENT", "Sarah met Sarah at New York University in New York.", [("Sarah", "PER"), ("Sarah", "PER"), ("New York University", "ORG"), ("New York", "LOC")]),
+    ("MULTI-SENTENCE", "John studies at Oxford University in London. Aisha Rahman requested support from Universiti Malaya.", [("John", "PER"), ("Oxford University", "ORG"), ("London", "LOC"), ("Aisha Rahman", "PER"), ("Universiti Malaya", "ORG")]),
+    ("PUNCTUATION", "(John Carter), a student at Oxford University, visited London!", [("John Carter", "PER"), ("Oxford University", "ORG"), ("London", "LOC")]),
+    ("NO-ENTITY", "The assignment deadline is next week and the classroom is quiet.", []),
+    ("UNKNOWN-STUDENT", "Xylophonia Zqv studies at Quasarion University in Vexford.", [("Xylophonia Zqv", "PER"), ("Quasarion University", "ORG"), ("Vexford", "LOC")]),
 ]
 
 
@@ -47,7 +47,7 @@ def main() -> None:
             "passed": actual == expected and offsets_ok,
         })
     payload = {
-        "purpose": "manual robustness evidence only; never used for training or model selection",
+        "purpose": "student-privacy robustness evidence only; never used for training or model selection",
         "passed": sum(row["passed"] for row in results),
         "total": len(results),
         "results": results,

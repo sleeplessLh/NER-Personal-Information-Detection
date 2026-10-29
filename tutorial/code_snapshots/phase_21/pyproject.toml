@@ -1,7 +1,7 @@
 [project]
 name = "personal-information-ner"
 version = "0.1.0"
-description = "A from-scratch PyTorch BiLSTM NER system for personal information detection."
+description = "A from-scratch PyTorch BiLSTM NER system for student personal information detection and redaction."
 requires-python = ">=3.11,<3.13"
 dependencies = [
   "fastapi==0.120.1",

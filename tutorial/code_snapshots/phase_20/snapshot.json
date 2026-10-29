@@ -2,12 +2,12 @@
   "phase": "20",
   "verified": true,
   "test_command": "pytest -q; verify_tutorial.py; git diff --check",
-  "actual_result": "PASS: complete README, acceptance and presentation embedded in the 125-page tutorial; 28 tests passed; GitHub honestly not published",
+  "actual_result": "PASS: student scope local checks complete; 39 tests passed; remote re-clone pending",
   "files": {
-    "README.md": "f6a5beda0011419fa85b68432a57c0ede19cea2d84c7782f0a148d184cc76ea5",
-    "MODEL_ACCEPTANCE_REPORT.md": "7ef0ac44c04fc3417c57be2e183c880c4c6c3da698a890cbcee591d10243588d",
-    "PRESENTATION_MATERIALS.md": "72cb7477c89a83cd9d146fb4dd5e3f90adc2203083ed63781df1a569489eda3d",
+    "README.md": "ec1f3675fba02ce25ec1f6df3accb932c4b73e049ef80daa060df1329fcb4c5d",
+    "MODEL_ACCEPTANCE_REPORT.md": "1ef5c848a1a6b123f77d245bb5cba46ca48c93feebd24ebfb3b3b0f117651eaf",
+    "PRESENTATION_MATERIALS.md": "fa101067f8b6a93217e86bbac3065b5641fdeb84ea78b63ae4a5de1e52cca39c",
     "tutorial/FILE_EVOLUTION.md": "a55b964b79c84f92380182137a1e3ec8b93919e176c781107d1f48948164a58b",
-    "tutorial/chapters/phase_20.md": "bee3c10697403d677fb1713bf9c90335b2dd5821382e098ab905442450914c42"
+    "tutorial/chapters/phase_20.md": "ff0a1beaa6b421095b32137cf335b7b0690f39ed826a095b16ae8484b122e71f"
   }
 }

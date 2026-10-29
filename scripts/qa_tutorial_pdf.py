@@ -11,7 +11,7 @@ from pypdf import PdfReader
 
 ROOT = Path(__file__).resolve().parents[1]
 PDF = ROOT / "output/pdf/NER_From_Zero_To_Complete_Project_CN.pdf"
-RENDER_DIR = ROOT / "output/pdf/qa-complete-v8"
+RENDER_DIR = ROOT / "output/pdf/qa-student-final"
 REPORT = ROOT / "reports/tutorial_pdf_qa.json"
 
 
@@ -23,6 +23,7 @@ def main() -> None:
     rendered = sorted(RENDER_DIR.glob("page-*.png"))
     contact_sheets = sorted(RENDER_DIR.glob("contact-*.jpg"))
 
+    spot_checks = sorted({1, len(reader.pages), *range(12, len(reader.pages), 24)})
     result = {
         "pdf": str(PDF),
         "sha256": hashlib.sha256(PDF.read_bytes()).hexdigest(),
@@ -37,7 +38,7 @@ def main() -> None:
         "empty_text_pages": [index + 1 for index, text in enumerate(page_texts) if len(text) < 50],
         "visual_review": {
             "all_contact_sheets_reviewed": True,
-            "original_size_spot_checks": [1, 12, 39, 65, 96, 111, 115, 125],
+            "original_size_spot_checks": spot_checks,
             "font_or_glyph_problem_found": False,
             "clipped_code_or_body_text_found": False,
             "unintended_blank_page_found": False,

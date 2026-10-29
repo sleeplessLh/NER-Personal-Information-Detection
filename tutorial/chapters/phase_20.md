@@ -39,7 +39,7 @@ tutorial/code_snapshots/phase_20/ [通过后生成]
 
 ```python
 uv run python -m src.generate_data
-uv run python -m src.train --epochs 8 --batch-size 64 --learning-rate 0.003
+uv run python -m src.train --epochs 16 --batch-size 64 --learning-rate 0.003
 uv run python -m src.evaluate
 uv run python -m pytest -q
 ```

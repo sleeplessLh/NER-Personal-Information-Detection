@@ -1,12 +1,12 @@
 {
   "phase": "03",
   "verified": true,
-  "test_command": "python learning\\bio_demo.py",
-  "actual_result": "PASS: token-label pairs and PER/ORG entity spans matched expected output",
+  "test_command": "python learning/bio_demo.py",
+  "actual_result": "PASS: student BIO example",
   "files": {
-    "learning\\hello_python.py": "659639cc4f0fe725832f5548f1547f6b3708c9de5d752549b37510ca31368761",
-    "learning\\python_foundations.py": "34fbb9f4c3bc740b6019291e88caa08cb158c6829a7af36467ebb75a12e8fafa",
-    "learning\\bio_demo.py": "b81280b6d29e37606294a0ec25971a8ddbb77f7066c0d86bd2a4a6e80bcefe58",
-    "tutorial\\chapters\\phase_03.md": "031d0a035d132a24a1c1923842820f87086adb53d91811895f25215f44527c44"
+    "learning/hello_python.py": "659639cc4f0fe725832f5548f1547f6b3708c9de5d752549b37510ca31368761",
+    "learning/python_foundations.py": "34fbb9f4c3bc740b6019291e88caa08cb158c6829a7af36467ebb75a12e8fafa",
+    "learning/bio_demo.py": "b81280b6d29e37606294a0ec25971a8ddbb77f7066c0d86bd2a4a6e80bcefe58",
+    "tutorial/chapters/phase_03.md": "5f855326b8875a97edab74ee29ff73492ee01d577229909085de7b4261eeb8da"
   }
 }

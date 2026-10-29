@@ -1,9 +1,9 @@
 {
   "phase": "00",
   "verified": true,
-  "test_command": "manual requirement checklist",
-  "actual_result": "PASS: boundaries and evidence types documented",
+  "test_command": "python -m pytest -q",
+  "actual_result": "39 passed",
   "files": {
-    "tutorial\\chapters\\phase_00.md": "b3155aa6ccda936d90f9a1af0fe252560102dc1f34680726f8b6fe5b5d004588"
+    "tutorial/chapters/phase_00.md": "04cb3c2fe288f735fa43c4ad9d291aec4fce6b30afa0d458a57f460c3dd6df00"
   }
 }

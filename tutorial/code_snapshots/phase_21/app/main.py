@@ -11,7 +11,7 @@ from starlette.concurrency import run_in_threadpool
 from src.predict import Predictor
 from src.redact import redact_text
 
-app = FastAPI(title="Personal Information NER", version="1.0.0")
+app = FastAPI(title="Student Privacy Protection NER", version="1.1.0")
 # 模型延迟加载；命令行和 Uvicorn 启动时可先完成模块导入。
 predictor: Predictor | None = None
 MAX_UPLOAD_BYTES = 5 * 1024 * 1024
@@ -50,8 +50,8 @@ def home() -> str:
     """返回教学版单页界面；JavaScript 通过 fetch 调用后端 API。"""
     return """<!doctype html><html><head><meta charset='utf-8'><title>NER Demo</title>
     <style>body{font-family:Segoe UI,sans-serif;max-width:900px;margin:40px auto;padding:0 20px}textarea{width:100%;min-height:160px}button{padding:10px 16px;margin:10px 6px 10px 0}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ccd3da;padding:8px;text-align:left}.panel{white-space:pre-wrap;background:#f4f6f8;padding:16px}.error{color:#a40000}</style></head>
-    <body><h1>Personal Information NER</h1>
-    <label for='text'>English text</label><textarea id='text'>Sarah works at Microsoft in Kuala Lumpur.</textarea><br>
+    <body><h1>Student Privacy Protection</h1><p>Detect and redact PERSON, LOCATION and ORGANISATION entities in English student-related text.</p>
+    <label for='text'>Student report or support text</label><textarea id='text'>Ahmad Ali, a student from Universiti Teknologi Malaysia, attended an event in Johor Bahru.</textarea><br>
     <button id='detect' onclick='runDetection()'>Detect Entities</button>
     <input type='file' id='file' accept='.txt,.pdf'><button id='upload' onclick='uploadFile()'>Upload File</button>
     <p id='status' role='status'></p><h2>Entities</h2><div id='entities'></div>

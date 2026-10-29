@@ -1,10 +1,10 @@
 {
   "pdf": "D:\\AIROST\\Intern-MachineLearning\\output\\pdf\\NER_From_Zero_To_Complete_Project_CN.pdf",
-  "sha256": "04958c008c19c498ce995995dd40461360a1f49fd801b9e13d344c35cd0aec02",
-  "file_size_bytes": 1001824,
-  "page_count": 125,
-  "rendered_page_count": 125,
-  "contact_sheet_count": 8,
+  "sha256": "7ea89bd0ee740ff406ef9e76d2cf15c34a830b9d476d29cf392419ba8224c3a6",
+  "file_size_bytes": 1017234,
+  "page_count": 131,
+  "rendered_page_count": 131,
+  "contact_sheet_count": 9,
   "all_22_phase_headings_present": true,
   "missing_phases": [],
   "replacement_character_count": 0,
@@ -15,12 +15,11 @@
     "original_size_spot_checks": [
       1,
       12,
-      39,
-      65,
-      96,
-      111,
-      115,
-      125
+      36,
+      60,
+      84,
+      108,
+      131
     ],
     "font_or_glyph_problem_found": false,
     "clipped_code_or_body_text_found": false,

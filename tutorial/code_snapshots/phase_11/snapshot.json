@@ -1,12 +1,12 @@
 {
   "phase": "11",
   "verified": true,
-  "test_command": "python -m src.train --epochs 8",
-  "actual_result": "PASS: best epoch 7 validation F1 0.9986225895",
+  "test_command": "python -m src.train --epochs 16 --batch-size 64 --learning-rate 0.003",
+  "actual_result": "PASS: best epoch 16 validation F1 0.919245",
   "files": {
-    "src\\train.py": "8cafe28b356c77a6466790efaa973a78a4f17a8a2904b057a5e9ed702c6eff6f",
-    "reports\\training_log.json": "9d6e29d10831f74980fbb6c05239aedf4d84daffb72bdc7ea4e3437572b72050",
-    "models\\best_model.pt": "9077f72d721ae36885bf18e442a3b616f0d7fdceb89c67f5b66e290e61b60a6b",
-    "tutorial\\chapters\\phase_11.md": "c99ad266c67b800ec7d905f9d05b94807876517d01465bd5275dba2a4b2a4676"
+    "src/train.py": "8cafe28b356c77a6466790efaa973a78a4f17a8a2904b057a5e9ed702c6eff6f",
+    "reports/training_log.json": "df65431f9fcb8a25cbbbf1942d1f8a6e786c22f7f4497dfdd66a43fb7551bd42",
+    "models/best_model.pt": "c0f68a78dd13599229eda6c42799c84d68ff3942fac600e8b5626571db6f3575",
+    "tutorial/chapters/phase_11.md": "00a05d2c3cc26751daf113b240915aeeb8062d0a86fd8fa7d5e9271245ab76ef"
   }
 }

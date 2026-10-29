@@ -55,6 +55,6 @@ def test_model_evaluation_counts_entity_boundaries():
 def test_checkpoint_cpu_inference_and_end_to_end_redaction():
     predictor = Predictor(MODELS_DIR / "best_model.pt")
     assert next(predictor.model.parameters()).device.type == "cpu"
-    result = predictor.predict("Sarah works at Microsoft in Kuala Lumpur.")
+    result = predictor.predict("Ahmad Ali studies at Universiti Teknologi Malaysia in Johor Bahru.")
     redacted = redact_text(result["text"], result["entities"])
-    assert redacted == "[PER] works at [ORG] in [LOC]."
+    assert redacted == "[PER] studies at [ORG] in [LOC]."

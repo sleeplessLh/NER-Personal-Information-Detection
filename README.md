@@ -1,8 +1,8 @@
-# Personal Information Detection in Text (NER)
+# Student Privacy Protection — Personal Information Detection and Redaction
 
 ## Project Overview
 
-这是一个从随机权重开始训练的英文命名实体识别（NER）项目。核心预测器由 PyTorch 自定义 `Embedding + casing features + BiLSTM + Linear` 实现，识别 `PERSON (PER)`、`LOCATION (LOC)`、`ORGANISATION (ORG)`，返回字符位置并生成脱敏文本。
+这是一个面向英文学生文本的命名实体识别（NER）项目，服务于 Student Incident Reports、Support Chats、Complaints、Feedback、University Administrative Reports 与 Student Activity Reports。模型从随机权重开始训练，由 PyTorch 自定义 `Embedding + casing features + BiLSTM + Linear` 实现，识别 `PERSON (PER)`、`LOCATION (LOC)`、`ORGANISATION (ORG)`，返回字符位置并生成脱敏文本。
 
 项目不调用外部 AI/NER API，也不加载 spaCy/Hugging Face 现成 NER pipeline。仓库直接包含经过训练的 `models/best_model.pt`，Clone 后不需要重新训练即可预测。
 
@@ -23,10 +23,10 @@
 - CPU 可运行的自定义 BiLSTM token classifier。
 - 原始英文文本预测、BIO tags、实体类型、token span、字符 `[start,end)`。
 - `[PER]`、`[LOC]`、`[ORG]` 自动脱敏。
-- Malaysian 姓名、城市、大学、公司、医院与政府机构合成标注数据。
+- Malaysian 学生姓名、地点、大学、学校、学生组织与教育机构合成标注数据。
 - FastAPI JSON API 和单页 Web 界面。
 - UTF-8 `.txt` 与带文本层 `.pdf` 上传；5 MB 限制和错误响应。
-- 38 项自动化测试、固定人工挑战矩阵及独立 general/Malaysian test evaluation。
+- 39 项自动化测试、13 项学生场景固定挑战矩阵及独立 general/Malaysian test evaluation。
 
 ## Model Architecture
 
@@ -36,12 +36,13 @@
 
 ## Dataset
 
-本项目使用可重现的合成英文 BIO 数据，不声称是 CoNLL-2003 或真实用户数据：
+本项目使用可重现的学生场景合成英文 BIO 数据，不声称是 CoNLL-2003、真实学生记录或真实用户数据：
 
 - General: 2,400 train / 300 validation / 300 test。
 - Malaysian: 160 train / 40 validation / 60 test。
 - 标签：`O, B/I-PER, B/I-LOC, B/I-ORG`。
-- 完整句子与实体池跨 split 隔离；句法模板仍共享，因此测试指标明显高估真实泛化。
+- 语境覆盖学生报告、投诉、反馈、支持聊天、大学行政报告与学生活动。
+- 完整句子与 general/Malaysian 合并实体池跨 split 隔离；句法模板仍共享，因此测试指标高估真实泛化。
 
 数据由 `src/generate_data.py` 生成，可公开重新分发；仓库不包含受限制的第三方数据集。
 
@@ -73,22 +74,22 @@ python -m uvicorn app.main:app --reload
 
 ## Model Prediction
 
-输入 `Sarah works at Microsoft in Kuala Lumpur.`，实际模型返回 `Sarah/PER`、`Microsoft/ORG`、`Kuala Lumpur/LOC` 及字符位置。
+输入 `Ahmad Ali studies at Universiti Teknologi Malaysia in Johor Bahru.`，实际模型返回 `Ahmad Ali/PER`、`Universiti Teknologi Malaysia/ORG`、`Johor Bahru/LOC` 及字符位置。
 
 ```powershell
-$body = @{ text = "Sarah works at Microsoft in Kuala Lumpur." } | ConvertTo-Json
+$body = @{ text = "Ahmad Ali studies at Universiti Teknologi Malaysia in Johor Bahru." } | ConvertTo-Json
 Invoke-RestMethod -Uri http://127.0.0.1:8000/api/predict -Method Post -ContentType "application/json" -Body $body
 ```
 
 ```python
 from src.predict import Predictor
-result = Predictor().predict("Sarah works at Microsoft in Kuala Lumpur.")
+result = Predictor().predict("Ahmad Ali studies at Universiti Teknologi Malaysia in Johor Bahru.")
 print(result["entities"])
 ```
 
 ## Text Redaction
 
-上述输入的实际脱敏结果为 `[PER] works at [ORG] in [LOC].`。实现按字符 span 从右向左替换，避免位置偏移。
+上述输入的实际脱敏结果为 `[PER] studies at [ORG] in [LOC].`。题目示例句也实际得到 `[PER], a student from [ORG], attended an event in [LOC].`。实现按字符 span 从右向左替换，避免位置偏移。
 
 ## File Upload
 
@@ -100,7 +101,7 @@ Clone 后运行不需要训练。只有重新实验时才执行：
 
 ```powershell
 python -m src.generate_data
-python -m src.train --epochs 8 --batch-size 64 --learning-rate 0.003
+python -m src.train --epochs 16 --batch-size 64 --learning-rate 0.003
 python -m src.evaluate
 ```
 
@@ -110,14 +111,14 @@ python -m src.evaluate
 
 2026-10-29 在 Windows 11、Python 3.12.15、PyTorch 2.9.0+cpu 重新训练与评估：
 
-- 8 epochs；batch size 64；learning rate 0.003；Adam；seed 42。
-- CPU training loop: 15.9974 seconds。
-- Best epoch: 6；validation entity F1: 0.9974。
-- General synthetic test (300): P/R/F1 = 1.0000/1.0000/1.0000。
+- 16 epochs；batch size 64；learning rate 0.003；Adam；seed 42。
+- CPU training loop: 14.2677 seconds。
+- Best epoch: 16；validation entity F1: 0.9192。
+- General student synthetic test (300): P/R/F1 = 0.9843/1.0000/0.9921。
 - Malaysian synthetic test (60): P/R/F1 = 1.0000/1.0000/1.0000。
 - PERSON precision/recall/F1 = 1.0000/1.0000/1.0000 on both synthetic tests。
 
-这些分数只适用于共享模板的合成分布。固定人工挑战矩阵为 11/13 通过；`Petronas executives` 和带括号的句子仍有类型误判，因此不能把合成测试的 1.0 当成生产性能。完整实际输出在 `reports/manual_acceptance.json`。
+学生场景固定挑战矩阵为 13/13 通过，覆盖 Malaysian 学生姓名、大学、学校、投诉、支持聊天、反馈、活动、重复实体、多句和未知词。它仍是小型人工检查矩阵，不能替代真实学生报告评估。完整实际输出在 `reports/manual_acceptance.json`。
 
 ## Testing
 
@@ -127,7 +128,7 @@ $env:MKL_NUM_THREADS="1"
 python -m pytest -q
 ```
 
-最新实测：`38 passed`。覆盖 dataset、实体池泄漏、preprocessing、vocabulary、BIO、model、forward、loss/backpropagation、checkpoint、prediction、三类实体、标点 span、长文本、重复实体、redaction、Malaysian data、TXT、单页/多页/损坏 PDF、API/Web、空输入、非法/超大文件、CPU inference 与 end-to-end。
+最新实测：`39 passed`。覆盖学生数据、合并实体池泄漏、preprocessing、vocabulary、BIO、model、forward、loss/backpropagation、checkpoint、prediction、三类实体、标点 span、长文本、重复实体、redaction、Malaysian data、TXT、单页/多页/损坏 PDF、API/Web、空输入、非法/超大文件、CPU inference 与 end-to-end。
 
 ## Project Structure
 
@@ -141,7 +142,7 @@ src/train.py                Training、validation、checkpoint、history
 src/evaluate.py             General/Malaysian 独立 test evaluation
 src/predict.py              CPU checkpoint loading、BIO/entity extraction
 src/redact.py               基于字符 span 的可靠脱敏
-tests/                      38 项自动化测试
+tests/                      39 项自动化测试
 models/best_model.pt        已训练 checkpoint；Clone 后直接使用
 data/processed/             可分发的合成 general 数据
 data/malaysian/             可分发的合成 Malaysian 数据
@@ -151,7 +152,8 @@ MODEL_ACCEPTANCE_REPORT.md  完整工程验收记录
 
 ## Limitations
 
-- 合成模板数据不等于真实 incident report、support chat 或 CoNLL-2003。
+- 模型针对学生报告、学生支持聊天、投诉、反馈、大学行政报告和学生活动进行优化；不提供医院病人、公司员工或客户场景的专项保证。
+- 合成模板数据不等于真实学生 incident report、support chat 或 CoNLL-2003。
 - PER/LOC/ORG 不覆盖电话、邮箱、Student ID、Passport、完整地址等所有 PII。
 - 无 CRF；非法 BIO 转移主要由后处理修复。
 - 不支持扫描 PDF OCR。

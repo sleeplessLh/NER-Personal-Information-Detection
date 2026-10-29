@@ -255,7 +255,7 @@ Version 4：外层遍历 DataLoader，形成 `run_epoch`。执行一个 epoch �
 
 ## 实验事实
 
-早期基线 validation F1=0.1976：模型背记训练实体。加入 entity word dropout 后 0.6494；增加多词地点后 0.8681；再加入 ordinary word dropout 后曾达到 0.9685。最终加入 Malaysian train/validation、互斥实体池和更多上下文模板并重训 8 epochs，最佳 epoch 6 validation F1=0.9974。理论跟随失败出现：Overfitting 是 train 极好、validation 差；合成模板上的高 validation 仍不等于真实泛化。
+早期基线 validation F1=0.1976：模型背记训练实体。加入 entity word dropout 后 0.6494；增加多词地点后 0.8681；再加入 ordinary word dropout 后曾达到 0.9685。最终聚焦学生隐私场景，加入 Malaysian train/validation、跨来源互斥实体池和学生报告模板并重训 16 epochs，最佳 epoch 16 validation F1=0.9192。理论跟随失败出现：Overfitting 是 train 极好、validation 差；合成模板上的高 validation 仍不等于真实泛化。
 
 ## 验收与 Checkpoint
 
@@ -411,7 +411,7 @@ Problem -> Privacy Motivation -> BIO Dataset -> Embedding/BiLSTM -> Training Fai
 11 未见姓名？中文：UNK、大小写、上下文。English: UNK, casing, and context support unseen names.
 12 Unknown？中文：映射 ID 1。English: It maps to the trained UNK embedding.
 13 为什么是 ML？中文：143,536 个参数由 Gradient 更新。English: Trainable parameters are optimized from labels.
-14 是否自己训练？中文：是，自定义 nn.Module 从随机权重训练 8 epochs。English: Yes, I defined and trained the architecture from random weights.
+14 是否自己训练？中文：是，自定义 nn.Module 从随机权重训练 16 epochs。English: Yes, I defined and trained the architecture from random weights.
 15 最大限制？中文：合成模板与 domain shift。English: Synthetic templates do not prove real-world generalization.
 16 Softmax？中文：Logits 归一化；Loss 内置。English: Cross-entropy applies log-softmax internally.
 17 Logit？中文：未归一化类别分数。English: An unnormalized class score.
@@ -454,7 +454,7 @@ train_rows.extend(local_train_rows)
 validation_rows.extend(local_validation_rows)
 ```
 
-G Explanation：`extend` 逐条加入 dict；返回值是 `None`，不要写成 `train_rows = train_rows.extend(...)`。H Relationships：local JSONL -> `load_jsonl` -> `NERDataset` -> `DataLoader` -> model。I Run：`uv run python -m src.train --epochs 8 --batch-size 64 --learning-rate 0.003`。J Expected：8 行 JSON epoch 日志和 best checkpoint。K Errors：缺文件先运行 generator；label 不合法先修数据。L Checkpoint：checkpoint 的 `dataset_counts` 必须显示 160/40。M Interview："I merged only the Malaysian training and validation splits. The local test split remained unseen."
+G Explanation：`extend` 逐条加入 dict；返回值是 `None`，不要写成 `train_rows = train_rows.extend(...)`。H Relationships：local JSONL -> `load_jsonl` -> `NERDataset` -> `DataLoader` -> model。I Run：`uv run python -m src.train --epochs 16 --batch-size 64 --learning-rate 0.003`。J Expected：16 行 JSON epoch 日志和 best checkpoint。K Errors：缺文件先运行 generator；label 不合法先修数据。L Checkpoint：checkpoint 的 `dataset_counts` 必须显示 160/40。M Interview："I merged only the Malaysian training and validation splits. The local test split remained unseen."
 
 # Phase 24 双测试集冻结评估
 

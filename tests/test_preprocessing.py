@@ -31,3 +31,14 @@ def test_entity_pools_are_disjoint_across_splits(pools):
         assert split_sets[0].isdisjoint(split_sets[1])
         assert split_sets[0].isdisjoint(split_sets[2])
         assert split_sets[1].isdisjoint(split_sets[2])
+
+
+def test_combined_general_and_malaysian_entities_do_not_cross_splits():
+    for entity_type in ("PER", "LOC", "ORG"):
+        combined = {
+            split: set(ENTITY_POOLS[split][entity_type]) | set(MALAYSIAN_POOLS[split][entity_type])
+            for split in ("train", "validation", "test")
+        }
+        assert combined["train"].isdisjoint(combined["validation"])
+        assert combined["train"].isdisjoint(combined["test"])
+        assert combined["validation"].isdisjoint(combined["test"])

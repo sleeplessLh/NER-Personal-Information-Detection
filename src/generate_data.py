@@ -11,48 +11,49 @@ from .preprocessing import tokenize, validate_bio
 
 ENTITY_POOLS = {
     "train": {
-        "PER": ["Aisha Rahman", "Daniel Wong", "Nur Izzati", "Michael Chen", "Priya Nair", "James Brown", "Emma Wilson", "Hafiz Omar", "Mei Lin", "Ravi Kumar", "Fatimah Zahra", "Lucas Martin"],
+        "PER": ["Aisha Rahman", "Daniel Wong", "Nur Izzati", "Michael Chen", "Priya Nair", "James Brown", "Emma Wilson", "Hafiz Omar", "Mei Lin", "Ravi Kumar", "Fatimah Zahra", "Lucas Martin", "Aminah", "Ravi", "Chloe", "Wei"],
         "LOC": ["Penang", "Paris", "Tokyo", "Selangor", "Berlin", "Singapore", "Perak", "Sydney", "Sabah", "Dublin", "Manchester", "Putrajaya", "Kota Kinabalu", "Los Angeles", "Hong Kong", "George Town", "New Delhi", "Bandar Seri Begawan"],
-        "ORG": ["Microsoft", "Universiti Malaya", "AirAsia", "Google", "Maybank", "World Health Organization", "Tesla", "Universiti Putra Malaysia", "Petronas", "Red Cross", "Intel", "CIMB Bank"],
+        "ORG": ["University of Manchester", "Universiti Malaya", "National University of Singapore", "Monash University", "University of Sydney", "University of Tokyo", "University of Berlin", "Universiti Putra Malaysia", "Dublin City University", "University of Delhi", "Manchester College", "Singapore Student Council"],
     },
     "validation": {
         "PER": ["Siti Aminah", "Oliver Smith", "Tan Wei Ming", "Sophia Garcia"],
         "LOC": ["Kuala Lumpur", "London", "Johor Bahru", "Madrid"],
-        "ORG": ["Universiti Kebangsaan Malaysia", "Amazon", "Bank Negara Malaysia", "Netflix"],
+        "ORG": ["Universiti Kebangsaan Malaysia", "University of Oxford", "Madrid International School", "London Student Union"],
     },
     "test": {
         "PER": ["John Carter", "Ali Hassan", "Sarah Lee", "Ahmad Zaki", "Siti Hajar", "Grace Taylor"],
         "LOC": ["Edinburgh", "Bangkok", "Melbourne", "Malacca", "New York", "Kuching"],
-        "ORG": ["Universiti Teknologi Malaysia", "Microsoft Research", "OpenAI", "Sunway University", "Apple", "Sarawak General Hospital"],
+        "ORG": ["Universiti Teknologi Malaysia", "University of Edinburgh", "Bangkok International School", "Sunway University", "New York University", "Kuching High School"],
     },
 }
 
 TEMPLATES = [
-    "{PER} lives in {LOC} .",
-    "{PER} works at {ORG} in {LOC} .",
-    "{PER} studies at {ORG} .",
-    "Yesterday , {PER} visited {LOC} .",
-    "{ORG} hired {PER} for its {LOC} office .",
-    "A report from {ORG} was signed by {PER} .",
-    "Please send the document to {PER} at {ORG} .",
-    "The meeting between {PER} and {ORG} happened in {LOC} .",
-    "{PER} moved from {LOC} to join {ORG} .",
-    "After arriving in {LOC} , {PER} called {ORG} .",
-    "{PER} met {PER2} at {ORG} .",
-    "{PER} submitted the report .",
-    "{PER} arrived early .",
-    "The conference took place in {LOC} .",
-    "{LOC} will host the next conference .",
-    "{ORG} opened a laboratory .",
-    "{ORG} hired a specialist .",
+    "{PER} is a student at {ORG} .",
+    "{PER} studies at {ORG} in {LOC} .",
+    "{PER} reported an incident at {ORG} in {LOC} .",
+    "{PER} submitted a complaint to {ORG} .",
+    "The student support team contacted {PER} at {ORG} .",
+    "{PER} attended a student activity in {LOC} .",
+    "{ORG} organised a student event in {LOC} .",
+    "{PER} travelled from {LOC} to study at {ORG} .",
+    "The university report says {PER} lives in {LOC} .",
+    "{PER} and {PER2} joined the club at {ORG} .",
+    "{PER} met {PER2} at {ORG} in {LOC} .",
+    "{PER} requested academic support from {ORG} .",
+    "{PER} submitted feedback about a course at {ORG} .",
+    "A student named {PER} visited {LOC} .",
+    "The incident involving {PER} happened near {ORG} in {LOC} .",
+    "The administrator at {ORG} emailed {PER} .",
+    "{PER} arrived early for class .",
+    "The student conference took place in {LOC} .",
 ]
 NO_ENTITY = {
     "train": [
-        "Please review the attached report .", "The system completed the task successfully .",
-        "The weather is pleasant today .", "The weather is rainy this morning .",
-        "This document contains general information .", "A routine update will happen tomorrow .",
-        "Our software processed the request correctly .", "Students submitted the assignment on time .",
-        "The room is quiet and clean .", "No private details appear in this message .",
+        "Please review the attached student report .", "The support request was completed successfully .",
+        "The lecture starts at nine tomorrow .", "The assignment deadline is next week .",
+        "This feedback contains general course information .", "A student activity will happen tomorrow .",
+        "The portal processed the request correctly .", "Students submitted the assignment on time .",
+        "The classroom is quiet and clean .", "No private details appear in this message .",
     ],
     "validation": ["A meeting will begin tomorrow morning .", "No private details appear here ."],
     "test": ["The weather is beautiful today .", "This ordinary sentence contains no entity ."],
@@ -62,17 +63,17 @@ MALAYSIAN_POOLS = {
     "train": {
         "PER": ["Ahmad Firdaus", "Nurul Aisyah", "Lim Wei Jian", "Arjun Nair", "Siti Khadijah", "Tan Jia Hui", "Muhammad Haziq", "Devi Krishnan"],
         "LOC": ["Shah Alam", "Ipoh", "Kuantan", "Seremban", "Alor Setar", "Kota Bharu", "Miri", "Cyberjaya"],
-        "ORG": ["Petronas", "Maybank", "Telekom Malaysia", "Universiti Putra Malaysia", "Hospital Serdang", "Bank Negara Malaysia", "Tenaga Nasional", "CIMB Bank"],
+        "ORG": ["Universiti Malaya", "Universiti Putra Malaysia", "Universiti Teknologi MARA", "Sunway College", "Taman Melawati Secondary School", "Aminuddin Baki Secondary School", "Malaysian Student Council", "Ministry of Higher Education"],
     },
     "validation": {
         "PER": ["Farah Nabila", "Lee Jun Hao"],
-        "LOC": ["Putrajaya", "Petaling Jaya"],
-        "ORG": ["Universiti Kebangsaan Malaysia", "Hospital Putrajaya"],
+        "LOC": ["Labuan", "Petaling Jaya"],
+        "ORG": ["Universiti Kebangsaan Malaysia", "Victoria Secondary School"],
     },
     "test": {
         "PER": ["Aina Sofea", "Kumar Raj", "Jason Teoh"],
-        "LOC": ["George Town", "Johor Bahru", "Kuching"],
-        "ORG": ["Universiti Sains Malaysia", "Hospital Kuala Lumpur", "Sarawak Energy"],
+        "LOC": ["Sandakan", "Batu Pahat", "Kuching"],
+        "ORG": ["Universiti Sains Malaysia", "Universiti Teknologi Malaysia", "International Islamic University Malaysia"],
     },
 }
 
@@ -167,6 +168,14 @@ def main() -> None:
             overlap = split_sets[left] & split_sets[right]
             if overlap:
                 raise RuntimeError(f"{entity_type} entity leakage between {left}/{right}: {sorted(overlap)}")
+        combined = {
+            split: set(ENTITY_POOLS[split][entity_type]) | set(MALAYSIAN_POOLS[split][entity_type])
+            for split in ("train", "validation", "test")
+        }
+        for left, right in (("train", "validation"), ("train", "test"), ("validation", "test")):
+            overlap = combined[left] & combined[right]
+            if overlap:
+                raise RuntimeError(f"Combined {entity_type} leakage between {left}/{right}: {sorted(overlap)}")
 
     sizes = {"train": 2400, "validation": 300, "test": 300}
     all_texts: set[str] = set()
@@ -183,10 +192,10 @@ def main() -> None:
         summary[split] = {"rows": len(rows), "unique_sentences": len(texts)}
 
     challenge_texts = [
-        "Farah works at Telekom Malaysia in Cyberjaya.",
-        "Kumar studies at Universiti Sains Malaysia in George Town.",
-        "Aina met Jason at Hospital Kuala Lumpur.",
-        "The weather is beautiful today.",
+        "Ahmad Ali is a student at Universiti Teknologi Malaysia in Johor Bahru.",
+        "Kumar submitted a complaint to Universiti Sains Malaysia in George Town.",
+        "Aina and Jason joined a student activity at International Islamic University Malaysia.",
+        "The assignment deadline is next week.",
     ]
     MALAYSIAN_DIR.mkdir(parents=True, exist_ok=True)
     (MALAYSIAN_DIR / "challenge.txt").write_text("\n".join(challenge_texts) + "\n", encoding="utf-8")
